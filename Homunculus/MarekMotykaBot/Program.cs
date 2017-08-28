@@ -15,6 +15,7 @@ namespace MarekMotykaBot
 
         public async Task StartAsync()
         {
+
             _client = new DiscordSocketClient();
             
             await _client.LoginAsync(TokenType.Bot, "MzQ3ODM1MjAyMjIwOTgyMjgz.DHeKuA.gKhpvqPwkPHsr9Jgh5lHBjw5UQ0");
