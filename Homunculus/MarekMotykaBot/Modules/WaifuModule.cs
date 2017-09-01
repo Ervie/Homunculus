@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace MarekMotykaBot.Modules
 {
-    public class ResponseModule: ModuleBase<SocketCommandContext>
+    public class WaifuModule: ModuleBase<SocketCommandContext>
     {
 		private List<string> _marekWaifuList = new List<string>() { "Erina", "Asuna", "Rias"};
 
