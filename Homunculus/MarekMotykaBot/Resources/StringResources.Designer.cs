@@ -62,6 +62,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Elo mordy, tutaj są komendy.
+        /// </summary>
+        internal static string listCommands {
+            get {
+                return ResourceManager.GetString("listCommands", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, ale muszę pisać magisterkę..
         /// </summary>
         internal static string masterThesis {

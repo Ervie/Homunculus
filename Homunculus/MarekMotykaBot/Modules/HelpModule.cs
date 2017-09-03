@@ -1,0 +1,91 @@
+﻿using Discord;
+using Discord.Commands;
+using MarekMotykaBot.Resources;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MarekMotykaBot.Modules
+{
+    public class HelpModule: ModuleBase<SocketCommandContext>
+    {
+        private readonly CommandService _service;
+
+        private readonly char prefixChar = '!';
+
+        public HelpModule(CommandService service)
+        {
+            _service = service;
+        }
+
+        [Command("Help"), Alias("h"), Summary("List all the commands")]
+        public async Task HelpAsync()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            var builder = new EmbedBuilder()
+            {
+                Color = new Color(114, 137, 218),
+                Description = StringConsts.ListCommands
+            };
+
+            foreach (var module in _service.Modules)
+            {
+                string description = null;
+                foreach (var cmd in module.Commands)
+                {
+                    var result = await cmd.CheckPreconditionsAsync(Context);
+                    if (result.IsSuccess)
+                    {
+
+                        foreach (string alias in cmd.Aliases)
+                        {
+                            sb.Append(prefixChar);
+                            sb.Append(alias);
+
+                            if (alias != cmd.Aliases.Last())
+                                sb.Append(", ");
+                        }
+
+                        if (cmd.Parameters.Count > 0)
+                        {
+                            sb.Append(" (");
+
+                            foreach (ParameterInfo parameter in cmd.Parameters)
+                            {
+                                sb.Append(parameter.Name);
+                                if (parameter != cmd.Parameters.Last())
+                                    sb.Append(", ");
+                            }
+
+                            sb.Append(") ");
+                        }
+                            
+                        if (!string.IsNullOrWhiteSpace(cmd.Summary))
+                        {
+                            sb.Append(" - ");
+                            sb.Append(cmd.Summary);
+                        }
+
+                        description += $"{sb.ToString()}\n";
+                        sb.Clear();
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(description))
+                {
+                    builder.AddField(x =>
+                    {
+                        x.Name = module.Name;
+                        x.Value = description;
+                        x.IsInline = false;
+                    });
+                }
+            }
+
+            await ReplyAsync("", false, builder.Build());
+        }
+    }
+}

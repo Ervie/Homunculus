@@ -47,14 +47,14 @@ namespace MarekMotykaBot.Modules
             await Context.Channel.SendMessageAsync(string.Format(StringConsts.WaifuBetter, waifus[selectedWaifuIndex]));
         }
 
-        [Command("BetterWaifu"), Alias("bw"), Summary("Waifu selector, multiple waifus")]
-        public async Task BetterWaifu(params string[] args)
+        [Command("BetterWaifu"), Alias("bw"), Summary("Waifu selector, multiple waifus separated with coma")]
+        public async Task BetterWaifu(params string[] waifus)
         {
-            var waifus = args.ToList();
+            var waifusList = waifus.ToList();
 
             foreach (string waifu in _marekWaifuList)
             {
-                if (waifus.Contains(waifu))
+                if (waifusList.Contains(waifu))
                 {
                     await Context.Channel.SendMessageAsync(string.Format(StringConsts.WaifuShit, waifu));
                     return;
@@ -63,9 +63,9 @@ namespace MarekMotykaBot.Modules
 
             Random rng = new Random();
 
-            int selectedWaifuIndex = rng.Next(waifus.Count);
+            int selectedWaifuIndex = rng.Next(waifusList.Count);
 
-            await Context.Channel.SendMessageAsync(string.Format(StringConsts.WaifuBest, waifus[selectedWaifuIndex]));
+            await Context.Channel.SendMessageAsync(string.Format(StringConsts.WaifuBest, waifusList[selectedWaifuIndex]));
         }
     }
 }

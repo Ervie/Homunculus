@@ -45,5 +45,13 @@ namespace MarekMotykaBot.Resources
                 return StringResources.ResourceManager.GetString("waifuShit");
             }
         }
+
+        public static string ListCommands
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("listCommands");
+            }
+        }
     }
 }
