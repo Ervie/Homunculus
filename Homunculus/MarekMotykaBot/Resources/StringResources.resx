@@ -121,6 +121,15 @@
     <value>Z {0} to se możesz... to wiesz co se możesz!</value>
     <comment>Sometimes he has enough</comment>
   </data>
+  <data name="husbandoBest" xml:space="preserve">
+    <value>{0} najlepszy.</value>
+  </data>
+  <data name="husbandoBetter" xml:space="preserve">
+    <value>{0} lepszy.</value>
+  </data>
+  <data name="legiaWarszawa" xml:space="preserve">
+    <value>Legia Warszawa to najlepszy klub, kto nie wierzy, to chuj mu w dziób!</value>
+  </data>
   <data name="listCommands" xml:space="preserve">
     <value>Elo mordy, tutaj są komendy</value>
     <comment>List  all comands</comment>

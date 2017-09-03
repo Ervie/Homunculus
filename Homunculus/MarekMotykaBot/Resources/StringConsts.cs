@@ -30,6 +30,22 @@ namespace MarekMotykaBot.Resources
             }
         }
 
+        public static string HusbandoBetter
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("husbandoBetter");
+            }
+        }
+
+        public static string HusbandoBest
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("husbandoBest");
+            }
+        }
+
         public static string WaifuEqual
         {
             get
@@ -59,6 +75,14 @@ namespace MarekMotykaBot.Resources
             get
             {
                 return StringResources.ResourceManager.GetString("declineCommand");
+            }
+        }
+
+        public static string LegiaWarszawa
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("legiaWarszawa");
             }
         }
     }

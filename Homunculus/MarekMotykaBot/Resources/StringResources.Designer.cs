@@ -71,6 +71,33 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} najlepszy..
+        /// </summary>
+        internal static string husbandoBest {
+            get {
+                return ResourceManager.GetString("husbandoBest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} lepszy..
+        /// </summary>
+        internal static string husbandoBetter {
+            get {
+                return ResourceManager.GetString("husbandoBetter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Legia Warszawa to najlepszy klub, kto nie wierzy, to chuj mu w dziób!.
+        /// </summary>
+        internal static string legiaWarszawa {
+            get {
+                return ResourceManager.GetString("legiaWarszawa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Elo mordy, tutaj są komendy.
         /// </summary>
         internal static string listCommands {

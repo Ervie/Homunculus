@@ -19,6 +19,12 @@ namespace MarekMotykaBot.Modules
             waifus.Add(firstWaifu);
             waifus.Add(secondWaifu);
 
+            if (waifus.Contains("Legia"))
+            {
+                await Context.Channel.SendMessageAsync(StringConsts.LegiaWarszawa);
+                return;
+            }
+
             if (waifus.Contains("Asuna") && waifus.Contains("Erina"))
             {
                 await Context.Channel.SendMessageAsync(StringConsts.WaifuEqual);
@@ -66,6 +72,33 @@ namespace MarekMotykaBot.Modules
             int selectedWaifuIndex = rng.Next(waifusList.Count);
 
             await Context.Channel.SendMessageAsync(string.Format(StringConsts.WaifuBest, waifusList[selectedWaifuIndex]));
+        }
+
+        [Command("BetterHusbando"), Alias("bh"), Summary("Husbando selector, 2 husbandos")]
+        public async Task BetterHusbando(string firstHusbando, string secondHusbando)
+        {
+            var husbandos = new List<string>();
+
+            husbandos.Add(firstHusbando);
+            husbandos.Add(secondHusbando);
+            
+            Random rng = new Random();
+
+            int selectedHusbandoIndex = rng.Next(husbandos.Count);
+
+            await Context.Channel.SendMessageAsync(string.Format(StringConsts.HusbandoBetter, husbandos[selectedHusbandoIndex]));
+        }
+
+        [Command("BetterHusbando"), Alias("bh"), Summary("Husbando selector, multiple husbandos separated with spaces")]
+        public async Task BetterHusbando(params string[] husbandos)
+        {
+            var husbandoList = husbandos.ToList();
+            
+            Random rng = new Random();
+
+            int selectedHusbandoIndex = rng.Next(husbandoList.Count);
+
+            await Context.Channel.SendMessageAsync(string.Format(StringConsts.HusbandoBest, husbandoList[selectedHusbandoIndex]));
         }
     }
 }

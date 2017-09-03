@@ -45,9 +45,6 @@ namespace MarekMotykaBot
         /// <summary>
         /// Check for marekface trigger words in each message and add reaction.
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="message"></param>
-        /// <returns></returns>
         private static async Task DetectMarekFaceTriggerWords(SocketCommandContext context, SocketUserMessage message)
         {
             foreach (string word in _marekFaceWords)

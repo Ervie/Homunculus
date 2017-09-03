@@ -4,6 +4,7 @@ using MarekMotykaBot.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,6 +32,14 @@ namespace MarekMotykaBot.Modules
                 Description = StringConsts.ListCommands
             };
 
+            //version
+            builder.AddField(x =>
+            {
+                x.Name = "Version";
+                x.Value = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+                x.IsInline = true;
+            });
+
             foreach (var module in _service.Modules)
             {
                 string description = null;
@@ -53,7 +62,7 @@ namespace MarekMotykaBot.Modules
                         {
                             sb.Append(" (");
 
-                            foreach (ParameterInfo parameter in cmd.Parameters)
+                            foreach (Discord.Commands.ParameterInfo parameter in cmd.Parameters)
                             {
                                 sb.Append(parameter.Name);
                                 if (parameter != cmd.Parameters.Last())
