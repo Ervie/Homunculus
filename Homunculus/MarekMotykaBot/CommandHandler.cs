@@ -3,6 +3,9 @@ using Discord.WebSocket;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using MarekMotykaBot.Resources;
+using System;
+using System.Linq;
 
 namespace MarekMotykaBot
 {
@@ -38,18 +41,41 @@ namespace MarekMotykaBot
 			int argPos = 0;
 
 			if (message.HasStringPrefix("!", ref argPos) ||
-				message.HasMentionPrefix(_client.CurrentUser, ref argPos) ||
-				message.HasMentionPrefix(_client.GetUser("Erina", "5946"), ref argPos))
+				message.HasMentionPrefix(_client.CurrentUser, ref argPos))
 			{
-                var result = await _service.ExecuteAsync(context, argPos);
-
-                if (result.IsSuccess && result.Error != CommandError.UnknownCommand)
+                if (!DeclineCommand(context, message.Content).Result)
                 {
-                    await context.Channel.SendMessageAsync(result.ErrorReason);
+                    var result = await _service.ExecuteAsync(context, argPos);
+
+                    if (result.IsSuccess && result.Error != CommandError.UnknownCommand)
+                    {
+                        await context.Channel.SendMessageAsync(result.ErrorReason);
+                    }
                 }
             }
         }
 
-		
+        private async Task<bool> DeclineCommand(SocketCommandContext context, string messageContent)
+        {
+            string commandName = messageContent.Split(' ').FirstOrDefault();
+            bool commandDeclined = false;
+
+            if (!string.IsNullOrWhiteSpace(commandName))
+            {
+                string meanResponse = string.Format(StringConsts.DeclineCommand, commandName);
+
+                Random rng = new Random();
+
+                int randomInt = rng.Next(1, 10);
+
+                // bad luck, you suck
+                if (randomInt == 1)
+                {
+                    commandDeclined = true;
+                    await context.Channel.SendMessageAsync(meanResponse);
+                }
+            }
+            return commandDeclined;
+        }
 	}
 }

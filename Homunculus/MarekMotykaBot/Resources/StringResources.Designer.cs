@@ -62,6 +62,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Z {0} to se możesz... to wiesz co se możesz!.
+        /// </summary>
+        internal static string declineCommand {
+            get {
+                return ResourceManager.GetString("declineCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Elo mordy, tutaj są komendy.
         /// </summary>
         internal static string listCommands {

@@ -11,12 +11,6 @@ namespace MarekMotykaBot.Modules
     {
         private List<string> _marekWaifuList = new List<string>() { "Erina", "Asuna", "Rias" };
 
-        [Command("Erina"), Summary("Only true waifu")]
-        public async Task ErinaHeart()
-        {
-            await Context.Channel.SendMessageAsync("<3");
-        }
-
         [Command("BetterWaifu"), Alias("bw"), Summary("Waifu selector, 2 waifus")]
         public async Task BetterWaifu(string firstWaifu, string secondWaifu)
         {
@@ -47,10 +41,16 @@ namespace MarekMotykaBot.Modules
             await Context.Channel.SendMessageAsync(string.Format(StringConsts.WaifuBetter, waifus[selectedWaifuIndex]));
         }
 
-        [Command("BetterWaifu"), Alias("bw"), Summary("Waifu selector, multiple waifus separated with coma")]
+        [Command("BetterWaifu"), Alias("bw"), Summary("Waifu selector, multiple waifus separated with spaces")]
         public async Task BetterWaifu(params string[] waifus)
         {
             var waifusList = waifus.ToList();
+
+            if (waifusList.Contains("Asuna") && waifusList.Contains("Erina"))
+            {
+                await Context.Channel.SendMessageAsync(StringConsts.WaifuEqual);
+                return;
+            }
 
             foreach (string waifu in _marekWaifuList)
             {

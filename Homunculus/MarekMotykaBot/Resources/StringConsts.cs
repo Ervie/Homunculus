@@ -53,5 +53,13 @@ namespace MarekMotykaBot.Resources
                 return StringResources.ResourceManager.GetString("listCommands");
             }
         }
+
+        public static string DeclineCommand
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("declineCommand");
+            }
+        }
     }
 }
