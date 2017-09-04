@@ -116,6 +116,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GÓWNO.
+        /// </summary>
+        internal static string shitString {
+            get {
+                return ResourceManager.GetString("shitString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} najlepsza..
         /// </summary>
         internal static string waifuBest {
@@ -148,6 +157,15 @@ namespace MarekMotykaBot.Resources {
         internal static string waifuShit {
             get {
                 return ResourceManager.GetString("waifuShit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Patrzcie chłopaki jak mu pocisnę....
+        /// </summary>
+        internal static string waitForIt {
+            get {
+                return ResourceManager.GetString("waitForIt", resourceCulture);
             }
         }
     }

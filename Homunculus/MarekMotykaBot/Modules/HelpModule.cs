@@ -21,7 +21,29 @@ namespace MarekMotykaBot.Modules
             _service = service;
         }
 
-        [Command("Help"), Alias("h"), Summary("List all the commands")]
+		[Command("Version"), Alias("v"), Summary("Prints version information")]
+		public async Task AboutAsync()
+		{
+			StringBuilder sb = new StringBuilder();
+
+			var builder = new EmbedBuilder()
+			{
+				Color = new Color(114, 137, 218),
+				Description = "About informations"
+			};
+			
+			//version
+			builder.AddField(x =>
+			{
+				x.Name = "Version";
+				x.Value = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+				x.IsInline = true;
+			});
+
+			await ReplyAsync("", false, builder.Build());
+		}
+
+		[Command("Help"), Alias("h"), Summary("List all the commands")]
         public async Task HelpAsync()
         {
             StringBuilder sb = new StringBuilder();
@@ -31,14 +53,6 @@ namespace MarekMotykaBot.Modules
                 Color = new Color(114, 137, 218),
                 Description = StringConsts.ListCommands
             };
-
-            //version
-            builder.AddField(x =>
-            {
-                x.Name = "Version";
-                x.Value = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
-                x.IsInline = true;
-            });
 
             foreach (var module in _service.Modules)
             {

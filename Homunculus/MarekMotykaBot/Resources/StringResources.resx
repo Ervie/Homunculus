@@ -138,6 +138,10 @@
     <value>Sorry, ale muszę pisać magisterkę.</value>
     <comment>Cheeky excuse to not hangout with friends</comment>
   </data>
+  <data name="shitString" xml:space="preserve">
+    <value>GÓWNO</value>
+    <comment>Best string name ever</comment>
+  </data>
   <data name="waifuBest" xml:space="preserve">
     <value>{0} najlepsza.</value>
   </data>
@@ -149,5 +153,8 @@
   </data>
   <data name="waifuShit" xml:space="preserve">
     <value>{0} najlepsza, reszta to shit!</value>
+  </data>
+  <data name="waitForIt" xml:space="preserve">
+    <value>Patrzcie chłopaki jak mu pocisnę...</value>
   </data>
 </root>

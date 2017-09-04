@@ -85,5 +85,21 @@ namespace MarekMotykaBot.Resources
                 return StringResources.ResourceManager.GetString("legiaWarszawa");
             }
         }
-    }
+
+		public static string WaitForIt
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("waitForIt");
+			}
+		}
+
+		public static string ShitString
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("shitString");
+			}
+		}
+	}
 }
