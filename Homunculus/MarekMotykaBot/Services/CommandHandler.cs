@@ -1,51 +1,53 @@
 ﻿using Discord.Commands;
 using Discord.WebSocket;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Threading.Tasks;
 using MarekMotykaBot.Resources;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace MarekMotykaBot
 {
     public class CommandHandler
     {
-        private readonly DiscordSocketClient _client;
-        private readonly CommandService _service;
+        private readonly DiscordSocketClient _discord;
+        private readonly CommandService _commands;
+        private readonly IServiceProvider _provider;
 
-
-		public CommandHandler(DiscordSocketClient client)
+        public CommandHandler(IServiceProvider provider)
         {
-            _client = client;
-			MessageScanner.Client = client;
-            _service = new CommandService();
+            _provider = provider;
+            _discord = _provider.GetService<DiscordSocketClient>();
+
+            MessageScanner.Client = _discord;
+            _commands = _provider.GetService<CommandService>();
         }
 
         public async Task InstallCommands()
         {
-			_client.MessageReceived += MessageScanner.ScanMessage;
-            _client.MessageReceived += HandleCommandAsync;
-            await _service.AddModulesAsync(Assembly.GetEntryAssembly());
+            _discord.MessageReceived += MessageScanner.ScanMessage;
+            _discord.MessageReceived += HandleCommandAsync;
+            await _commands.AddModulesAsync(Assembly.GetEntryAssembly());
         }
 
-		private async Task HandleCommandAsync(SocketMessage s)
-		{
-			var message = s as SocketUserMessage;
+        private async Task HandleCommandAsync(SocketMessage s)
+        {
+            var message = s as SocketUserMessage;
 
-			if (message == null)
-				return;
+            if (message == null)
+                return;
 
-			var context = new SocketCommandContext(_client, message);
+            var context = new SocketCommandContext(_discord, message);
 
-			int argPos = 0;
+            int argPos = 0;
 
-			if (message.HasStringPrefix("!", ref argPos) ||
-				message.HasMentionPrefix(_client.CurrentUser, ref argPos))
-			{
+            if (message.HasStringPrefix("!", ref argPos) ||
+                message.HasMentionPrefix(_discord.CurrentUser, ref argPos))
+            {
                 if (!DeclineCommand(context, message.Content).Result)
                 {
-                    var result = await _service.ExecuteAsync(context, argPos);
+                    var result = await _commands.ExecuteAsync(context, argPos);
 
                     if (result.IsSuccess && result.Error != CommandError.UnknownCommand)
                     {
@@ -77,5 +79,5 @@ namespace MarekMotykaBot
             }
             return commandDeclined;
         }
-	}
+    }
 }
