@@ -38,5 +38,5 @@ namespace MarekMotykaBot.Modules
     //        return result.Items.FirstOrDefault(x => x.Id.Kind == dataType);
     //    }
     //}
-    
+
 }

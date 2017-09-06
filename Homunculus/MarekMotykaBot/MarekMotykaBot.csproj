@@ -5,9 +5,9 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <ApplicationIcon />
     <StartupObject />
-    <Version>1.1.0</Version>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
+    <Version>1.1.1</Version>
+    <AssemblyVersion>1.0.1.1</AssemblyVersion>
+    <FileVersion>1.0.1.1</FileVersion>
     <Description>Discord bot written with .Net Core and Discord.Net. Simple mimicking</Description>
     <PackageLicenseUrl>https://github.com/Ervie/Homunculus/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl></PackageProjectUrl>
@@ -35,6 +35,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>StringResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\Images\Reactions\jjj.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
