@@ -2,45 +2,48 @@
 using Discord;
 using Discord.WebSocket;
 using System.Threading.Tasks;
-using MarekMotykaBot.Utils;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using Discord.Commands;
+using Google.Apis.YouTube.v3;
+using Google.Apis.Services;
+using MarekMotykaBot.Services;
 
 namespace MarekMotykaBot
 {
     public class Program
     {
-        static void Main(string[] args) => new Program().StartAsync().GetAwaiter().GetResult();
-
-        //private DiscordSocketClient _client;
-
-        //private CommandHandler _handler;
-
-        private Startup _startup = new Startup();
+        public static void Main(string[] args)
+            => new Program().StartAsync().GetAwaiter().GetResult();
+        
 
         public async Task StartAsync()
         {
-            PrettyConsole.NewLine($"MarekMotykaBot v{Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}");
-            PrettyConsole.NewLine();
+            var services = new ServiceCollection()      
+                .AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
+                {
+                    LogLevel = LogSeverity.Verbose,
+                    MessageCacheSize = 1000
+                }))
+                .AddSingleton(new CommandService(new CommandServiceConfig
+                {
+                    DefaultRunMode = RunMode.Async,   
+                    LogLevel = LogSeverity.Verbose
+                }))
+                .AddSingleton<CommandHandlingService>()    
+                .AddSingleton<LoggingService>()
+                .AddSingleton<StartupService>()
+                .AddSingleton<MessageScannerService>()
+                .AddSingleton<YTService>()
+                .AddSingleton<Random>();
 
-            var services = await _startup.ConfigureServices();
+            var provider = services.BuildServiceProvider();
 
-            var manager = services.GetService<CommandHandler>();
+            provider.GetRequiredService<LoggingService>();
+            await provider.GetRequiredService<StartupService>().StartAsync();
+            provider.GetRequiredService<CommandHandlingService>();
 
-            await manager.InstallCommands();
-
-            //_client = new DiscordSocketClient();
-
-            //await _client.LoginAsync(TokenType.Bot, "MzQ3ODM1MjAyMjIwOTgyMjgz.DHeKuA.gKhpvqPwkPHsr9Jgh5lHBjw5UQ0");
-
-            //await _client.StartAsync();
-
-            //_handler = new CommandHandler(_client);
-
-            //await _handler.InstallCommands();
-
-            await Task.Delay(-1);
+            await Task.Delay(-1); 
         }
-
     }
 }
