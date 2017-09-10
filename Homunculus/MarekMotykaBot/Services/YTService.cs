@@ -27,7 +27,7 @@ namespace MarekMotykaBot.Services
         {
             var request = _youTubeService.Search.List("snippet");
             request.Q = query;
-            request.MaxResults = 3;
+            request.MaxResults = 10;
 
             var result = await request.ExecuteAsync();
             return result.Items.FirstOrDefault(x => x.Id.Kind == dataType);

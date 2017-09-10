@@ -2,8 +2,6 @@
 using Discord.Commands;
 using MarekMotykaBot.Resources;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -11,40 +9,40 @@ using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Modules
 {
-    public class HelpModule: ModuleBase<SocketCommandContext>
+    public class HelpModule : ModuleBase<SocketCommandContext>
     {
         private readonly CommandService _service;
         private readonly IConfiguration _configuration;
-        
+
         public HelpModule(CommandService service, IConfiguration configuration)
         {
             _service = service;
             _configuration = configuration;
         }
 
-		[Command("Version"), Alias("v"), Summary("Prints version information")]
-		public async Task AboutAsync()
-		{
-			StringBuilder sb = new StringBuilder();
+        [Command("Version"), Alias("v"), Summary("Prints version information")]
+        public async Task AboutAsync()
+        {
+            StringBuilder sb = new StringBuilder();
 
-			var builder = new EmbedBuilder()
-			{
-				Color = new Color(114, 137, 218),
-				Description = "About informations"
-			};
-			
-			//version
-			builder.AddField(x =>
-			{
-				x.Name = "Version";
-				x.Value = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
-				x.IsInline = true;
-			});
+            var builder = new EmbedBuilder()
+            {
+                Color = new Color(114, 137, 218),
+                Description = "About informations"
+            };
 
-			await ReplyAsync("", false, builder.Build());
-		}
+            //version
+            builder.AddField(x =>
+            {
+                x.Name = "Version";
+                x.Value = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+                x.IsInline = true;
+            });
 
-		[Command("Help"), Alias("h"), Summary("List all the commands")]
+            await ReplyAsync("", false, builder.Build());
+        }
+
+        [Command("Help"), Alias("h"), Summary("List all the commands")]
         public async Task HelpAsync()
         {
             StringBuilder sb = new StringBuilder();
@@ -65,7 +63,6 @@ namespace MarekMotykaBot.Modules
                     var result = await cmd.CheckPreconditionsAsync(Context);
                     if (result.IsSuccess)
                     {
-
                         foreach (string alias in cmd.Aliases)
                         {
                             sb.Append(prefix);
@@ -88,7 +85,7 @@ namespace MarekMotykaBot.Modules
 
                             sb.Append(") ");
                         }
-                            
+
                         if (!string.IsNullOrWhiteSpace(cmd.Summary))
                         {
                             sb.Append(" - ");

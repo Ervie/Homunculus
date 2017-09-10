@@ -9,7 +9,14 @@ namespace MarekMotykaBot.Modules
 {
     public class WaifuModule : ModuleBase<SocketCommandContext>
     {
-        private List<string> _marekWaifuList = new List<string>() { "Erina", "Asuna", "Rias" };
+        private readonly Random _rng;
+
+        private readonly List<string> _marekWaifuList = new List<string>() { "Erina", "Asuna", "Rias" };
+
+        public WaifuModule(Random random)
+        {
+            _rng = random;
+        }
 
         [Command("BetterWaifu"), Alias("bw"), Summary("Waifu selector, 2 waifus")]
         public async Task BetterWaifu(string firstWaifu, string secondWaifu)
@@ -40,9 +47,7 @@ namespace MarekMotykaBot.Modules
                 }
             }
 
-            Random rng = new Random();
-
-            int selectedWaifuIndex = rng.Next(waifus.Count);
+            int selectedWaifuIndex = _rng.Next(waifus.Count);
 
             await Context.Channel.SendMessageAsync(string.Format(StringConsts.WaifuBetter, waifus[selectedWaifuIndex]));
         }
@@ -66,10 +71,8 @@ namespace MarekMotykaBot.Modules
                     return;
                 }
             }
-
-            Random rng = new Random();
-
-            int selectedWaifuIndex = rng.Next(waifusList.Count);
+            
+            int selectedWaifuIndex = _rng.Next(waifusList.Count);
 
             await Context.Channel.SendMessageAsync(string.Format(StringConsts.WaifuBest, waifusList[selectedWaifuIndex]));
         }
@@ -81,10 +84,8 @@ namespace MarekMotykaBot.Modules
 
             husbandos.Add(firstHusbando);
             husbandos.Add(secondHusbando);
-
-            Random rng = new Random();
-
-            int selectedHusbandoIndex = rng.Next(husbandos.Count);
+            
+            int selectedHusbandoIndex = _rng.Next(husbandos.Count);
 
             await Context.Channel.SendMessageAsync(string.Format(StringConsts.HusbandoBetter, husbandos[selectedHusbandoIndex]));
         }
@@ -93,10 +94,8 @@ namespace MarekMotykaBot.Modules
         public async Task BetterHusbando(params string[] husbandos)
         {
             var husbandoList = husbandos.ToList();
-
-            Random rng = new Random();
-
-            int selectedHusbandoIndex = rng.Next(husbandoList.Count);
+            
+            int selectedHusbandoIndex = _rng.Next(husbandoList.Count);
 
             await Context.Channel.SendMessageAsync(string.Format(StringConsts.HusbandoBest, husbandoList[selectedHusbandoIndex]));
         }

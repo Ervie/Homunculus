@@ -13,17 +13,19 @@ namespace MarekMotykaBot.Services
         private readonly DiscordSocketClient _discord;
         private readonly CommandService _commands;
         private readonly MessageScannerService _scanner;
+        private readonly Random _rng;
         private readonly IServiceProvider _provider;
         private readonly IConfiguration _configuration;
 
         // DiscordSocketClient, CommandService, and IServiceProvider are injected automatically from the IServiceProvider
-        public CommandHandlingService(IConfiguration configuration, DiscordSocketClient discord, CommandService commands, MessageScannerService scanner, IServiceProvider provider)
+        public CommandHandlingService(IConfiguration configuration, DiscordSocketClient discord, CommandService commands, MessageScannerService scanner, Random random, IServiceProvider provider)
         {
             _discord = discord;
             _commands = commands;
             _scanner = scanner;
             _provider = provider;
             _configuration = configuration;
+            _rng = random;
 
             _discord.MessageReceived += OnMessageReceivedAsync;
             _discord.MessageReceived += scanner.ScanMessage;
@@ -60,10 +62,8 @@ namespace MarekMotykaBot.Services
             if (!string.IsNullOrWhiteSpace(commandName))
             {
                 string meanResponse = string.Format(StringConsts.DeclineCommand, commandName);
-
-                Random rng = new Random();
-
-                int randomInt = rng.Next(1, 10);
+                
+                int randomInt = _rng.Next(1, 10);
 
                 // bad luck, you suck
                 if (randomInt == 1)

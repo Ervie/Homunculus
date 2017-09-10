@@ -134,6 +134,10 @@
     <value>Elo mordy, tutaj są komendy</value>
     <comment>List  all comands</comment>
   </data>
+  <data name="marekWaifus" xml:space="preserve">
+    <value>{0} jest najlepsza! &lt;3</value>
+    <comment>String for detecting Marek's waifus</comment>
+  </data>
   <data name="masterThesis" xml:space="preserve">
     <value>Sorry, ale muszę pisać magisterkę.</value>
     <comment>Cheeky excuse to not hangout with friends</comment>
@@ -156,5 +160,8 @@
   </data>
   <data name="waitForIt" xml:space="preserve">
     <value>Patrzcie chłopaki jak mu pocisnę...</value>
+  </data>
+  <data name="ytNotFound" xml:space="preserve">
+    <value>Nie znalazłem takiego filmu jak {0}.</value>
   </data>
 </root>

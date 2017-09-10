@@ -14,7 +14,7 @@ namespace MarekMotykaBot
         private readonly DiscordSocketClient _client;
 
         private List<string> _waifuList = new List<string>() { "Asuna", "Rias", "Erina" };
-        private List<string> _marekFaceWords = new List<string>() { "czerń", "czarn", "nigga", "nigger", "ciemn", "murzyn", "black", "schartz", "cień", "mrok", "mroczn", "afryk", "africa" };
+        private List<string> _marekFaceWords = new List<string>() { "czerń", "czarn", "nigga", "nigger", "ciemn", "murzyn", "black", "schartz", "cień", "mrok", "mroczn", "afryk", "africa", "negro", "kuro"};
 
         public MessageScannerService(DiscordSocketClient client)
         {
@@ -75,7 +75,7 @@ namespace MarekMotykaBot
             {
                 if (message.Content.ToLowerInvariant().Contains(waifuName.ToLowerInvariant()) && !message.Author.IsBot)
                 {
-                    await context.Channel.SendMessageAsync(string.Format($"{waifuName} jest najlepsza! <3"));
+                    await context.Channel.SendMessageAsync(string.Format(StringConsts.MarekWaifus, waifuName));
                     break;
                 }
             }

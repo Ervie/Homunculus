@@ -1,5 +1,6 @@
 ﻿using Discord.Commands;
 using MarekMotykaBot.Services;
+using MarekMotykaBot.Resources;
 using System;
 using System.Threading.Tasks;
 
@@ -22,7 +23,7 @@ namespace MarekMotykaBot.Modules
             var video = await _youtube.SearchYoutubeAsync("Blok ekipa", "youtube#video");
 
             if (video == null)
-                await ReplyAsync($"I could not find a video like Blok Ekipa");
+                await ReplyAsync(string.Format(StringConsts.YtNotFound, "Blok Ekipa"));
             else
                 await ReplyAsync($"http://youtube.com/watch?v={video.Id.VideoId}");
         }
@@ -34,7 +35,7 @@ namespace MarekMotykaBot.Modules
             var video = await _youtube.SearchYoutubeAsync(query, "youtube#video");
 
             if (video == null)
-                await ReplyAsync($"I could not find a video like {query}");
+                await ReplyAsync(string.Format(StringConsts.YtNotFound, query));
             else
                 await ReplyAsync($"http://youtube.com/watch?v={video.Id.VideoId}");
         }

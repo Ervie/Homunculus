@@ -107,6 +107,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} jest najlepsza! &lt;3.
+        /// </summary>
+        internal static string marekWaifus {
+            get {
+                return ResourceManager.GetString("marekWaifus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, ale muszę pisać magisterkę..
         /// </summary>
         internal static string masterThesis {
@@ -166,6 +175,15 @@ namespace MarekMotykaBot.Resources {
         internal static string waitForIt {
             get {
                 return ResourceManager.GetString("waitForIt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nie znalazłem takiego filmu jak {0}..
+        /// </summary>
+        internal static string ytNotFound {
+            get {
+                return ResourceManager.GetString("ytNotFound", resourceCulture);
             }
         }
     }

@@ -101,5 +101,21 @@ namespace MarekMotykaBot.Resources
 				return StringResources.ResourceManager.GetString("shitString");
 			}
 		}
-	}
+
+        public static string MarekWaifus
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("marekWaifus");
+            }
+        }
+
+        public static string YtNotFound
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("ytNotFound");
+            }
+        }
+    }
 }
