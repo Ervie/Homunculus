@@ -1,5 +1,6 @@
 ﻿using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
+using Microsoft.Extensions.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using Youtube = Google.Apis.YouTube.v3.Data;
@@ -9,12 +10,15 @@ namespace MarekMotykaBot.Services
     public class YTService
     {
         private readonly YouTubeService _youTubeService;
+        private readonly IConfiguration _configuration;
 
-        public YTService()
+        public YTService(IConfiguration configuration)
         {
+            _configuration = configuration;
+
             _youTubeService = new YouTubeService(new BaseClientService.Initializer()
             {
-                ApiKey = "toBeReplaced",
+                ApiKey = _configuration["tokens:youtube"],
                 MaxUrlLength = 256
             });
         }

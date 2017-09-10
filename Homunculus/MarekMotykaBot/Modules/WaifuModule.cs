@@ -1,9 +1,9 @@
 ﻿using Discord.Commands;
+using MarekMotykaBot.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MarekMotykaBot.Resources;
 
 namespace MarekMotykaBot.Modules
 {
@@ -81,7 +81,7 @@ namespace MarekMotykaBot.Modules
 
             husbandos.Add(firstHusbando);
             husbandos.Add(secondHusbando);
-            
+
             Random rng = new Random();
 
             int selectedHusbandoIndex = rng.Next(husbandos.Count);
@@ -93,7 +93,7 @@ namespace MarekMotykaBot.Modules
         public async Task BetterHusbando(params string[] husbandos)
         {
             var husbandoList = husbandos.ToList();
-            
+
             Random rng = new Random();
 
             int selectedHusbandoIndex = rng.Next(husbandoList.Count);

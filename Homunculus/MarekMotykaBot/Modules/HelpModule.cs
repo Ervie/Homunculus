@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using MarekMotykaBot.Resources;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,12 @@ namespace MarekMotykaBot.Modules
     public class HelpModule: ModuleBase<SocketCommandContext>
     {
         private readonly CommandService _service;
-
-        private readonly char prefixChar = '!';
-
-        public HelpModule(CommandService service)
+        private readonly IConfiguration _configuration;
+        
+        public HelpModule(CommandService service, IConfiguration configuration)
         {
             _service = service;
+            _configuration = configuration;
         }
 
 		[Command("Version"), Alias("v"), Summary("Prints version information")]
@@ -48,6 +49,8 @@ namespace MarekMotykaBot.Modules
         {
             StringBuilder sb = new StringBuilder();
 
+            string prefix = _configuration["prefix"];
+
             var builder = new EmbedBuilder()
             {
                 Color = new Color(114, 137, 218),
@@ -65,7 +68,7 @@ namespace MarekMotykaBot.Modules
 
                         foreach (string alias in cmd.Aliases)
                         {
-                            sb.Append(prefixChar);
+                            sb.Append(prefix);
                             sb.Append(alias);
 
                             if (alias != cmd.Aliases.Last())

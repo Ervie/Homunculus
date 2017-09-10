@@ -1,13 +1,11 @@
-﻿using System;
-using Discord;
-using Discord.WebSocket;
-using System.Threading.Tasks;
-using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Discord;
 using Discord.Commands;
-using Google.Apis.YouTube.v3;
-using Google.Apis.Services;
+using Discord.WebSocket;
 using MarekMotykaBot.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Threading.Tasks;
 
 namespace MarekMotykaBot
 {
@@ -16,10 +14,15 @@ namespace MarekMotykaBot
         public static void Main(string[] args)
             => new Program().StartAsync().GetAwaiter().GetResult();
         
+        private IConfiguration _config;
 
         public async Task StartAsync()
         {
-            var services = new ServiceCollection()      
+            var builder = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory).AddJsonFile("configuration.json");
+
+            _config = builder.Build();
+
+            var services = new ServiceCollection()
                 .AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
                 {
                     LogLevel = LogSeverity.Verbose,
@@ -27,14 +30,15 @@ namespace MarekMotykaBot
                 }))
                 .AddSingleton(new CommandService(new CommandServiceConfig
                 {
-                    DefaultRunMode = RunMode.Async,   
+                    DefaultRunMode = RunMode.Async,
                     LogLevel = LogSeverity.Verbose
                 }))
-                .AddSingleton<CommandHandlingService>()    
+                .AddSingleton<CommandHandlingService>()
                 .AddSingleton<LoggingService>()
                 .AddSingleton<StartupService>()
                 .AddSingleton<MessageScannerService>()
                 .AddSingleton<YTService>()
+                .AddSingleton(_config)
                 .AddSingleton<Random>();
 
             var provider = services.BuildServiceProvider();
@@ -43,7 +47,7 @@ namespace MarekMotykaBot
             await provider.GetRequiredService<StartupService>().StartAsync();
             provider.GetRequiredService<CommandHandlingService>();
 
-            await Task.Delay(-1); 
+            await Task.Delay(-1);
         }
     }
 }
