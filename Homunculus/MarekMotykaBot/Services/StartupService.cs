@@ -23,7 +23,6 @@ namespace MarekMotykaBot.Services
         public async Task StartAsync()
         {
             string discordToken = _configuration["tokens:discord"];
-
             await _discord.LoginAsync(TokenType.Bot, discordToken);
             await _discord.StartAsync();
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly());

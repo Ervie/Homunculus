@@ -38,6 +38,7 @@ namespace MarekMotykaBot
                 .AddSingleton<StartupService>()
                 .AddSingleton<MessageScannerService>()
                 .AddSingleton<YTService>()
+                .AddSingleton<ImgurService>()
                 .AddSingleton(_config)
                 .AddSingleton<Random>();
 
