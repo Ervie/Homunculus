@@ -71,6 +71,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Orzeł.
+        /// </summary>
+        internal static string head {
+            get {
+                return ResourceManager.GetString("head", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} najlepszy..
         /// </summary>
         internal static string husbandoBest {
@@ -130,6 +139,15 @@ namespace MarekMotykaBot.Resources {
         internal static string shitString {
             get {
                 return ResourceManager.GetString("shitString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reszka.
+        /// </summary>
+        internal static string tails {
+            get {
+                return ResourceManager.GetString("tails", resourceCulture);
             }
         }
         

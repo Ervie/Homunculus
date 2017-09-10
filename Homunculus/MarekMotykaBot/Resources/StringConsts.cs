@@ -117,5 +117,21 @@ namespace MarekMotykaBot.Resources
                 return StringResources.ResourceManager.GetString("ytNotFound");
             }
         }
+
+        public static string Head
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("head");
+            }
+        }
+
+        public static string Tails
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("tails");
+            }
+        }
     }
 }

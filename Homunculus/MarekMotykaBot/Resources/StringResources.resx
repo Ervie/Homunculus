@@ -121,6 +121,9 @@
     <value>Z {0} to se możesz... to wiesz co se możesz!</value>
     <comment>Sometimes he has enough</comment>
   </data>
+  <data name="head" xml:space="preserve">
+    <value>Orzeł</value>
+  </data>
   <data name="husbandoBest" xml:space="preserve">
     <value>{0} najlepszy.</value>
   </data>
@@ -145,6 +148,9 @@
   <data name="shitString" xml:space="preserve">
     <value>GÓWNO</value>
     <comment>Best string name ever</comment>
+  </data>
+  <data name="tails" xml:space="preserve">
+    <value>Reszka</value>
   </data>
   <data name="waifuBest" xml:space="preserve">
     <value>{0} najlepsza.</value>
