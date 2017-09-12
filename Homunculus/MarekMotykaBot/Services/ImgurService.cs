@@ -21,10 +21,22 @@ namespace MarekMotykaBot.Services
             _client = new ImgurClient(_configuration["tokens:imgurClient"], _configuration["tokens:imgurSecret"]);
         }
 
-        public async Task<string> GetRandomImageFromAlbum(string albumId)
+        public async Task<string> GetRandomImageFromGallery(string galleryId)
         {
             var endpoint = new GalleryEndpoint(_client);
-            var album = await endpoint.GetGalleryAlbumAsync(albumId);
+            var album = await endpoint.GetGalleryAlbumAsync(galleryId);
+
+            int randomImageIndex = _rng.Next(1, album.Images.Count());
+
+            var imageToPost = album.Images.ElementAt(randomImageIndex);
+
+            return imageToPost.Link;
+        }
+
+        public async Task<string> GetRandomImageFromAlbum(string albumId)
+        {
+            var endpoint = new AlbumEndpoint(_client);
+            var album = await endpoint.GetAlbumAsync(albumId);
 
             int randomImageIndex = _rng.Next(1, album.Images.Count());
 
