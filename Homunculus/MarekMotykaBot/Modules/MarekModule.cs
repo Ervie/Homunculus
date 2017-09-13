@@ -31,7 +31,7 @@ namespace MarekMotykaBot.Modules
             await ReplyAsync(gifUrl);
         }
 
-        [Command("OldMemes"), Alias("old"), Summary("Post random old Marek meme image")]
+        [Command("MarekMeme"), Alias("meme"), Summary("Post random old Marek meme image")]
         public async Task OldMeme()
         {
             string gifUrl;
