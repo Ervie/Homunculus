@@ -26,18 +26,24 @@ namespace MarekMotykaBot.Modules
         public async Task SowaAsync()
         {
             string gifUrl;
-            gifUrl = await _imgur.GetRandomImageFromGallery("0M9vR");
+            gifUrl = await _imgur.GetRandomImageFromGallery("CbtU3");
 
             await ReplyAsync(gifUrl);
         }
 
         [Command("MarekMeme"), Alias("meme"), Summary("Post random old Marek meme image")]
-        public async Task OldMeme()
+        public async Task OldMemeAsync()
         {
             string gifUrl;
             gifUrl = await _imgur.GetRandomImageFromAlbum("V5CPd");
 
             await ReplyAsync(gifUrl);
         }
+
+        //[Command("Joke"), Alias("joke"), Summary("Marek's joke - you know the drill")]
+        //public async Task JokeAsync()
+        //{
+        //    await ReplyAsync("a");
+        //}
     }
 }

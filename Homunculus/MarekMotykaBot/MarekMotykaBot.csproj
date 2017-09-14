@@ -5,9 +5,9 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <ApplicationIcon />
     <StartupObject />
-    <Version>2.1.4</Version>
-    <AssemblyVersion>2.1.0.4</AssemblyVersion>
-    <FileVersion>2.1.0.4</FileVersion>
+    <Version>2.1.5</Version>
+    <AssemblyVersion>2.1.0.5</AssemblyVersion>
+    <FileVersion>2.1.0.5</FileVersion>
     <Description>Simple mimicking Discord bot written with .Net Core and Discord.Net.</Description>
     <PackageLicenseUrl>https://github.com/Ervie/Homunculus/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl></PackageProjectUrl>
@@ -19,11 +19,12 @@
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="1.0.2" />
     <PackageReference Include="Google.Apis" Version="1.29.1" />
-    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.29.1.760" />
+    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.29.1.976" />
     <PackageReference Include="Imgur.API" Version="5.0.0-beta1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,6 +49,13 @@
     <None Update="Resources\Images\Reactions\jjj.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\TextFiles\oneLiners.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\TextFiles\" />
   </ItemGroup>
 
 </Project>

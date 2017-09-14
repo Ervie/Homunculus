@@ -30,7 +30,7 @@ namespace MarekMotykaBot.Services
 
             var imageToPost = album.Images.ElementAt(randomImageIndex);
 
-            return imageToPost.Link;
+            return imageToPost.Link.Remove(imageToPost.Link.Length - 4);
         }
 
         public async Task<string> GetRandomImageFromAlbum(string albumId)
@@ -42,7 +42,7 @@ namespace MarekMotykaBot.Services
 
             var imageToPost = album.Images.ElementAt(randomImageIndex);
 
-            return imageToPost.Link;
+            return imageToPost.Link.Remove(imageToPost.Link.Length - 4);
         }
     }
 }
