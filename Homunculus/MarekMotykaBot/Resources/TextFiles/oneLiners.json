@@ -1,12 +1,10 @@
-{
-  "OneLiners": [
-    {
-      "Question": "a",
-      "Punchline": "b"
-    },
-    {
-      "Question": "c",
-      "Punchline": "d"
-    }
-  ]
-}
+[
+	{
+		"Question": "A",
+		"Punchline": "b"
+	},
+	{
+		"Question": "B",
+		"Punchline": "c"
+	}
+]

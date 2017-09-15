@@ -1,6 +1,9 @@
 ﻿using Discord.Commands;
+using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Modules
@@ -8,10 +11,14 @@ namespace MarekMotykaBot.Modules
     public class MarekModule : ModuleBase<SocketCommandContext>
     {
         private readonly ImgurService _imgur;
+		private readonly JSONSerializer _serializer;
+		private readonly Random _rng;
 
-        public MarekModule(ImgurService imgur)
+		public MarekModule(ImgurService imgur, JSONSerializer serializer, Random random)
         {
             _imgur = imgur;
+			_serializer = serializer;
+			_rng = random;
         }
 
         [Command("NoCoSeMoge"), Alias("no"), Summary("He will tell you what you can do")]
@@ -40,10 +47,18 @@ namespace MarekMotykaBot.Modules
             await ReplyAsync(gifUrl);
         }
 
-        //[Command("Joke"), Alias("joke"), Summary("Marek's joke - you know the drill")]
-        //public async Task JokeAsync()
-        //{
-        //    await ReplyAsync("a");
-        //}
-    }
+		[Command("Joke"), Alias("joke"), Summary("Marek's joke - you know the drill")]
+		public async Task JokeAsync()
+		{
+			List<OneLinerJoke> jokes = _serializer.LoadOneLiners();
+
+			int randomJokeIndex = _rng.Next(1, jokes.Count);
+
+			OneLinerJoke selectedJoke = jokes[randomJokeIndex];
+
+			await Context.Channel.SendMessageAsync($"{selectedJoke.Question}");
+			await Task.Delay(3000);
+			await Context.Channel.SendMessageAsync($"{selectedJoke.Punchline}");
+		}
+	}
 }

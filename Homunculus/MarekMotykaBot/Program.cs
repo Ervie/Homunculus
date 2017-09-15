@@ -22,23 +22,24 @@ namespace MarekMotykaBot
 
             _config = builder.Build();
 
-            var services = new ServiceCollection()
-                .AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
-                {
-                    LogLevel = LogSeverity.Verbose,
-                    MessageCacheSize = 1000
-                }))
-                .AddSingleton(new CommandService(new CommandServiceConfig
-                {
-                    DefaultRunMode = RunMode.Async,
-                    LogLevel = LogSeverity.Verbose
-                }))
-                .AddSingleton<CommandHandlingService>()
-                .AddSingleton<LoggingService>()
-                .AddSingleton<StartupService>()
-                .AddSingleton<MessageScannerService>()
-                .AddSingleton<YTService>()
-                .AddSingleton<ImgurService>()
+			var services = new ServiceCollection()
+				.AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
+				{
+					LogLevel = LogSeverity.Verbose,
+					MessageCacheSize = 1000
+				}))
+				.AddSingleton(new CommandService(new CommandServiceConfig
+				{
+					DefaultRunMode = RunMode.Async,
+					LogLevel = LogSeverity.Verbose
+				}))
+				.AddSingleton<CommandHandlingService>()
+				.AddSingleton<LoggingService>()
+				.AddSingleton<StartupService>()
+				.AddSingleton<MessageScannerService>()
+				.AddSingleton<YTService>()
+				.AddSingleton<ImgurService>()
+				.AddSingleton<JSONSerializer>()
                 .AddSingleton(_config)
                 .AddSingleton<Random>();
 

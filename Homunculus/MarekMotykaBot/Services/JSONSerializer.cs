@@ -7,15 +7,20 @@ using MarekMotykaBot.DataTypes;
 
 namespace MarekMotykaBot.Services
 {
-    class JSONSerializer
+    public class JSONSerializer
     {
         private readonly string resources = AppContext.BaseDirectory + "/Resources/TextFiles/";
-
+		
         public JSONSerializer()
         {
-            
-            var result = JsonConvert.DeserializeObject<List<OneLinerJoke>>(File.ReadAllText("oneLiner.json"));
-            
         }
+
+		public List<OneLinerJoke> LoadOneLiners()
+		{
+			//List<OneLinerJoke> test = new List<OneLinerJoke>();
+			//test.Add(new OneLinerJoke("A", "b"));
+			//File.WriteAllText(resources + "oneLiners.json", JsonConvert.SerializeObject(test));
+			return JsonConvert.DeserializeObject<List<OneLinerJoke>>(File.ReadAllText(resources + "oneLiners.json"));
+		}
     }
 }
