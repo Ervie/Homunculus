@@ -17,10 +17,8 @@ namespace MarekMotykaBot.Services
 
 		public List<OneLinerJoke> LoadOneLiners()
 		{
-			//List<OneLinerJoke> test = new List<OneLinerJoke>();
-			//test.Add(new OneLinerJoke("A", "b"));
-			//File.WriteAllText(resources + "oneLiners.json", JsonConvert.SerializeObject(test));
-			return JsonConvert.DeserializeObject<List<OneLinerJoke>>(File.ReadAllText(resources + "oneLiners.json"));
+            var text = File.ReadAllText(resources + "oneLiners.json", Encoding.UTF8);
+            return JsonConvert.DeserializeObject<List<OneLinerJoke>>(text);
 		}
     }
 }

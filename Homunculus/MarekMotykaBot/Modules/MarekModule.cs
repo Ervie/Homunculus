@@ -47,7 +47,7 @@ namespace MarekMotykaBot.Modules
             await ReplyAsync(gifUrl);
         }
 
-		[Command("Joke"), Alias("joke"), Summary("Marek's joke - you know the drill")]
+		[Command("Joke"), Summary("Marek's joke - you know the drill")]
 		public async Task JokeAsync()
 		{
 			List<OneLinerJoke> jokes = _serializer.LoadOneLiners();
