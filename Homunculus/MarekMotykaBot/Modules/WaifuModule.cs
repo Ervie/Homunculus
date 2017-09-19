@@ -56,6 +56,7 @@ namespace MarekMotykaBot.Modules
         public async Task BetterWaifu(params string[] waifus)
         {
             var waifusList = waifus.ToList();
+            waifusList = waifusList.Distinct(StringComparer.CurrentCultureIgnoreCase).ToList();
 
             if (waifusList.Contains("Asuna") && waifusList.Contains("Erina"))
             {
@@ -71,10 +72,22 @@ namespace MarekMotykaBot.Modules
                     return;
                 }
             }
-            
+
             int selectedWaifuIndex = _rng.Next(waifusList.Count);
 
-            await Context.Channel.SendMessageAsync(string.Format(StringConsts.WaifuBest, waifusList[selectedWaifuIndex]));
+            switch (waifusList.Count)
+            {
+                case 0:
+                case 1:
+                    await Context.Channel.SendMessageAsync("...");
+                    break;
+                case 2:
+                    await Context.Channel.SendMessageAsync(string.Format(StringConsts.WaifuBetter, waifus[selectedWaifuIndex]));
+                    break;
+                default:
+                    await Context.Channel.SendMessageAsync(string.Format(StringConsts.WaifuBest, waifusList[selectedWaifuIndex]));
+                    break; 
+            }
         }
 
         [Command("BetterHusbando"), Alias("bh"), Summary("Husbando selector, 2 husbandos")]
@@ -94,10 +107,23 @@ namespace MarekMotykaBot.Modules
         public async Task BetterHusbando(params string[] husbandos)
         {
             var husbandoList = husbandos.ToList();
-            
+            husbandoList = husbandoList.Distinct(StringComparer.CurrentCultureIgnoreCase).ToList();
+
             int selectedHusbandoIndex = _rng.Next(husbandoList.Count);
 
-            await Context.Channel.SendMessageAsync(string.Format(StringConsts.HusbandoBest, husbandoList[selectedHusbandoIndex]));
+            switch (husbandoList.Count)
+            {
+                case 0:
+                case 1:
+                    await Context.Channel.SendMessageAsync("...");
+                    break;
+                case 2:
+                    await Context.Channel.SendMessageAsync(string.Format(StringConsts.HusbandoBest, husbandoList[selectedHusbandoIndex]));
+                    break;
+                default:
+                    await Context.Channel.SendMessageAsync(string.Format(StringConsts.HusbandoBetter, husbandos[selectedHusbandoIndex]));
+                    break;
+            }
         }
     }
 }
