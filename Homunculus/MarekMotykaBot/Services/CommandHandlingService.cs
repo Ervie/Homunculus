@@ -48,7 +48,7 @@ namespace MarekMotykaBot.Services
                 {
                     var result = await Commands.ExecuteAsync(context, argPos, _provider);
 
-                    if (!result.IsSuccess)
+                    if (!result.IsSuccess && result.Error != CommandError.UnknownCommand)
                         await context.Channel.SendMessageAsync(result.ToString());
                 }
             }
