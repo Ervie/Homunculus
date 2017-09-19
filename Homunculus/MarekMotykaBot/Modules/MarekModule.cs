@@ -1,9 +1,11 @@
 ﻿using Discord.Commands;
 using MarekMotykaBot.DataTypes;
+using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Modules
@@ -11,14 +13,30 @@ namespace MarekMotykaBot.Modules
     public class MarekModule : ModuleBase<SocketCommandContext>
     {
         private readonly ImgurService _imgur;
-		private readonly JSONSerializer _serializer;
-		private readonly Random _rng;
+        private readonly JSONSerializer _serializer;
+        private readonly Random _rng;
 
-		public MarekModule(ImgurService imgur, JSONSerializer serializer, Random random)
+        private readonly string[] eightBallResponses =
+        {
+            "Tak",
+            "Nie",
+            "Być może",
+            "Z tym to se możesz... To wiesz co se możesz",
+            "Oczywiście, {0} potwierdzi",
+            "No pewex",
+            "Ale że co? No prośba...",
+            "Nie odpowiem Ci teraz, bo piszę magisterkę",
+            "To {0} tak mówił",
+            "Doubt",
+            "TakNieTakNieTakNie :^)",
+            "Kek"
+        };
+
+        public MarekModule(ImgurService imgur, JSONSerializer serializer, Random random)
         {
             _imgur = imgur;
-			_serializer = serializer;
-			_rng = random;
+            _serializer = serializer;
+            _rng = random;
         }
 
         [Command("NoCoSeMoge"), Alias("no"), Summary("He will tell you what you can do")]
@@ -47,18 +65,40 @@ namespace MarekMotykaBot.Modules
             await ReplyAsync(gifUrl);
         }
 
-		[Command("Joke"), Summary("Marek's joke - you know the drill")]
-		public async Task JokeAsync()
-		{
-			List<OneLinerJoke> jokes = _serializer.LoadOneLiners();
+        //TODO: Meme generator
+        //[Command("MarekMeme"), Alias("meme"), Summary("Create your own Marek meme image, text split by semicolon")]
+        //public async Task NewMemeAsync(params string[] text)
+        //{
+        //}
 
-			int randomJokeIndex = _rng.Next(1, jokes.Count);
+        [Command("Joke"), Summary("Marek's joke - you know the drill")]
+        public async Task JokeAsync()
+        {
+            List<OneLinerJoke> jokes = _serializer.LoadOneLiners();
 
-			OneLinerJoke selectedJoke = jokes[randomJokeIndex];
+            int randomJokeIndex = _rng.Next(1, jokes.Count);
 
-			await Context.Channel.SendMessageAsync($"{selectedJoke.Question}");
-			await Task.Delay(3000);
-			await Context.Channel.SendMessageAsync($"{selectedJoke.Punchline}");
-		}
-	}
+            OneLinerJoke selectedJoke = jokes[randomJokeIndex];
+
+            await Context.Channel.SendMessageAsync($"{selectedJoke.Question}");
+            await Task.Delay(3000);
+            await Context.Channel.SendMessageAsync($"{selectedJoke.Punchline}");
+        }
+
+        [Command("8ball"), Summary("Binary answer for all your questions")]
+        public async Task EightBallAsync(params string[] text)
+        {
+            int randomResponseIndex = _rng.Next(0, eightBallResponses.ToList().Count - 1);
+
+            string selectedResponse = eightBallResponses[randomResponseIndex];
+
+            var users = Context.Guild.Users.Where(x => !x.DiscordId().Equals("MarekMotykaBot#2213") && !x.DiscordId().Equals("Erina#5946")).ToList();
+
+            int randomUserIndex = _rng.Next(0, users.Count - 1);
+
+            var selectedUser = users.ElementAt(randomUserIndex).Username;
+
+            await Context.Channel.SendMessageAsync($"{string.Format(selectedResponse, selectedUser)}");
+        }
+    }
 }
