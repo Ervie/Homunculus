@@ -1,4 +1,6 @@
 ﻿using Discord.Commands;
+using ImgFlipAPI.APISource.Core;
+using ImgFlipAPI.APISource.Core.Models;
 using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
@@ -14,6 +16,7 @@ namespace MarekMotykaBot.Modules
     {
         private readonly ImgurService _imgur;
         private readonly JSONSerializer _serializer;
+        private readonly ImgFlipService _imgFlip;
         private readonly Random _rng;
 
         private readonly string[] eightBallResponses =
@@ -32,11 +35,12 @@ namespace MarekMotykaBot.Modules
             "Kek"
         };
 
-        public MarekModule(ImgurService imgur, JSONSerializer serializer, Random random)
+        public MarekModule(ImgurService imgur, JSONSerializer serializer, ImgFlipService imgFlip, Random random)
         {
             _imgur = imgur;
             _serializer = serializer;
             _rng = random;
+            _imgFlip = imgFlip;
         }
 
         [Command("NoCoSeMoge"), Alias("no"), Summary("He will tell you what you can do")]
@@ -66,10 +70,24 @@ namespace MarekMotykaBot.Modules
         }
 
         //TODO: Meme generator
-        //[Command("MarekMeme"), Alias("meme"), Summary("Create your own Marek meme image, text split by semicolon")]
-        //public async Task NewMemeAsync(params string[] text)
-        //{
-        //}
+        [Command("MarekMeme"), Alias("meme"), Summary("Create your own Marek meme image, text split by semicolon")]
+        public async Task NewMemeAsync(params string[] text)
+        {
+            var captions = string.Join(" ", text).Split(';').ToList();
+
+            if (captions.Count < 2)
+                return;
+
+            if (string.IsNullOrWhiteSpace(captions.ElementAt(0)) || string.IsNullOrWhiteSpace(captions.ElementAt(1)))
+                return;
+
+            string toptext = captions.ElementAt(0);
+            string bottomtext = captions.ElementAt(1);
+
+            string resultUrl = await _imgFlip.CreateMarekMeme(toptext, bottomtext);
+
+            await ReplyAsync(resultUrl);
+        }
 
         [Command("Joke"), Summary("Marek's joke - you know the drill")]
         public async Task JokeAsync()

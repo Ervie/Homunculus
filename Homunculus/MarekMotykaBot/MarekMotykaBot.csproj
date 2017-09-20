@@ -3,11 +3,11 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <ApplicationIcon>3160b700ce.ico</ApplicationIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
     <StartupObject />
-    <Version>2.2.1</Version>
-    <AssemblyVersion>2.2.0.1</AssemblyVersion>
-    <FileVersion>2.2.0.1</FileVersion>
+    <Version>2.2.2</Version>
+    <AssemblyVersion>2.2.0.2</AssemblyVersion>
+    <FileVersion>2.2.0.2</FileVersion>
     <Description>Simple mimicking Discord bot written with .Net Core and Discord.Net.</Description>
     <PackageLicenseUrl>https://github.com/Ervie/Homunculus/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl></PackageProjectUrl>
@@ -56,6 +56,10 @@
 
   <ItemGroup>
     <Folder Include="Resources\TextFiles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ImfFlipAPI.APISource.Core\ImfFlipAPI.APISource.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -39,6 +39,7 @@ namespace MarekMotykaBot
 				.AddSingleton<MessageScannerService>()
 				.AddSingleton<YTService>()
 				.AddSingleton<ImgurService>()
+                .AddSingleton<ImgFlipService>()
 				.AddSingleton<JSONSerializer>()
                 .AddSingleton(_config)
                 .AddSingleton<Random>();
