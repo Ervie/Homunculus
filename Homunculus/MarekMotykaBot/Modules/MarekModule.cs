@@ -68,8 +68,7 @@ namespace MarekMotykaBot.Modules
 
             await ReplyAsync(gifUrl);
         }
-
-        //TODO: Meme generator
+        
         [Command("MarekMeme"), Alias("meme"), Summary("Create your own Marek meme image, text split by semicolon")]
         public async Task NewMemeAsync(params string[] text)
         {
@@ -81,8 +80,8 @@ namespace MarekMotykaBot.Modules
             if (string.IsNullOrWhiteSpace(captions.ElementAt(0)) || string.IsNullOrWhiteSpace(captions.ElementAt(1)))
                 return;
 
-            string toptext = captions.ElementAt(0);
-            string bottomtext = captions.ElementAt(1);
+            string toptext = captions.ElementAt(0).ToUpper();
+            string bottomtext = captions.ElementAt(1).ToUpper();
 
             string resultUrl = await _imgFlip.CreateMarekMeme(toptext, bottomtext);
 
