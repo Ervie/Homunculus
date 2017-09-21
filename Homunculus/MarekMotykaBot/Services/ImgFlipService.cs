@@ -1,15 +1,14 @@
 ﻿using ImgFlipAPI.APISource.Core;
 using ImgFlipAPI.APISource.Core.Models;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services
 {
     public class ImgFlipService
     {
+        private const int MarekTemplateId = 114558777;
+
         private readonly ImgFlipAPISource _source;
         private readonly IConfiguration _configuration;
 
@@ -27,9 +26,7 @@ namespace MarekMotykaBot.Services
 
         public async Task<string> CreateMarekMeme(string topText, string bottomText)
         {
-            int template_id = 114558777;
-            
-            CaptionMemeRoot freshMeme = await ImgFlipAPISource.Instance.CaptionMemeAsync(template_id, _imgFlipUsername, _imgFlipPassword, topText, bottomText);
+            CaptionMemeRoot freshMeme = await ImgFlipAPISource.Instance.CaptionMemeAsync(MarekTemplateId, _imgFlipUsername, _imgFlipPassword, topText, bottomText);
 
             if (freshMeme.success)
                 return freshMeme.data.url;

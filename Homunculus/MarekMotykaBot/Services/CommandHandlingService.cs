@@ -1,5 +1,7 @@
-﻿using Discord.Commands;
+﻿using Discord;
+using Discord.Commands;
 using Discord.WebSocket;
+using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -27,8 +29,8 @@ namespace MarekMotykaBot.Services
             _configuration = configuration;
             _rng = random;
 
-            _discord.MessageReceived += OnMessageReceivedAsync;
-            _discord.MessageReceived += scanner.ScanMessage;
+            SetStartingState();
+            _discord.GuildMemberUpdated += OnGuildMemberUpdated;
         }
 
         public CommandService Commands => _commands;
@@ -52,6 +54,32 @@ namespace MarekMotykaBot.Services
                         await context.Channel.SendMessageAsync(result.ToString());
                 }
             }
+        }
+
+        //Hide when true user logs on
+        private async Task OnGuildMemberUpdated(SocketUser user, SocketUser user2)
+        {
+            if (user.DiscordId().Equals("Erina#5946"))
+            {
+                if (!user2.Status.Equals(UserStatus.Offline))
+                {
+                    await _discord.SetStatusAsync(UserStatus.Invisible);
+                    _discord.MessageReceived -= OnMessageReceivedAsync;
+                    _discord.MessageReceived -= _scanner.ScanMessage;
+                }
+                else
+                {
+                    await _discord.SetStatusAsync(UserStatus.Online);
+                    _discord.MessageReceived += OnMessageReceivedAsync;
+                    _discord.MessageReceived += _scanner.ScanMessage;
+                }
+            }
+        }
+
+        private void SetStartingState()
+        {
+            _discord.MessageReceived += OnMessageReceivedAsync;
+            _discord.MessageReceived += _scanner.ScanMessage;
         }
 
         private async Task<bool> DeclineCommand(SocketCommandContext context, string messageContent)

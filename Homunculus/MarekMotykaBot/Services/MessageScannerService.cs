@@ -14,7 +14,7 @@ namespace MarekMotykaBot
         private readonly DiscordSocketClient _client;
 
         private List<string> _waifuList = new List<string>() { "Asuna", "Rias", "Erina" };
-        private List<string> _marekFaceWords = new List<string>() { "czerń", "czarn", "nigga", "nigger", "ciemn", "murzyn", "black", "schartz", "cień", "mrok", "mroczn", "afryk", "africa", "negro", "kuro"};
+        private List<string> _marekFaceWords = new List<string>() { "czerń", "czarn", "nigga", "nigger", "murzyn", "black", "schartz", "afryk", "africa", "negro", "kuro" };
 
         public MessageScannerService(DiscordSocketClient client)
         {
