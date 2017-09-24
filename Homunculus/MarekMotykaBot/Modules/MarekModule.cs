@@ -1,4 +1,5 @@
 ﻿using Discord.Commands;
+using Discord;
 using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
@@ -38,6 +39,9 @@ namespace MarekMotykaBot.Modules
             "Zdaje Ci się!",
             "Chyba w twoich snach!"
         };
+
+        private SortedList<string, string> cache = new SortedList<string, string>();
+        private const byte cacheSize = 10;
 
         public MarekModule(ImgurService imgur, JSONSerializer serializer, ImgFlipService imgFlip, Random random)
         {
@@ -109,17 +113,36 @@ namespace MarekMotykaBot.Modules
         [Command("8ball"), Summary("Binary answer for all your questions")]
         public async Task EightBallAsync(params string[] text)
         {
-            int randomResponseIndex = _rng.Next(0, eightBallResponses.ToList().Count - 1);
+            cache = _serializer.LoadEightBallCache();
 
-            string selectedResponse = eightBallResponses.ElementAt(randomResponseIndex);
+            string messageKey = Context.User.DiscordId() + string.Join(" ", text);
 
-            var users = Context.Guild.Users.Where(x => !x.DiscordId().Equals("MarekMotykaBot#2213") && !x.DiscordId().Equals("Erina#5946")).ToList();
+            // Check if message was not received earlier; If yes, send same answer
+            if (cache.ContainsKey(messageKey))
+            {
+                await Context.Channel.SendMessageAsync(cache[messageKey]);
+            }
+            else
+            {
+                int randomResponseIndex = _rng.Next(0, eightBallResponses.ToList().Count - 1);
 
-            int randomUserIndex = _rng.Next(0, users.Count - 1);
+                string selectedResponse = eightBallResponses.ElementAt(randomResponseIndex);
 
-            var selectedUser = users.ElementAt(randomUserIndex).Username;
+                var users = Context.Guild.Users.Where(x => !x.DiscordId().Equals("MarekMotykaBot#2213") && !x.DiscordId().Equals("Erina#5946")).ToList();
 
-            await Context.Channel.SendMessageAsync($"{string.Format(selectedResponse, selectedUser)}");
+                int randomUserIndex = _rng.Next(0, users.Count - 1);
+
+                var selectedUser = users.ElementAt(randomUserIndex).Username;
+
+                if (cache.Count > cacheSize)
+                    cache.RemoveAt(0);
+
+                cache.Add(messageKey, string.Format(selectedResponse, selectedUser));
+
+                _serializer.SaveEightBallCache(cache);
+
+                await Context.Channel.SendMessageAsync($"{string.Format(selectedResponse, selectedUser)}");
+            }
         }
     }
 }

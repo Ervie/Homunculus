@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MarekMotykaBot.DataTypes
+﻿namespace MarekMotykaBot.DataTypes
 {
     public class OneLinerJoke
     {
@@ -10,10 +6,10 @@ namespace MarekMotykaBot.DataTypes
 
         public string Punchline { get; set; }
 
-		public OneLinerJoke(string question, string punchline)
-		{
-			Question = question;
-			Punchline = punchline;
-		}
+        public OneLinerJoke(string question, string punchline)
+        {
+            Question = question;
+            Punchline = punchline;
+        }
     }
 }

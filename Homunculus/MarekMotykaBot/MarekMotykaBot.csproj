@@ -49,6 +49,9 @@
     <None Update="Resources\Images\Reactions\jjj.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\TextFiles\cache8ball.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\TextFiles\oneLiners.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
