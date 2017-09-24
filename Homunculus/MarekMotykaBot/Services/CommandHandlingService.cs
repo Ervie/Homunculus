@@ -30,7 +30,6 @@ namespace MarekMotykaBot.Services
             _rng = random;
 
             SetStartingState();
-            _discord.GuildMemberUpdated += OnGuildMemberUpdated;
         }
 
         public CommandService Commands => _commands;
@@ -55,27 +54,7 @@ namespace MarekMotykaBot.Services
                 }
             }
         }
-
-        //Hide when true user logs on
-        private async Task OnGuildMemberUpdated(SocketUser user, SocketUser user2)
-        {
-            if (user.DiscordId().Equals("Erina#5946"))
-            {
-                if (!user2.Status.Equals(UserStatus.Offline))
-                {
-                    await _discord.SetStatusAsync(UserStatus.Invisible);
-                    _discord.MessageReceived -= OnMessageReceivedAsync;
-                    _discord.MessageReceived -= _scanner.ScanMessage;
-                }
-                else
-                {
-                    await _discord.SetStatusAsync(UserStatus.Online);
-                    _discord.MessageReceived += OnMessageReceivedAsync;
-                    _discord.MessageReceived += _scanner.ScanMessage;
-                }
-            }
-        }
-
+        
         private void SetStartingState()
         {
             _discord.MessageReceived += OnMessageReceivedAsync;
@@ -91,7 +70,7 @@ namespace MarekMotykaBot.Services
             {
                 string meanResponse = string.Format(StringConsts.DeclineCommand, commandName);
                 
-                int randomInt = _rng.Next(1, 10);
+                int randomInt = _rng.Next(1, 20);
 
                 // bad luck, you suck
                 if (randomInt == 1)

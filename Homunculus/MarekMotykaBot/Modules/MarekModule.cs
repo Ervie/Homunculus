@@ -1,6 +1,4 @@
 ﻿using Discord.Commands;
-using ImgFlipAPI.APISource.Core;
-using ImgFlipAPI.APISource.Core.Models;
 using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
@@ -30,9 +28,15 @@ namespace MarekMotykaBot.Modules
             "Ale że co? No prośba...",
             "Nie odpowiem Ci teraz, bo piszę magisterkę",
             "To {0} tak mówił",
-            "Doubt",
+            ">Doubt",
             "TakNieTakNieTakNie :^)",
-            "Kek"
+            "Kek",
+            "Prędzej schlam się piwem bezalkoholowym!",
+            "Wiadomix",
+            "No wiadomix, że nie",
+            "Wydaje mi się, że tak",
+            "Zdaje Ci się!",
+            "Chyba w twoich snach!"
         };
 
         public MarekModule(ImgurService imgur, JSONSerializer serializer, ImgFlipService imgFlip, Random random)
@@ -68,7 +72,7 @@ namespace MarekMotykaBot.Modules
 
             await ReplyAsync(gifUrl);
         }
-        
+
         [Command("MarekMeme"), Alias("meme"), Summary("Create your own Marek meme image, text split by semicolon")]
         public async Task NewMemeAsync(params string[] text)
         {
@@ -107,7 +111,7 @@ namespace MarekMotykaBot.Modules
         {
             int randomResponseIndex = _rng.Next(0, eightBallResponses.ToList().Count - 1);
 
-            string selectedResponse = eightBallResponses[randomResponseIndex];
+            string selectedResponse = eightBallResponses.ElementAt(randomResponseIndex);
 
             var users = Context.Guild.Users.Where(x => !x.DiscordId().Equals("MarekMotykaBot#2213") && !x.DiscordId().Equals("Erina#5946")).ToList();
 
