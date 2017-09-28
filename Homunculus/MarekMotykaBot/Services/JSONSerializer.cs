@@ -25,7 +25,7 @@ namespace MarekMotykaBot.Services
         {
             var text = File.ReadAllText(resources + "cache8ball.json", Encoding.UTF8);
             var deserializedObject = JsonConvert.DeserializeObject<SortedList<string, string>>(text);
-            return deserializedObject == null ? new SortedList<string, string>() : deserializedObject;
+            return deserializedObject ?? new SortedList<string, string>();
         }
 
         public void SaveEightBallCache(SortedList<string, string> cache)

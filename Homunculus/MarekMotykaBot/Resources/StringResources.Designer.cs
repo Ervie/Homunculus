@@ -10,7 +10,6 @@
 
 namespace MarekMotykaBot.Resources {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -40,7 +39,7 @@ namespace MarekMotykaBot.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MarekMotykaBot.Resources.StringResources", typeof(StringResources).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MarekMotykaBot.Resources.StringResources", typeof(StringResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -98,6 +97,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ...w słoiku!.
+        /// </summary>
+        internal static string inTheJar {
+            get {
+                return ResourceManager.GetString("inTheJar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Legia Warszawa to najlepszy klub, kto nie wierzy, to chuj mu w dziób!.
         /// </summary>
         internal static string legiaWarszawa {
@@ -130,6 +138,15 @@ namespace MarekMotykaBot.Resources {
         internal static string masterThesis {
             get {
                 return ResourceManager.GetString("masterThesis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spierdalamyyyy!.
+        /// </summary>
+        internal static string runAway {
+            get {
+                return ResourceManager.GetString("runAway", resourceCulture);
             }
         }
         

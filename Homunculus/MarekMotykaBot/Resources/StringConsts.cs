@@ -133,5 +133,21 @@ namespace MarekMotykaBot.Resources
                 return StringResources.ResourceManager.GetString("tails");
             }
         }
+
+        public static string InTheJar
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("inTheJar");
+            }
+        }
+
+        public static string RunAway
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("runAway");
+            }
+        }
     }
 }

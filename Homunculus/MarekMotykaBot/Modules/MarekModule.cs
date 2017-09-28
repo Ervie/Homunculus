@@ -54,9 +54,36 @@ namespace MarekMotykaBot.Modules
         [Command("NoCoSeMoge"), Alias("no"), Summary("He will tell you what you can do")]
         public async Task CoSeMogeAsync()
         {
-            await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
-            await Task.Delay(3000);
-            await Context.Channel.SendMessageAsync($"**{StringConsts.ShitString}**");
+            int randomNumer = _rng.Next(1, 10);
+
+            switch (randomNumer)
+            {
+                case (1):
+                    await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
+                    await Task.Delay(3000);
+                    await Context.Channel.SendMessageAsync($"...");
+                    await Task.Delay(1000);
+                    await Context.Channel.SendMessageAsync($"...");
+                    await Task.Delay(1000);
+                    await Context.Channel.SendMessageAsync($"**{StringConsts.RunAway}**");
+                    break;
+                case (2):
+                case (3):
+                    await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
+                    await Task.Delay(3000);
+                    await Context.Channel.SendMessageAsync($"**{StringConsts.ShitString}**");
+                    await Task.Delay(1500);
+                    await Context.Channel.SendMessageAsync($"**{StringConsts.InTheJar}**");
+                    break;
+
+                default:
+                    await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
+                    await Task.Delay(3000);
+                    await Context.Channel.SendMessageAsync($"**{StringConsts.ShitString}**");
+                    break;
+            }
+
+            
         }
 
         [Command("Sowa"), Alias("owl"), Summary("Post random owl image")]
@@ -132,7 +159,7 @@ namespace MarekMotykaBot.Modules
 
                 int randomUserIndex = _rng.Next(0, users.Count - 1);
 
-                var selectedUser = users.ElementAt(randomUserIndex).Username;
+                string selectedUser = users.ElementAt(randomUserIndex).Username;
 
                 if (cache.Count > cacheSize)
                     cache.RemoveAt(0);
