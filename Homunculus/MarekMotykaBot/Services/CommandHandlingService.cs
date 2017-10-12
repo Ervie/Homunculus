@@ -59,6 +59,7 @@ namespace MarekMotykaBot.Services
         {
             _discord.MessageReceived += OnMessageReceivedAsync;
             _discord.MessageReceived += _scanner.ScanMessage;
+            _discord.MessageUpdated += _scanner.ScanUpdateMessage;
         }
 
         private async Task<bool> DeclineCommand(SocketCommandContext context, string messageContent)

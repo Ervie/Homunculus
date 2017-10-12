@@ -38,6 +38,21 @@ namespace MarekMotykaBot
             }
         }
 
+        public async Task ScanUpdateMessage(Cacheable<IMessage, ulong> oldMessage, SocketMessage s, ISocketMessageChannel channel)
+        {
+            var message = s as SocketUserMessage;
+
+            if (message == null)
+                return;
+
+            var context = new SocketCommandContext(_client, message);
+
+            if (!message.Author.IsBot)
+            {
+                await RemoveMarekFaceReaction(context, message, await DetectMarekFaceTriggerWords(context, message));
+            }
+        }
+
         private async Task DetectMentions(SocketCommandContext context, SocketUserMessage message)
         {
             if (message.MentionedUsers.Where(x => x.DiscordId().Equals("MarekMotykaBot#2213") || x.DiscordId().Equals("Erina#5946")).FirstOrDefault() != null ||
@@ -50,7 +65,7 @@ namespace MarekMotykaBot
         /// <summary>
         /// Check for marekface trigger words in each message and add reaction.
         /// </summary>
-        private async Task DetectMarekFaceTriggerWords(SocketCommandContext context, SocketUserMessage message)
+        private async Task<bool> DetectMarekFaceTriggerWords(SocketCommandContext context, SocketUserMessage message)
         {
             foreach (string word in _marekFaceWords)
             {
@@ -59,11 +74,13 @@ namespace MarekMotykaBot
                     var marekFace = context.Guild.Emotes.Where(x => x.Name.ToLower().Equals("marekface")).FirstOrDefault();
 
                     if (marekFace != null)
+                    {
                         await message.AddReactionAsync(marekFace);
-
-                    break;
+                    }
+                    return false;
                 }
             }
+            return true;
         }
 
         /// <summary>
@@ -78,6 +95,19 @@ namespace MarekMotykaBot
                     await context.Channel.SendMessageAsync(string.Format(StringConsts.MarekWaifus, waifuName));
                     break;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Remove marekFace reaction.
+        /// </summary>
+        private async Task RemoveMarekFaceReaction(SocketCommandContext context, SocketUserMessage message, bool shouldRemove)
+        {
+            var marekFace = context.Guild.Emotes.Where(x => x.Name.ToLower().Equals("marekface")).FirstOrDefault();
+
+            if (marekFace != null && shouldRemove)
+            {
+                await message.RemoveReactionAsync(marekFace, context.Client.CurrentUser);
             }
         }
     }
