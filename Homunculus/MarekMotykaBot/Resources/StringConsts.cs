@@ -149,5 +149,13 @@ namespace MarekMotykaBot.Resources
                 return StringResources.ResourceManager.GetString("runAway");
             }
         }
+
+        public static string ThesisDefense
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("thesisDefense");
+            }
+        }
     }
 }

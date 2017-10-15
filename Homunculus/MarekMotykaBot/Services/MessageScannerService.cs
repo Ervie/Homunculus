@@ -58,7 +58,7 @@ namespace MarekMotykaBot
             if (message.MentionedUsers.Where(x => x.DiscordId().Equals("MarekMotykaBot#2213") || x.DiscordId().Equals("Erina#5946")).FirstOrDefault() != null ||
                 message.Tags.Any(x => x.Type.Equals(TagType.EveryoneMention) || x.Type.Equals(TagType.HereMention)))
             {
-                await context.Channel.SendMessageAsync(StringConsts.MasterThesis);
+                await context.Channel.SendMessageAsync(StringConsts.ThesisDefense);
             }
         }
 

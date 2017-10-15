@@ -169,6 +169,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, ale muszę uczyć się na obronę..
+        /// </summary>
+        internal static string thesisDefense {
+            get {
+                return ResourceManager.GetString("thesisDefense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} najlepsza..
         /// </summary>
         internal static string waifuBest {

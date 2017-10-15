@@ -158,6 +158,10 @@
   <data name="tails" xml:space="preserve">
     <value>Reszka</value>
   </data>
+  <data name="thesisDefense" xml:space="preserve">
+    <value>Sorry, ale muszę uczyć się na obronę.</value>
+    <comment>Another cheeky excuse to not hangout with friends</comment>
+  </data>
   <data name="waifuBest" xml:space="preserve">
     <value>{0} najlepsza.</value>
   </data>
