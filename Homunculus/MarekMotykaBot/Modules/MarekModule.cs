@@ -27,7 +27,6 @@ namespace MarekMotykaBot.Modules
             "Oczywiście, {0} potwierdzi",
             "No pewex",
             "Ale że co? No prośba...",
-            "Sorry, ale muszę uczyć się na obronę.",
             "To {0} tak mówił",
             ">Doubt",
             "TakNieTakNieTakNie :^)",

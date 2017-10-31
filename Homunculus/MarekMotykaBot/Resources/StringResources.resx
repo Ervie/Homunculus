@@ -121,6 +121,12 @@
     <value>Z {0} to se możesz... to wiesz co se możesz!</value>
     <comment>Sometimes he has enough</comment>
   </data>
+  <data name="doctor" xml:space="preserve">
+    <value>Sorry, ale teraz się doktoryzuję.</value>
+  </data>
+  <data name="girlfriend" xml:space="preserve">
+    <value>Sorry, akurat wyszedłem z Martyną.</value>
+  </data>
   <data name="head" xml:space="preserve">
     <value>Orzeł</value>
   </data>
@@ -132,6 +138,9 @@
   </data>
   <data name="inTheJar" xml:space="preserve">
     <value>...w słoiku!</value>
+  </data>
+  <data name="job" xml:space="preserve">
+    <value>Sorry, teraz pracuję.</value>
   </data>
   <data name="legiaWarszawa" xml:space="preserve">
     <value>Legia Warszawa to najlepszy klub, kto nie wierzy, to chuj mu w dziób!</value>
@@ -154,6 +163,9 @@
   <data name="shitString" xml:space="preserve">
     <value>GÓWNO</value>
     <comment>Best string name ever</comment>
+  </data>
+  <data name="snoring" xml:space="preserve">
+    <value>Chrrr... chrrr... chrrr...</value>
   </data>
   <data name="tails" xml:space="preserve">
     <value>Reszka</value>

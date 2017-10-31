@@ -3,6 +3,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -58,7 +59,26 @@ namespace MarekMotykaBot
             if (message.MentionedUsers.Where(x => x.DiscordId().Equals("MarekMotykaBot#2213") || x.DiscordId().Equals("Erina#5946")).FirstOrDefault() != null ||
                 message.Tags.Any(x => x.Type.Equals(TagType.EveryoneMention) || x.Type.Equals(TagType.HereMention)))
             {
-                await context.Channel.SendMessageAsync(StringConsts.ThesisDefense);
+                DateTime today = DateTime.Now;
+
+                if (today.DayOfWeek == DayOfWeek.Saturday || today.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    if (today.Hour < 12)
+                        await context.Channel.SendMessageAsync(StringConsts.Snoring);
+                    else
+                        await context.Channel.SendMessageAsync(StringConsts.Girlfriend);
+                }
+                else
+                {
+                    if (today.Hour < 7)
+                        await context.Channel.SendMessageAsync(StringConsts.Snoring);
+                    else if (today.Hour < 17)
+                        await context.Channel.SendMessageAsync(StringConsts.Job);
+                    else
+                        await context.Channel.SendMessageAsync(StringConsts.Doctor);
+                }
+
+                
             }
         }
 

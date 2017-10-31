@@ -70,6 +70,24 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, ale teraz się doktoryzuję..
+        /// </summary>
+        internal static string doctor {
+            get {
+                return ResourceManager.GetString("doctor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, akurat wyszedłem z Martyną..
+        /// </summary>
+        internal static string girlfriend {
+            get {
+                return ResourceManager.GetString("girlfriend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Orzeł.
         /// </summary>
         internal static string head {
@@ -102,6 +120,15 @@ namespace MarekMotykaBot.Resources {
         internal static string inTheJar {
             get {
                 return ResourceManager.GetString("inTheJar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, teraz pracuję..
+        /// </summary>
+        internal static string job {
+            get {
+                return ResourceManager.GetString("job", resourceCulture);
             }
         }
         
@@ -156,6 +183,15 @@ namespace MarekMotykaBot.Resources {
         internal static string shitString {
             get {
                 return ResourceManager.GetString("shitString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chrrr... chrrr... chrrr....
+        /// </summary>
+        internal static string snoring {
+            get {
+                return ResourceManager.GetString("snoring", resourceCulture);
             }
         }
         
