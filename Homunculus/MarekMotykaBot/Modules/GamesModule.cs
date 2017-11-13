@@ -29,6 +29,44 @@ namespace MarekMotykaBot.Modules
             await ReplyAsync(Context.User.Username + ": " + rolledNumber.ToString());
         }
 
+        [Command("Roll"), Alias("k"), Summary("Roll customizable dice.")]
+        public async Task RollDiceAsync(string diceSize)
+        {
+            try
+            {
+                int maxNumber = Int32.Parse(diceSize);
+
+                int rolledNumber = _rng.Next(1, maxNumber);
+
+                await ReplyAsync(Context.User.Username + ": " + rolledNumber.ToString());
+            }
+            catch (FormatException)
+            {
+                await ReplyAsync(Context.User.Username + ", wiesz co to liczba naturalna?");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                await ReplyAsync("Panieee, tak to się nie da.");
+            }
+            catch (OverflowException)
+            {
+                await ReplyAsync("Za dużo :/");
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        [Command("Roll"), Alias("k"), Summary("Roll customizable dice.")]
+        public async Task RollDiceAsync()
+        {
+            await ReplyAsync("Ni ma liczby, rzucam zwykłą.");
+
+            int rolledNumber = _rng.Next(1, 6);
+
+            await ReplyAsync(Context.User.Username + ": " + rolledNumber.ToString());
+        }
+
         [Command("Flip_coin"), Alias("flip"), Summary("Flip the coin.")]
         public async Task FlipCoinAsync()
         {
