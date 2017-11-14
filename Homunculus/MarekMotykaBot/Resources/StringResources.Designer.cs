@@ -115,6 +115,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Panieee, tak to się nie da..
+        /// </summary>
+        internal static string impossible {
+            get {
+                return ResourceManager.GetString("impossible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ...w słoiku!.
         /// </summary>
         internal static string inTheJar {
@@ -169,6 +178,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ni ma liczby, rzucam zwykłą..
+        /// </summary>
+        internal static string noNumber {
+            get {
+                return ResourceManager.GetString("noNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Spierdalamyyyy!.
         /// </summary>
         internal static string runAway {
@@ -210,6 +228,15 @@ namespace MarekMotykaBot.Resources {
         internal static string thesisDefense {
             get {
                 return ResourceManager.GetString("thesisDefense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Za dużo :/.
+        /// </summary>
+        internal static string tooMuch {
+            get {
+                return ResourceManager.GetString("tooMuch", resourceCulture);
             }
         }
         

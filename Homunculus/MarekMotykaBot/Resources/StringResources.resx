@@ -136,6 +136,9 @@
   <data name="husbandoBetter" xml:space="preserve">
     <value>{0} lepszy.</value>
   </data>
+  <data name="impossible" xml:space="preserve">
+    <value>Panieee, tak to się nie da.</value>
+  </data>
   <data name="inTheJar" xml:space="preserve">
     <value>...w słoiku!</value>
   </data>
@@ -157,6 +160,9 @@
     <value>Sorry, ale muszę pisać magisterkę.</value>
     <comment>Cheeky excuse to not hangout with friends</comment>
   </data>
+  <data name="noNumber" xml:space="preserve">
+    <value>Ni ma liczby, rzucam zwykłą.</value>
+  </data>
   <data name="runAway" xml:space="preserve">
     <value>Spierdalamyyyy!</value>
   </data>
@@ -173,6 +179,9 @@
   <data name="thesisDefense" xml:space="preserve">
     <value>Sorry, ale muszę uczyć się na obronę.</value>
     <comment>Another cheeky excuse to not hangout with friends</comment>
+  </data>
+  <data name="tooMuch" xml:space="preserve">
+    <value>Za dużo :/</value>
   </data>
   <data name="waifuBest" xml:space="preserve">
     <value>{0} najlepsza.</value>

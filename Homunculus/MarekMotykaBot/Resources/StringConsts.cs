@@ -189,5 +189,29 @@ namespace MarekMotykaBot.Resources
                 return StringResources.ResourceManager.GetString("girlfriend");
             }
         }
+
+        public static string NoNumber
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("noNumber");
+            }
+        }
+
+        public static string TooMuch
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("tooMuch");
+            }
+        }
+
+        public static string Impossible
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("impossible");
+            }
+        }
     }
 }
