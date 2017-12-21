@@ -166,6 +166,10 @@
   <data name="runAway" xml:space="preserve">
     <value>Spierdalamyyyy!</value>
   </data>
+  <data name="secretGiftDeny" xml:space="preserve">
+    <value>Słucham się tylko {0}!</value>
+    <comment>Deny giving gift for anyone than specific friend.</comment>
+  </data>
   <data name="shitString" xml:space="preserve">
     <value>GÓWNO</value>
     <comment>Best string name ever</comment>

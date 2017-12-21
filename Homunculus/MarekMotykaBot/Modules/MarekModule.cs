@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace MarekMotykaBot.Modules
 {
@@ -17,6 +18,7 @@ namespace MarekMotykaBot.Modules
         private readonly JSONSerializer _serializer;
         private readonly ImgFlipService _imgFlip;
         private readonly Random _rng;
+        private readonly IConfiguration _configuration;
 
         private readonly string[] eightBallResponses =
         {
@@ -42,8 +44,9 @@ namespace MarekMotykaBot.Modules
         private SortedList<string, string> cache = new SortedList<string, string>();
         private const byte cacheSize = 10;
 
-        public MarekModule(ImgurService imgur, JSONSerializer serializer, ImgFlipService imgFlip, Random random)
+        public MarekModule(IConfiguration configuration, ImgurService imgur, JSONSerializer serializer, ImgFlipService imgFlip, Random random)
         {
+            _configuration = configuration;
             _imgur = imgur;
             _serializer = serializer;
             _rng = random;
@@ -168,6 +171,20 @@ namespace MarekMotykaBot.Modules
                 _serializer.SaveEightBallCache(cache);
 
                 await Context.Channel.SendMessageAsync($"{string.Format(selectedResponse, selectedUser)}");
+            }
+        }
+
+        [Command("blueribbon"), Summary("Passes for hidden gift")]
+        public async Task UnityAsync()
+        {
+            if (!Context.User.DiscordId().Equals("Tarlfgar#9358"))
+            {
+                await Context.Channel.SendMessageAsync(String.Format(StringConsts.SecretGiftDeny, "Lonka!"));
+            }
+            else
+            {
+                await Context.Channel.SendMessageAsync("Username: " + _configuration["credentials:helionUser"]);
+                await Context.Channel.SendMessageAsync("Password: " + _configuration["credentials:helionPassword"]);
             }
         }
     }

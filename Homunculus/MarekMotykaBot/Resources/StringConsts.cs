@@ -213,5 +213,13 @@ namespace MarekMotykaBot.Resources
                 return StringResources.ResourceManager.GetString("impossible");
             }
         }
+
+        public static string SecretGiftDeny
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("secretGiftDeny");
+            }
+        }
     }
 }

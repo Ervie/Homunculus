@@ -196,6 +196,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Słucham się tylko {0}!.
+        /// </summary>
+        internal static string secretGiftDeny {
+            get {
+                return ResourceManager.GetString("secretGiftDeny", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GÓWNO.
         /// </summary>
         internal static string shitString {
