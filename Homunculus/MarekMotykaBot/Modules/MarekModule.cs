@@ -183,8 +183,8 @@ namespace MarekMotykaBot.Modules
             }
             else
             {
-                await Context.Channel.SendMessageAsync("Username: " + _configuration["credentials:helionUser"]);
-                await Context.Channel.SendMessageAsync("Password: " + _configuration["credentials:helionPassword"]);
+                await Context.Channel.SendMessageAsync("Helion user e-mail: " + _configuration["credentials:helionUser"]);
+                await Context.Channel.SendMessageAsync("Helion password: " + _configuration["credentials:helionPassword"]);
             }
         }
     }
