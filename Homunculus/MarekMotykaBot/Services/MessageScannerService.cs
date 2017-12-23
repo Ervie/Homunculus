@@ -14,7 +14,10 @@ namespace MarekMotykaBot
     {
         private readonly DiscordSocketClient _client;
 
+        private readonly string _swearWord = "penis";
+
         private List<string> _waifuList = new List<string>() { "Asuna", "Rias", "Erina" };
+
         private List<string> _marekFaceWords = new List<string>() { "czerń", "czarn", "nigga", "nigger", "murzyn", "black", "schartz", "afryk", "africa", "negro", "kuro", "murzyń" };
 
         public MessageScannerService(DiscordSocketClient client)
@@ -36,6 +39,7 @@ namespace MarekMotykaBot
                 await DetectWaifus(context, message);
                 await DetectMarekFaceTriggerWords(context, message);
                 await DetectMentions(context, message);
+                await DetectSwearWord(context, message);
             }
         }
 
@@ -128,6 +132,17 @@ namespace MarekMotykaBot
             if (marekFace != null && shouldRemove)
             {
                 await message.RemoveReactionAsync(marekFace, context.Client.CurrentUser);
+            }
+        }
+
+        /// <summary>
+        /// Check for swearword and who posted it - increment counter;
+        /// </summary>
+        private async Task DetectSwearWord(SocketCommandContext context, SocketUserMessage message)
+        {
+            if (message.Content.ToLowerInvariant().Contains(_swearWord.ToLowerInvariant()) && !message.Author.IsBot)
+            {
+
             }
         }
     }

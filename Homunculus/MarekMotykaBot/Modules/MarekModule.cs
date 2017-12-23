@@ -128,7 +128,7 @@ namespace MarekMotykaBot.Modules
         [Command("Joke"), Summary("Marek's joke - you know the drill")]
         public async Task JokeAsync()
         {
-            List<OneLinerJoke> jokes = _serializer.LoadOneLiners();
+            List<OneLinerJoke> jokes = _serializer.LoadFromFile<OneLinerJoke>("oneLiners.json");
 
             int randomJokeIndex = _rng.Next(1, jokes.Count);
 
@@ -142,14 +142,15 @@ namespace MarekMotykaBot.Modules
         [Command("8ball"), Summary("Binary answer for all your questions")]
         public async Task EightBallAsync(params string[] text)
         {
-            cache = _serializer.LoadEightBallCache();
+            List<EightBallCache> cache = _serializer.LoadFromFile<EightBallCache>("cache8ball.json");
 
-            string messageKey = Context.User.DiscordId() + string.Join(" ", text);
+            string messageKey = string.Join(" ", text);
+            string userKey = Context.User.DiscordId();
 
             // Check if message was not received earlier; If yes, send same answer
-            if (cache.ContainsKey(messageKey))
+            if (cache.Exists(x => x.Question == messageKey && x.DiscordUsername == userKey))
             {
-                await Context.Channel.SendMessageAsync(cache[messageKey]);
+                await Context.Channel.SendMessageAsync(cache.Find(x => x.Question == messageKey && x.DiscordUsername == userKey).Answer);
             }
             else
             {
@@ -166,9 +167,9 @@ namespace MarekMotykaBot.Modules
                 if (cache.Count > cacheSize)
                     cache.RemoveAt(0);
 
-                cache.Add(messageKey, string.Format(selectedResponse, selectedUser));
+                cache.Add(new EightBallCache(userKey, messageKey, string.Format(selectedResponse, selectedUser)));
 
-                _serializer.SaveEightBallCache(cache);
+                _serializer.SaveToFile<EightBallCache>("cache8ball.json", cache);
 
                 await Context.Channel.SendMessageAsync($"{string.Format(selectedResponse, selectedUser)}");
             }

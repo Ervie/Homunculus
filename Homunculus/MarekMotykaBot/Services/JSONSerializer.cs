@@ -9,29 +9,25 @@ namespace MarekMotykaBot.Services
 {
     public class JSONSerializer
     {
-        private readonly string resources = AppContext.BaseDirectory + "/Resources/TextFiles/";
+        private readonly string resourcesPath = AppContext.BaseDirectory + "/Resources/TextFiles/";
 		
         public JSONSerializer()
         {
         }
 
-		public List<OneLinerJoke> LoadOneLiners()
-		{
-            var text = File.ReadAllText(resources + "oneLiners.json", Encoding.UTF8);
-            return JsonConvert.DeserializeObject<List<OneLinerJoke>>(text);
-		}
-
-        public SortedList<string, string> LoadEightBallCache()
+        public List<T> LoadFromFile<T>(string fileName)
         {
-            var text = File.ReadAllText(resources + "cache8ball.json", Encoding.UTF8);
-            var deserializedObject = JsonConvert.DeserializeObject<SortedList<string, string>>(text);
-            return deserializedObject ?? new SortedList<string, string>();
+            var text = File.ReadAllText(resourcesPath + fileName, Encoding.UTF8);
+
+            var deserializedList = JsonConvert.DeserializeObject<List<T>>(text);
+
+            return deserializedList ?? new List<T>();
         }
 
-        public void SaveEightBallCache(SortedList<string, string> cache)
+        public void SaveToFile<T>(string fileName, List<T> dataToSave)
         {
-            var json = JsonConvert.SerializeObject(cache);
-            File.WriteAllText(resources + "cache8ball.json", json, Encoding.UTF8);
+            var json = JsonConvert.SerializeObject(dataToSave);
+            File.WriteAllText(resourcesPath + fileName, json, Encoding.UTF8);
         }
     }
 }
