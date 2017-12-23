@@ -1,16 +1,15 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
 using System.IO;
-using MarekMotykaBot.DataTypes;
+using System.Text;
 
 namespace MarekMotykaBot.Services
 {
     public class JSONSerializer
     {
         private readonly string resourcesPath = AppContext.BaseDirectory + "/Resources/TextFiles/";
-		
+
         public JSONSerializer()
         {
         }

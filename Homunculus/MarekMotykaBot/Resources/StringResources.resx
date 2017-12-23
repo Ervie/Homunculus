@@ -177,6 +177,12 @@
   <data name="snoring" xml:space="preserve">
     <value>Chrrr... chrrr... chrrr...</value>
   </data>
+  <data name="swearWordCounterEntry" xml:space="preserve">
+    <value>{0} do tej pory użył słowa  "{1}" {2} razy.</value>
+  </data>
+  <data name="swearWordCounterHeader" xml:space="preserve">
+    <value>Zliczam brzydkie słowa!</value>
+  </data>
   <data name="tails" xml:space="preserve">
     <value>Reszka</value>
   </data>

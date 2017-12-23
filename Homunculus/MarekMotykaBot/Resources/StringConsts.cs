@@ -221,5 +221,21 @@ namespace MarekMotykaBot.Resources
                 return StringResources.ResourceManager.GetString("secretGiftDeny");
             }
         }
+
+        public static string SwearWordCounterEntry
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("swearWordCounterEntry");
+            }
+        }
+
+        public static string SwearWordCounterHeader
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("swearWordCounterHeader");
+            }
+        }
     }
 }

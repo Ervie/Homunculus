@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using System.Text;
 
 namespace MarekMotykaBot.Modules
 {
@@ -41,7 +42,8 @@ namespace MarekMotykaBot.Modules
             "Chyba w twoich snach!"
         };
 
-        private SortedList<string, string> cache = new SortedList<string, string>();
+        private readonly List<string> _swearWordList = new List<string>() { "penis" };
+        
         private const byte cacheSize = 10;
 
         public MarekModule(IConfiguration configuration, ImgurService imgur, JSONSerializer serializer, ImgFlipService imgFlip, Random random)
@@ -187,6 +189,41 @@ namespace MarekMotykaBot.Modules
                 await Context.Channel.SendMessageAsync("Helion user e-mail: " + _configuration["credentials:helionUser"]);
                 await Context.Channel.SendMessageAsync("Helion password: " + _configuration["credentials:helionPassword"]);
             }
+        }
+
+        [Command("Penis"), Alias("penis"), Summary("This is a Christian server!"), RequireUserPermission(GuildPermission.Administrator)]
+        public async Task SwearWordCounterAsync()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            var counterList = _serializer.LoadFromFile<WordCounterEntry>("wordCounter.json");
+
+            var builder = new EmbedBuilder()
+            {
+                Color = new Color(114, 137, 218),
+                Description = StringConsts.SwearWordCounterHeader
+            };
+
+            foreach (string swearWord in _swearWordList)
+            {
+                var specificSwearWordEntries = counterList.Where(x => x.Word.Equals(swearWord)).OrderBy(x => x.CounterValue);
+
+                foreach (var entry in specificSwearWordEntries)
+                {
+                    sb.AppendLine(string.Format(StringConsts.SwearWordCounterEntry, entry.DiscordNickname, entry.Word, entry.CounterValue));
+                }
+                
+                builder.AddField(x =>
+                {
+                    x.Name = swearWord;
+                    x.Value = sb.ToString();
+                    x.IsInline = true;
+                });
+
+                sb.Clear();
+            }
+            
+            await ReplyAsync("", false, builder.Build());
         }
     }
 }

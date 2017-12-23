@@ -223,6 +223,24 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} do tej pory użył słowa  &quot;{1}&quot; {2} razy..
+        /// </summary>
+        internal static string swearWordCounterEntry {
+            get {
+                return ResourceManager.GetString("swearWordCounterEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zliczam brzydkie słowa!.
+        /// </summary>
+        internal static string swearWordCounterHeader {
+            get {
+                return ResourceManager.GetString("swearWordCounterHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reszka.
         /// </summary>
         internal static string tails {

@@ -1,8 +1,11 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
+using MarekMotykaBot.Services;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,15 +17,21 @@ namespace MarekMotykaBot
     {
         private readonly DiscordSocketClient _client;
 
-        private readonly string _swearWord = "penis";
+        private readonly JSONSerializer _serializer;
 
-        private List<string> _waifuList = new List<string>() { "Asuna", "Rias", "Erina" };
+        private readonly IConfiguration _configuration;
 
-        private List<string> _marekFaceWords = new List<string>() { "czerń", "czarn", "nigga", "nigger", "murzyn", "black", "schartz", "afryk", "africa", "negro", "kuro", "murzyń" };
+        private readonly List<string> _swearWordList = new List<string>() { "penis" };
 
-        public MessageScannerService(DiscordSocketClient client)
+        private readonly List<string> _waifuList = new List<string>() { "Asuna", "Rias", "Erina" };
+
+        private readonly List<string> _marekFaceWords = new List<string>() { "czerń", "czarn", "nigga", "nigger", "murzyn", "black", "schartz", "afryk", "africa", "negro", "kuro", "murzyń" };
+
+        public MessageScannerService(DiscordSocketClient client, JSONSerializer serializer, IConfiguration configuration)
         {
             _client = client;
+            _serializer = serializer;
+            _configuration = configuration;
         }
 
         public async Task ScanMessage(SocketMessage s)
@@ -34,7 +43,7 @@ namespace MarekMotykaBot
 
             var context = new SocketCommandContext(_client, message);
 
-            if (!message.Author.IsBot)
+            if (!message.Author.IsBot && !message.Content.StartsWith(_configuration["prefix"]))
             {
                 await DetectWaifus(context, message);
                 await DetectMarekFaceTriggerWords(context, message);
@@ -140,9 +149,34 @@ namespace MarekMotykaBot
         /// </summary>
         private async Task DetectSwearWord(SocketCommandContext context, SocketUserMessage message)
         {
-            if (message.Content.ToLowerInvariant().Contains(_swearWord.ToLowerInvariant()) && !message.Author.IsBot)
+            foreach (string swearWord in _swearWordList)
             {
+                if (message.Content.ToLowerInvariant().Contains(swearWord.ToLowerInvariant()) && !message.Author.IsBot)
+                {
+                    var counterList = _serializer.LoadFromFile<WordCounterEntry>("wordCounter.json");
 
+                    string messageText = message.Content.ToLowerInvariant();
+                    string username = context.User.DiscordId();
+
+                    while (messageText.Contains(swearWord))
+                    {
+                        if (counterList.Exists(x => x.DiscordUsername.Equals(username) && x.Word.Equals(swearWord)))
+                        {
+                            counterList.Find(x => x.DiscordUsername.Equals(username) && x.Word.Equals(swearWord)).CounterValue++;
+                        }
+                        else
+                        {
+                            counterList.Add(new WordCounterEntry(username, context.User.Username, swearWord, 1));
+                        }
+
+                        int firstSubstringIndex = messageText.IndexOf(swearWord);
+                        messageText =  (firstSubstringIndex < 0)
+                                        ? messageText
+                                        : messageText.Remove(firstSubstringIndex, swearWord.Length);
+                    }
+
+                    _serializer.SaveToFile<WordCounterEntry>("wordCounter.json", counterList);
+                }
             }
         }
     }

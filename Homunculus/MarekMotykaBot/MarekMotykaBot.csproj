@@ -5,9 +5,9 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <StartupObject />
-    <Version>2.4.0</Version>
-    <AssemblyVersion>2.4.0.0</AssemblyVersion>
-    <FileVersion>2.4.0.0</FileVersion>
+    <Version>2.4.1</Version>
+    <AssemblyVersion>2.4.0.1</AssemblyVersion>
+    <FileVersion>2.4.0.1</FileVersion>
     <Description>Simple mimicking Discord bot written with .Net Core and Discord.Net.</Description>
     <PackageLicenseUrl>https://github.com/Ervie/Homunculus/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl></PackageProjectUrl>
@@ -55,10 +55,9 @@
     <None Update="Resources\TextFiles\oneLiners.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Resources\TextFiles\" />
+    <None Update="Resources\TextFiles\wordCounter.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
