@@ -1,6 +1,7 @@
 ﻿using Discord.Commands;
 using Discord;
 using MarekMotykaBot.DataTypes;
+using MarekMotykaBot.DataTypes.Caches;
 using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
@@ -191,7 +192,7 @@ namespace MarekMotykaBot.Modules
             }
         }
 
-        [Command("Penis"), Alias("penis"), Summary("This is a Christian server!"), RequireUserPermission(GuildPermission.Administrator)]
+        [Command("Penis"),  Summary("This is a Christian server!"), RequireUserPermission(GuildPermission.Administrator)]
         public async Task SwearWordCounterAsync()
         {
             StringBuilder sb = new StringBuilder();

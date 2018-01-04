@@ -1,4 +1,4 @@
-﻿namespace MarekMotykaBot.DataTypes
+﻿namespace MarekMotykaBot.DataTypes.Caches
 {
     public class EightBallCache
     {
