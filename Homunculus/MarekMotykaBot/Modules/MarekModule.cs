@@ -209,7 +209,7 @@ namespace MarekMotykaBot.Modules
             {
                 var specificSwearWordEntries = counterList.Where(x => x.Word.Equals(swearWord)).OrderBy(x => x.CounterValue);
 
-                foreach (var entry in specificSwearWordEntries)
+                foreach (var entry in specificSwearWordEntries.OrderByDescending(x => x.CounterValue))
                 {
                     sb.AppendLine(string.Format(StringConsts.SwearWordCounterEntry, entry.DiscordNickname, entry.Word, entry.CounterValue));
                 }

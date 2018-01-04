@@ -21,7 +21,7 @@ namespace MarekMotykaBot
 
         private readonly IConfiguration _configuration;
 
-        private readonly List<string> _swearWordList = new List<string>() { "penis" };
+        private readonly List<string> _swearWordList = new List<string>() { "penis", "dupa", "kurwa" };
 
         private readonly List<string> _waifuList = new List<string>() { "Asuna", "Rias", "Erina" };
 
