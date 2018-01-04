@@ -1,6 +1,9 @@
 ﻿using Discord.Commands;
+using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.Resources;
+using MarekMotykaBot.Services;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,9 +13,12 @@ namespace MarekMotykaBot.Modules
     {
         private readonly Random _rng;
 
-        public GamesModule(Random random)
+        private readonly JSONSerializer _serializer;
+
+        public GamesModule(Random random, JSONSerializer serializer)
         {
             _rng = random;
+            _serializer = serializer;
         }
 
         [Command("Roll_k6"), Alias("k6"), Summary("Roll the k6 dice.")]
@@ -115,6 +121,19 @@ namespace MarekMotykaBot.Modules
             string resultString = result == 1 ? "Orzeł" : "Reszka";
 
             await ReplyAsync(Context.User.Username + ": " + resultString);
+        }
+
+        [Command("Charade"), Alias("kalambury", "k", "c")]
+        public async Task CharadeAsync()
+        {
+            List<CharadeEntry> charadeCollection = _serializer.LoadFromFile<CharadeEntry>("Animes.json");
+
+            int randomJokeIndex = _rng.Next(0, charadeCollection.Count);
+
+            CharadeEntry selectedEntry = charadeCollection[randomJokeIndex];
+
+            // TODO: Expand (better displaying, add cache)
+            await Context.Channel.SendMessageAsync($"{selectedEntry.Title}, ({string.Join(", ", selectedEntry.Translations)})");
         }
     }
 }
