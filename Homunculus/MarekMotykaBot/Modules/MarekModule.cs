@@ -1,16 +1,16 @@
-﻿using Discord.Commands;
-using Discord;
+﻿using Discord;
+using Discord.Commands;
 using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.DataTypes.Caches;
 using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Modules
 {
@@ -44,7 +44,7 @@ namespace MarekMotykaBot.Modules
         };
 
         private readonly List<string> _swearWordList = new List<string>() { "penis" };
-        
+
         private const byte cacheSize = 10;
 
         public MarekModule(IConfiguration configuration, ImgurService imgur, JSONSerializer serializer, ImgFlipService imgFlip, Random random)
@@ -72,6 +72,7 @@ namespace MarekMotykaBot.Modules
                     await Task.Delay(1000);
                     await Context.Channel.SendMessageAsync($"**{StringConsts.RunAway}**");
                     break;
+
                 case (2):
                 case (3):
                     await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
@@ -87,8 +88,6 @@ namespace MarekMotykaBot.Modules
                     await Context.Channel.SendMessageAsync($"**{StringConsts.ShitString}**");
                     break;
             }
-
-            
         }
 
         [Command("Sowa"), Alias("owl"), Summary("Post random owl image")]
@@ -192,7 +191,7 @@ namespace MarekMotykaBot.Modules
             }
         }
 
-        [Command("Penis"),  Summary("This is a Christian server!"), RequireUserPermission(GuildPermission.Administrator)]
+        [Command("Penis"), Summary("This is a Christian server!"), RequireUserPermission(GuildPermission.Administrator)]
         public async Task SwearWordCounterAsync()
         {
             StringBuilder sb = new StringBuilder();
@@ -213,7 +212,7 @@ namespace MarekMotykaBot.Modules
                 {
                     sb.AppendLine(string.Format(StringConsts.SwearWordCounterEntry, entry.DiscordNickname, entry.Word, entry.CounterValue));
                 }
-                
+
                 builder.AddField(x =>
                 {
                     x.Name = swearWord;
@@ -223,8 +222,6 @@ namespace MarekMotykaBot.Modules
 
                 sb.Clear();
             }
-            
-            await ReplyAsync("", false, builder.Build());
         }
     }
 }

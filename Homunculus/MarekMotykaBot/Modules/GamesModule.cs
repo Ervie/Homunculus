@@ -1,9 +1,11 @@
-﻿using Discord.Commands;
+﻿using Discord;
+using Discord.Commands;
 using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -146,15 +148,36 @@ namespace MarekMotykaBot.Modules
 
 				CharadeEntry selectedEntry = charadeCollection[randomCharadeEntryIndex];
 
-				string concatenatedTranslations = selectedEntry.Translations.Count() > 0 ? string.Concat(" (", string.Join(", ", selectedEntry.Translations), ")") : string.Empty;
+                //string concatenatedTranslations = selectedEntry.Translations.Count() > 0 ? string.Concat(" (", string.Join(", ", selectedEntry.Translations), ")") : string.Empty;
 
-				await Context.Channel.SendMessageAsync($"{selectedEntry.Title}{concatenatedTranslations}");
+                var builder = new EmbedBuilder();
 
-				charadeCache.Add(selectedEntry.Id);
+                builder.WithImageUrl(selectedEntry.PicUrl);
+
+                builder.AddField(x =>
+                {
+                    x.Name = "Tytuł";
+                    x.Value = selectedEntry.Title;
+                    x.IsInline = true;
+                });
+
+                if (selectedEntry.Translations.Count() > 0)
+                {
+                    builder.AddField(x =>
+                    {
+                        x.Name = "Tłumaczenia";
+                        x.Value = string.Join(Environment.NewLine, selectedEntry.Translations);
+                        x.IsInline = false;
+                    });
+                }
+
+                await ReplyAsync("", false, builder.Build());
+
+                charadeCache.Add(selectedEntry.Id);
 
 				_serializer.SaveToFile<int>("charadeCache.json", charadeCache);
 
-				break;
+                break;
 			}
         }
 
