@@ -237,5 +237,13 @@ namespace MarekMotykaBot.Resources
                 return StringResources.ResourceManager.GetString("swearWordCounterHeader");
             }
         }
-    }
+
+		public static string CharadeEnd
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("charadeEnd");
+			}
+		}
+	}
 }

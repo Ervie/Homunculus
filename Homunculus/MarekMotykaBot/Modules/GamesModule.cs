@@ -123,17 +123,47 @@ namespace MarekMotykaBot.Modules
             await ReplyAsync(Context.User.Username + ": " + resultString);
         }
 
-        [Command("Charade"), Alias("kalambury", "k", "c")]
+        [Command("Charade"), Alias("kalambury", "c"), Summary("Draw a random entry for charade game.")]
         public async Task CharadeAsync()
         {
             List<CharadeEntry> charadeCollection = _serializer.LoadFromFile<CharadeEntry>("Animes.json");
+			List<int> charadeCache = _serializer.LoadFromFile<int>("charadeCache.json");
 
-            int randomJokeIndex = _rng.Next(0, charadeCollection.Count);
+			if (charadeCache.Count() == charadeCollection.Count())
+			{
+				await Context.Channel.SendMessageAsync($"{StringConsts.CharadeEnd}");
+				return;
+			}
 
-            CharadeEntry selectedEntry = charadeCollection[randomJokeIndex];
+			int randomCharadeEntryIndex = -1;
 
-            // TODO: Expand (better displaying, add cache)
-            await Context.Channel.SendMessageAsync($"{selectedEntry.Title}, ({string.Join(", ", selectedEntry.Translations)})");
+			while (true)
+			{
+				randomCharadeEntryIndex = _rng.Next(0, charadeCollection.Count);
+
+				if (charadeCache.Contains(charadeCollection[randomCharadeEntryIndex].Id))
+					continue;
+
+				CharadeEntry selectedEntry = charadeCollection[randomCharadeEntryIndex];
+
+				string concatenatedTranslations = selectedEntry.Translations.Count() > 0 ? string.Concat(" (", string.Join(", ", selectedEntry.Translations), ")") : string.Empty;
+
+				await Context.Channel.SendMessageAsync($"{selectedEntry.Title}{concatenatedTranslations}");
+
+				charadeCache.Add(selectedEntry.Id);
+
+				_serializer.SaveToFile<int>("charadeCache.json", charadeCache);
+
+				break;
+			}
         }
+
+		[Command("ResetCharade"), Alias("reset", "r"), Summary("Reset charade cache")]
+		public async Task CharadeResetAsync()
+		{
+			List<int> emptyList = new List<int>();
+
+			_serializer.SaveToFile<int>("charadeCache.json", emptyList);
+		}
     }
 }

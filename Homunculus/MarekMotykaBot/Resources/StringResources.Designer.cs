@@ -61,6 +61,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Koniec haseł!.
+        /// </summary>
+        internal static string charadeEnd {
+            get {
+                return ResourceManager.GetString("charadeEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Z {0} to se możesz... to wiesz co se możesz!.
         /// </summary>
         internal static string declineCommand {
