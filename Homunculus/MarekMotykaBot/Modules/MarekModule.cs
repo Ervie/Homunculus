@@ -222,6 +222,8 @@ namespace MarekMotykaBot.Modules
 
                 sb.Clear();
             }
+
+            await ReplyAsync("", false, builder.Build());
         }
     }
 }

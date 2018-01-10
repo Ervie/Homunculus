@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,10 +9,15 @@ namespace MarekMotykaBot.Services
 {
     public class JSONSerializer
     {
-        private readonly string resourcesPath = AppContext.BaseDirectory + "/Resources/TextFiles/";
+        private readonly string resourcesPath;
 
-        public JSONSerializer()
+        private readonly IConfiguration _configuration;
+
+        public JSONSerializer(IConfiguration configuration)
         {
+            _configuration = configuration;
+
+            resourcesPath = AppContext.BaseDirectory + configuration["configValues:resourcePath"];
         }
 
         public List<T> LoadFromFile<T>(string fileName)

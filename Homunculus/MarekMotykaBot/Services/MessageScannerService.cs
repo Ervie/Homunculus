@@ -156,8 +156,6 @@ namespace MarekMotykaBot
             {
                 if (message.Content.ToLowerInvariant().Contains(swearWord.ToLowerInvariant()) && !message.Author.IsBot)
                 {
-					await _dropbox.DownloadFileAsync("wordCounter.json");
-
                     var counterList = _serializer.LoadFromFile<WordCounterEntry>("wordCounter.json");
 
                     string messageText = message.Content.ToLowerInvariant();
