@@ -41,6 +41,7 @@ namespace MarekMotykaBot
 				.AddSingleton<ImgurService>()
                 .AddSingleton<ImgFlipService>()
 				.AddSingleton<JSONSerializer>()
+				.AddSingleton<DropboxService>()
                 .AddSingleton(_config)
                 .AddSingleton<Random>();
 

@@ -19,6 +19,8 @@ namespace MarekMotykaBot
 
         private readonly JSONSerializer _serializer;
 
+		private readonly DropboxService _dropbox;
+
         private readonly IConfiguration _configuration;
 
         private readonly List<string> _swearWordList = new List<string>() { "penis", "dupa", "kurwa" };
@@ -27,11 +29,12 @@ namespace MarekMotykaBot
 
         private readonly List<string> _marekFaceWords = new List<string>() { "czerń", "czarn", "nigga", "nigger", "murzyn", "black", "schartz", "afryk", "africa", "negro", "kuro", "murzyń" };
 
-        public MessageScannerService(DiscordSocketClient client, JSONSerializer serializer, IConfiguration configuration)
+        public MessageScannerService(DiscordSocketClient client, JSONSerializer serializer, DropboxService dropbox, IConfiguration configuration)
         {
             _client = client;
             _serializer = serializer;
             _configuration = configuration;
+			_dropbox = dropbox;
         }
 
         public async Task ScanMessage(SocketMessage s)
@@ -153,6 +156,8 @@ namespace MarekMotykaBot
             {
                 if (message.Content.ToLowerInvariant().Contains(swearWord.ToLowerInvariant()) && !message.Author.IsBot)
                 {
+					await _dropbox.DownloadFileAsync("wordCounter.json");
+
                     var counterList = _serializer.LoadFromFile<WordCounterEntry>("wordCounter.json");
 
                     string messageText = message.Content.ToLowerInvariant();
@@ -176,6 +181,8 @@ namespace MarekMotykaBot
                     }
 
                     _serializer.SaveToFile<WordCounterEntry>("wordCounter.json", counterList);
+
+					await _dropbox.UploadFileAsync("wordCounter.json", "wordCounter.json");
                 }
             }
         }
