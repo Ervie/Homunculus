@@ -36,19 +36,20 @@ namespace MarekMotykaBot.Modules
 
             foreach (string swearWord in _swearWordList)
             {
-                var specificSwearWordEntries = counterList.Where(x => x.Word.Equals(swearWord)).OrderBy(x => x.CounterValue);
+                var specificSwearWordEntries = counterList.Where(x => x.Word.Equals(swearWord)).OrderByDescending(x => x.CounterValue);
 
-                foreach (var entry in specificSwearWordEntries.OrderByDescending(x => x.CounterValue))
+                foreach (var entry in specificSwearWordEntries)
                 {
                     sb.AppendLine(string.Format(StringConsts.SwearWordCounterEntry, entry.DiscordNickname, entry.Word, entry.CounterValue));
                 }
 
-                builder.AddField(x =>
-                {
-                    x.Name = swearWord;
-                    x.Value = sb.ToString();
-                    x.IsInline = true;
-                });
+                if (!string.IsNullOrEmpty(sb.ToString()))
+                    builder.AddField(x =>
+                    {
+                        x.Name = swearWord;
+                        x.Value = sb.ToString();
+                        x.IsInline = true;
+                    });
 
                 sb.Clear();
             }
