@@ -7,18 +7,19 @@ using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services
 {
-    public class StartupService
+    public class StartupService: IDiscordService
     {
         private readonly DiscordSocketClient _discord;
         private readonly CommandService _commands;
-        private readonly IConfiguration _configuration;
         private readonly DropboxService _dropbox;
+
+        public IConfiguration Configuration { get; set; }
 
         public StartupService(IConfiguration configuration, DiscordSocketClient discord, CommandService commands, DropboxService dropbox)
         {
             _discord = discord;
             _commands = commands;
-            _configuration = configuration;
+            Configuration = configuration;
             _dropbox = dropbox;
         }
 
@@ -27,7 +28,7 @@ namespace MarekMotykaBot.Services
             // update local file on startup
             await _dropbox.DownloadFileAsync("wordCounter.json");
 
-            string discordToken = _configuration["tokens:discord"];
+            string discordToken = Configuration["tokens:discord"];
             await _discord.LoginAsync(TokenType.Bot, discordToken);
             await _discord.StartAsync();
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly());

@@ -5,7 +5,6 @@ using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,9 +14,9 @@ namespace MarekMotykaBot.Modules
     {
         private readonly Random _rng;
 
-        private readonly JSONSerializer _serializer;
+        private readonly JSONSerializerService _serializer;
 
-        public GamesModule(Random random, JSONSerializer serializer)
+        public GamesModule(Random random, JSONSerializerService serializer)
         {
             _rng = random;
             _serializer = serializer;
@@ -129,24 +128,24 @@ namespace MarekMotykaBot.Modules
         public async Task CharadeAsync()
         {
             List<CharadeEntry> charadeCollection = _serializer.LoadFromFile<CharadeEntry>("Animes.json");
-			List<int> charadeCache = _serializer.LoadFromFile<int>("charadeCache.json");
+            List<int> charadeCache = _serializer.LoadFromFile<int>("charadeCache.json");
 
-			if (charadeCache.Count() == charadeCollection.Count())
-			{
-				await Context.Channel.SendMessageAsync($"{StringConsts.CharadeEnd}");
-				return;
-			}
+            if (charadeCache.Count() == charadeCollection.Count())
+            {
+                await Context.Channel.SendMessageAsync($"{StringConsts.CharadeEnd}");
+                return;
+            }
 
-			int randomCharadeEntryIndex = -1;
+            int randomCharadeEntryIndex = -1;
 
-			while (true)
-			{
-				randomCharadeEntryIndex = _rng.Next(0, charadeCollection.Count);
+            while (true)
+            {
+                randomCharadeEntryIndex = _rng.Next(0, charadeCollection.Count);
 
-				if (charadeCache.Contains(charadeCollection[randomCharadeEntryIndex].Id))
-					continue;
+                if (charadeCache.Contains(charadeCollection[randomCharadeEntryIndex].Id))
+                    continue;
 
-				CharadeEntry selectedEntry = charadeCollection[randomCharadeEntryIndex];
+                CharadeEntry selectedEntry = charadeCollection[randomCharadeEntryIndex];
 
                 //string concatenatedTranslations = selectedEntry.Translations.Count() > 0 ? string.Concat(" (", string.Join(", ", selectedEntry.Translations), ")") : string.Empty;
 
@@ -175,18 +174,20 @@ namespace MarekMotykaBot.Modules
 
                 charadeCache.Add(selectedEntry.Id);
 
-				_serializer.SaveToFile<int>("charadeCache.json", charadeCache);
+                _serializer.SaveToFile<int>("charadeCache.json", charadeCache);
 
                 break;
-			}
+            }
         }
 
-		[Command("ResetCharade"), Alias("reset", "r"), Summary("Reset charade cache")]
-		public async Task CharadeResetAsync()
-		{
-			List<int> emptyList = new List<int>();
+        [Command("ResetCharade"), Alias("reset", "r"), Summary("Reset charade cache")]
+        public async Task CharadeResetAsync()
+        {
+            List<int> emptyList = new List<int>();
 
-			_serializer.SaveToFile<int>("charadeCache.json", emptyList);
-		}
+            _serializer.SaveToFile<int>("charadeCache.json", emptyList);
+
+            await ReplyAsync(StringConsts.CharadeReset);
+        }
     }
 }

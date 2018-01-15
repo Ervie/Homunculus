@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services
 {
-    public class DropboxService
+    public class DropboxService: IDiscordService
     {
         private readonly DropboxClient _client;
 
-        private readonly IConfiguration _configuration;
+        public IConfiguration Configuration { get; set; }
 
         private readonly string resourcesPath;
 
         public DropboxService(IConfiguration configuration)
         {
-            _configuration = configuration;
+            Configuration = configuration;
 
             resourcesPath = AppContext.BaseDirectory + configuration["configValues:resourcePath"];
 

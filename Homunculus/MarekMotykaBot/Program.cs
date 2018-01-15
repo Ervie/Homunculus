@@ -40,7 +40,7 @@ namespace MarekMotykaBot
 				.AddSingleton<YTService>()
 				.AddSingleton<ImgurService>()
                 .AddSingleton<ImgFlipService>()
-				.AddSingleton<JSONSerializer>()
+				.AddSingleton<JSONSerializerService>()
 				.AddSingleton<DropboxService>()
                 .AddSingleton(_config)
                 .AddSingleton<Random>();

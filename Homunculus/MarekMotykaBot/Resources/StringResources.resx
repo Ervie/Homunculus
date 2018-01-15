@@ -120,6 +120,9 @@
   <data name="charadeEnd" xml:space="preserve">
     <value>Koniec haseł!</value>
   </data>
+  <data name="charadeReset" xml:space="preserve">
+    <value>Kesz do kalamburów zresetowany.</value>
+  </data>
   <data name="declineCommand" xml:space="preserve">
     <value>Z {0} to se możesz... to wiesz co se możesz!</value>
     <comment>Sometimes he has enough</comment>

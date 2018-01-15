@@ -13,27 +13,27 @@ using System.Threading.Tasks;
 
 namespace MarekMotykaBot
 {
-    public class MessageScannerService
+    public class MessageScannerService: IDiscordService
     {
         private readonly DiscordSocketClient _client;
 
-        private readonly JSONSerializer _serializer;
+        private readonly JSONSerializerService _serializer;
 
 		private readonly DropboxService _dropbox;
-
-        private readonly IConfiguration _configuration;
-
+        
         private readonly List<string> _swearWordList = new List<string>() { "penis", "dupa", "kurwa" };
 
         private readonly List<string> _waifuList = new List<string>() { "Asuna", "Rias", "Erina" };
 
         private readonly List<string> _marekFaceWords = new List<string>() { "czerń", "czarn", "nigga", "nigger", "murzyn", "black", "schartz", "afryk", "africa", "negro", "kuro", "murzyń" };
 
-        public MessageScannerService(DiscordSocketClient client, JSONSerializer serializer, DropboxService dropbox, IConfiguration configuration)
+        public IConfiguration Configuration { get; set; }
+
+        public MessageScannerService(DiscordSocketClient client, JSONSerializerService serializer, DropboxService dropbox, IConfiguration configuration)
         {
             _client = client;
             _serializer = serializer;
-            _configuration = configuration;
+            Configuration = configuration;
 			_dropbox = dropbox;
         }
 
@@ -46,7 +46,7 @@ namespace MarekMotykaBot
 
             var context = new SocketCommandContext(_client, message);
 
-            if (!message.Author.IsBot && !message.Content.StartsWith(_configuration["prefix"]))
+            if (!message.Author.IsBot && !message.Content.StartsWith(Configuration["prefix"]))
             {
                 await DetectWaifus(context, message);
                 await DetectMarekFaceTriggerWords(context, message);

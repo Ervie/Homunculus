@@ -17,7 +17,7 @@ namespace MarekMotykaBot.Modules
     public class MarekModule : ModuleBase<SocketCommandContext>
     {
         private readonly ImgurService _imgur;
-        private readonly JSONSerializer _serializer;
+        private readonly JSONSerializerService _serializer;
         private readonly ImgFlipService _imgFlip;
         private readonly Random _rng;
         private readonly IConfiguration _configuration;
@@ -42,12 +42,10 @@ namespace MarekMotykaBot.Modules
             "Zdaje Ci się!",
             "Chyba w twoich snach!"
         };
-
-        private readonly List<string> _swearWordList = new List<string>() { "penis" };
-
+        
         private const byte cacheSize = 10;
 
-        public MarekModule(IConfiguration configuration, ImgurService imgur, JSONSerializer serializer, ImgFlipService imgFlip, Random random)
+        public MarekModule(IConfiguration configuration, ImgurService imgur, JSONSerializerService serializer, ImgFlipService imgFlip, Random random)
         {
             _configuration = configuration;
             _imgur = imgur;
@@ -189,41 +187,6 @@ namespace MarekMotykaBot.Modules
                 await Context.Channel.SendMessageAsync("Helion user e-mail: " + _configuration["credentials:helionUser"]);
                 await Context.Channel.SendMessageAsync("Helion password: " + _configuration["credentials:helionPassword"]);
             }
-        }
-
-        [Command("Penis"), Summary("This is a Christian server!"), RequireUserPermission(GuildPermission.Administrator)]
-        public async Task SwearWordCounterAsync()
-        {
-            StringBuilder sb = new StringBuilder();
-
-            var counterList = _serializer.LoadFromFile<WordCounterEntry>("wordCounter.json");
-
-            var builder = new EmbedBuilder()
-            {
-                Color = new Color(114, 137, 218),
-                Description = StringConsts.SwearWordCounterHeader
-            };
-
-            foreach (string swearWord in _swearWordList)
-            {
-                var specificSwearWordEntries = counterList.Where(x => x.Word.Equals(swearWord)).OrderBy(x => x.CounterValue);
-
-                foreach (var entry in specificSwearWordEntries.OrderByDescending(x => x.CounterValue))
-                {
-                    sb.AppendLine(string.Format(StringConsts.SwearWordCounterEntry, entry.DiscordNickname, entry.Word, entry.CounterValue));
-                }
-
-                builder.AddField(x =>
-                {
-                    x.Name = swearWord;
-                    x.Value = sb.ToString();
-                    x.IsInline = true;
-                });
-
-                sb.Clear();
-            }
-
-            await ReplyAsync("", false, builder.Build());
         }
     }
 }

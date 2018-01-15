@@ -7,18 +7,19 @@ using Youtube = Google.Apis.YouTube.v3.Data;
 
 namespace MarekMotykaBot.Services
 {
-    public class YTService
+    public class YTService: IDiscordService
     {
         private readonly YouTubeService _youTubeService;
-        private readonly IConfiguration _configuration;
+
+        public IConfiguration Configuration { get; set; }
 
         public YTService(IConfiguration configuration)
         {
-            _configuration = configuration;
+            Configuration = configuration;
 
             _youTubeService = new YouTubeService(new BaseClientService.Initializer()
             {
-                ApiKey = _configuration["tokens:youtube"],
+                ApiKey = Configuration["tokens:youtube"],
                 MaxUrlLength = 256
             });
         }

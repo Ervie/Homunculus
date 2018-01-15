@@ -70,6 +70,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kesz do kalamburów zresetowany..
+        /// </summary>
+        internal static string charadeReset {
+            get {
+                return ResourceManager.GetString("charadeReset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Z {0} to se możesz... to wiesz co se możesz!.
         /// </summary>
         internal static string declineCommand {

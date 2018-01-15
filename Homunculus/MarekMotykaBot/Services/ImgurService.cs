@@ -7,18 +7,19 @@ using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services
 {
-    public class ImgurService
+    public class ImgurService: IDiscordService
     {
-        private readonly IConfiguration _configuration;
         private readonly Random _rng;
         private readonly ImgurClient _client;
 
+        public IConfiguration Configuration { get; set; }
+
         public ImgurService(IConfiguration configuration, Random random)
         {
-            _configuration = configuration;
+            Configuration = configuration;
             _rng = random;
 
-            _client = new ImgurClient(_configuration["tokens:imgurClient"], _configuration["tokens:imgurSecret"]);
+            _client = new ImgurClient(Configuration["tokens:imgurClient"], Configuration["tokens:imgurSecret"]);
         }
 
         public async Task<string> GetRandomImageFromGallery(string galleryId)

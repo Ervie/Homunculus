@@ -245,5 +245,14 @@ namespace MarekMotykaBot.Resources
 				return StringResources.ResourceManager.GetString("charadeEnd");
 			}
 		}
-	}
+
+        public static string CharadeReset
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("charadeReset");
+            }
+        }
+
+    }
 }

@@ -1,22 +1,27 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services
 {
-    public class LoggingService
+    public class LoggingService: IDiscordService
     {
         private readonly DiscordSocketClient _discord;
         private readonly CommandService _commands;
 
+        public IConfiguration Configuration { get; set; }
+
         private string _logDirectory { get; }
         private string _logFile => Path.Combine(_logDirectory, $"{DateTime.UtcNow.ToString("yyyy-MM-dd")}.txt");
 
-        public LoggingService(DiscordSocketClient discord, CommandService commands)
+        public LoggingService(IConfiguration _configuration, DiscordSocketClient discord, CommandService commands)
         {
+            Configuration = _configuration;
+
             _logDirectory = Path.Combine(AppContext.BaseDirectory, "logs");
 
             _discord = discord;

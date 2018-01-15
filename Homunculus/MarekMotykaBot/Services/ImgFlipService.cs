@@ -5,23 +5,24 @@ using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services
 {
-    public class ImgFlipService
+    public class ImgFlipService: IDiscordService
     {
         private const int MarekTemplateId = 114558777;
 
         private readonly ImgFlipAPISource _source;
-        private readonly IConfiguration _configuration;
-
+        
         private readonly string _imgFlipUsername;
         private readonly string _imgFlipPassword;
 
+        public IConfiguration Configuration { get; set; }
+
         public ImgFlipService(IConfiguration configuration)
         {
-            _configuration = configuration;
+            Configuration = configuration;
             _source = ImgFlipAPISource.Instance;
 
-            _imgFlipUsername = _configuration["credentials:imgFlipUser"];
-            _imgFlipPassword = _configuration["credentials:imgFlipPassword"];
+            _imgFlipUsername = Configuration["credentials:imgFlipUser"];
+            _imgFlipPassword = Configuration["credentials:imgFlipPassword"];
         }
 
         public async Task<string> CreateMarekMeme(string topText, string bottomText)

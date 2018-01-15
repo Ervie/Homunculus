@@ -10,14 +10,15 @@ using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services
 {
-    public class CommandHandlingService
+    public class CommandHandlingService : IDiscordService
     {
         private readonly DiscordSocketClient _discord;
         private readonly CommandService _commands;
         private readonly MessageScannerService _scanner;
         private readonly Random _rng;
         private readonly IServiceProvider _provider;
-        private readonly IConfiguration _configuration;
+
+        public IConfiguration Configuration { get; set; }
 
         // DiscordSocketClient, CommandService, and IServiceProvider are injected automatically from the IServiceProvider
         public CommandHandlingService(IConfiguration configuration, DiscordSocketClient discord, CommandService commands, MessageScannerService scanner, Random random, IServiceProvider provider)
@@ -26,13 +27,14 @@ namespace MarekMotykaBot.Services
             _commands = commands;
             _scanner = scanner;
             _provider = provider;
-            _configuration = configuration;
+            Configuration = configuration;
             _rng = random;
 
             SetStartingState();
         }
 
         public CommandService Commands => _commands;
+        
 
         private async Task OnMessageReceivedAsync(SocketMessage s)
         {
@@ -43,7 +45,7 @@ namespace MarekMotykaBot.Services
             var context = new SocketCommandContext(_discord, msg);
 
             int argPos = 0;
-            if (msg.HasStringPrefix(_configuration["prefix"], ref argPos) || msg.HasMentionPrefix(_discord.CurrentUser, ref argPos))
+            if (msg.HasStringPrefix(Configuration["prefix"], ref argPos) || msg.HasMentionPrefix(_discord.CurrentUser, ref argPos))
             {
                 if (!DeclineCommand(context, msg.Content).Result)
                 {

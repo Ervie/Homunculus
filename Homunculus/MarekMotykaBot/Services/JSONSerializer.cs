@@ -7,15 +7,15 @@ using System.Text;
 
 namespace MarekMotykaBot.Services
 {
-    public class JSONSerializer
+    public class JSONSerializerService: IDiscordService
     {
         private readonly string resourcesPath;
 
-        private readonly IConfiguration _configuration;
+        public IConfiguration Configuration { get; set; }
 
-        public JSONSerializer(IConfiguration configuration)
+        public JSONSerializerService(IConfiguration configuration)
         {
-            _configuration = configuration;
+            Configuration = configuration;
 
             resourcesPath = AppContext.BaseDirectory + configuration["configValues:resourcePath"];
         }
