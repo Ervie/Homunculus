@@ -22,26 +22,7 @@ namespace MarekMotykaBot.Modules
         private readonly Random _rng;
         private readonly IConfiguration _configuration;
 
-        private readonly string[] eightBallResponses =
-        {
-            "Tak",
-            "Nie",
-            "Być może",
-            "Z tym to se możesz... To wiesz co se możesz",
-            "Oczywiście, {0} potwierdzi",
-            "No pewex",
-            "Ale że co? No prośba...",
-            "To {0} tak mówił",
-            ">Doubt",
-            "TakNieTakNieTakNie :^)",
-            "Kek",
-            "Prędzej schlam się piwem bezalkoholowym!",
-            "Wiadomix",
-            "No wiadomix, że nie",
-            "Wydaje mi się, że tak",
-            "Zdaje Ci się!",
-            "Chyba w twoich snach!"
-        };
+        private readonly List<string> eightBallResponses;
         
         private const byte cacheSize = 10;
 
@@ -52,6 +33,8 @@ namespace MarekMotykaBot.Modules
             _serializer = serializer;
             _rng = random;
             _imgFlip = imgFlip;
+
+            eightBallResponses = _serializer.LoadFromFile<string>("8ballResponses.json");
         }
 
         [Command("NoCoSeMoge"), Alias("no"), Summary("He will tell you what you can do")]

@@ -20,12 +20,12 @@ namespace MarekMotykaBot
         private readonly JSONSerializerService _serializer;
 
 		private readonly DropboxService _dropbox;
-        
-        private readonly List<string> _swearWordList = new List<string>() { "penis", "dupa", "kurwa" };
 
-        private readonly List<string> _waifuList = new List<string>() { "Asuna", "Rias", "Erina" };
+        private readonly List<string> _swearWordList;
 
-        private readonly List<string> _marekFaceWords = new List<string>() { "czerń", "czarn", "nigga", "nigger", "murzyn", "black", "schartz", "afryk", "africa", "negro", "kuro", "murzyń" };
+        private readonly List<string> _waifuList;
+
+        private readonly List<string> _marekFaceWords;
 
         public IConfiguration Configuration { get; set; }
 
@@ -35,6 +35,10 @@ namespace MarekMotykaBot
             _serializer = serializer;
             Configuration = configuration;
 			_dropbox = dropbox;
+
+            _swearWordList = _serializer.LoadFromFile<string>("swearWords.json");
+            _marekFaceWords = _serializer.LoadFromFile<string>("marekTrigger.json");
+            _waifuList = serializer.LoadFromFile<string>("marekWaifus.json");
         }
 
         public async Task ScanMessage(SocketMessage s)

@@ -14,11 +14,13 @@ namespace MarekMotykaBot.Modules
     {
         private readonly JSONSerializerService _serializer;
 
-        private readonly List<string> _swearWordList = new List<string>() { "penis", "kurwa", "dupa" };
+        private readonly List<string> _swearWordList;
 
         public AdminModule(JSONSerializerService serializer)
         {
             _serializer = serializer;
+
+            _swearWordList = _serializer.LoadFromFile<string>("swearWords.json");
         }
 
         [Command("Penis"), Summary("This is a Christian server!"), RequireUserPermission(GuildPermission.Administrator)]

@@ -1,5 +1,6 @@
 ﻿using Discord.Commands;
 using MarekMotykaBot.Resources;
+using MarekMotykaBot.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,16 @@ namespace MarekMotykaBot.Modules
     {
         private readonly Random _rng;
 
-        private readonly List<string> _marekWaifuList = new List<string>() { "Erina", "Asuna", "Rias" };
+        private readonly JSONSerializerService _serializer;
 
-        public WaifuModule(Random random)
+        private readonly List<string> _marekWaifuList;
+
+        public WaifuModule(Random random, JSONSerializerService serializer)
         {
             _rng = random;
+            _serializer = serializer;
+
+            _marekWaifuList = serializer.LoadFromFile<string>("marekWaifus.json");
         }
 
         [Command("BetterWaifu"), Alias("bw"), Summary("Waifu selector, 2 waifus")]
