@@ -27,6 +27,8 @@ namespace MarekMotykaBot
 
         private readonly List<string> _marekFaceWords;
 
+        private readonly List<string> _takeuchiWords;
+
         public IConfiguration Configuration { get; set; }
 
         public MessageScannerService(DiscordSocketClient client, JSONSerializerService serializer, DropboxService dropbox, IConfiguration configuration)
@@ -39,6 +41,7 @@ namespace MarekMotykaBot
             _swearWordList = _serializer.LoadFromFile<string>("swearWords.json");
             _marekFaceWords = _serializer.LoadFromFile<string>("marekTrigger.json");
             _waifuList = serializer.LoadFromFile<string>("marekWaifus.json");
+            _takeuchiWords = serializer.LoadFromFile<string>("takeuchiTrigger.json");
         }
 
         public async Task ScanMessage(SocketMessage s)
@@ -54,6 +57,7 @@ namespace MarekMotykaBot
             {
                 await DetectWaifus(context, message);
                 await DetectMarekFaceTriggerWords(context, message);
+                await DetectTakeuchiFaceTriggerWords(context, message);
                 await DetectMentions(context, message);
                 await DetectSwearWord(context, message);
             }
@@ -124,7 +128,28 @@ namespace MarekMotykaBot
         }
 
         /// <summary>
-        /// Detect waidus name in each message
+        /// Check for takeuchi trigger words in each message and add reaction.
+        /// </summary>
+        private async Task<bool> DetectTakeuchiFaceTriggerWords(SocketCommandContext context, SocketUserMessage message)
+        {
+            foreach (string word in _takeuchiWords)
+            {
+                if (message.Content.ToLowerInvariant().Contains(word) && !message.Author.IsBot)
+                {
+                    var takeuchiFace = context.Guild.Emotes.Where(x => x.Name.ToLower().Equals("takeuchi")).FirstOrDefault();
+
+                    if (takeuchiFace != null)
+                    {
+                        await message.AddReactionAsync(takeuchiFace);
+                    }
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Detect waifus name in each message
         /// </summary>
         private async Task DetectWaifus(SocketCommandContext context, SocketUserMessage message)
         {

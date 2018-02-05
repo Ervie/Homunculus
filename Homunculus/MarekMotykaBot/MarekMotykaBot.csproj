@@ -5,9 +5,9 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <StartupObject />
-    <Version>2.5.1</Version>
-    <AssemblyVersion>2.5.0.1</AssemblyVersion>
-    <FileVersion>2.5.0.1</FileVersion>
+    <Version>2.5.2</Version>
+    <AssemblyVersion>2.5.0.2</AssemblyVersion>
+    <FileVersion>2.5.0.2</FileVersion>
     <Description>Simple mimicking Discord bot written with .Net Core and Discord.Net.</Description>
     <PackageLicenseUrl>https://github.com/Ervie/Homunculus/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl></PackageProjectUrl>
@@ -72,6 +72,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\TextFiles\swearWords.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\TextFiles\takeuchiTrigger.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\TextFiles\wordCounter.json">
