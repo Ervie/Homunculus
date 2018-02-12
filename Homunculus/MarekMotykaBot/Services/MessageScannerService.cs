@@ -106,7 +106,7 @@ namespace MarekMotykaBot
 		/// </summary>
 		private async Task RemoveReactionAfterTriggerMissing(SocketCommandContext context, SocketUserMessage message, bool shouldRemove, string emoteCode)
 		{
-			if (!shouldRemove)
+			if (shouldRemove)
 			{
 				GuildEmote emote = context.Guild.Emotes.Where(x => x.Name.ToLower().Equals(emoteCode)).FirstOrDefault();
 
