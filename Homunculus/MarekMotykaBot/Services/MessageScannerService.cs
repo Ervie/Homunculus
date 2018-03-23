@@ -29,7 +29,9 @@ namespace MarekMotykaBot
 
 		private readonly List<string> _takeuchiWords;
 
-		public IConfiguration Configuration { get; set; }
+        private readonly List<string> _ziewaczWords;
+
+        public IConfiguration Configuration { get; set; }
 
 		public MessageScannerService(DiscordSocketClient client, JSONSerializerService serializer, DropboxService dropbox, IConfiguration configuration)
 		{
@@ -42,7 +44,8 @@ namespace MarekMotykaBot
 			_marekFaceWords = _serializer.LoadFromFile<string>("marekTrigger.json");
 			_waifuList = serializer.LoadFromFile<string>("marekWaifus.json");
 			_takeuchiWords = serializer.LoadFromFile<string>("takeuchiTrigger.json");
-		}
+            _ziewaczWords = serializer.LoadFromFile<string>("ziewaczTrigger.json");
+        }
 
 		public async Task ScanMessage(SocketMessage s)
 		{
@@ -58,6 +61,7 @@ namespace MarekMotykaBot
 				await DetectWaifus(context, message);
 				await AddReactionAfterTriggerWord(context, message, _marekFaceWords, "marekface");
 				await AddReactionAfterTriggerWord(context, message, _takeuchiWords, "takeuchi");
+                await AddReactionAfterTriggerWord(context, message, _ziewaczWords, "ziewface");
 				await DetectMentions(context, message);
 				await DetectSwearWord(context, message);
 			}
@@ -76,7 +80,8 @@ namespace MarekMotykaBot
 			{
 				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _marekFaceWords, "marekface"), "marekface");
 				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _takeuchiWords, "takeuchi"), "takeuchi");
-			}
+                await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _ziewaczWords, "ziewface"), "ziewface");
+            }
 		}
 
 		/// <summary>
