@@ -146,9 +146,7 @@ namespace MarekMotykaBot.Modules
                     continue;
 
                 CharadeEntry selectedEntry = charadeCollection[randomCharadeEntryIndex];
-
-                //string concatenatedTranslations = selectedEntry.Translations.Count() > 0 ? string.Concat(" (", string.Join(", ", selectedEntry.Translations), ")") : string.Empty;
-
+				
                 var builder = new EmbedBuilder();
 
                 builder.WithImageUrl(selectedEntry.PicUrl);

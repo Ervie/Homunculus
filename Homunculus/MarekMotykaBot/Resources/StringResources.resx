@@ -127,6 +127,9 @@
     <value>Z {0} to se możesz... to wiesz co se możesz!</value>
     <comment>Sometimes he has enough</comment>
   </data>
+  <data name="derpQuote" xml:space="preserve">
+    <value>Księga DerpRoomu mówi wyraźnie...</value>
+  </data>
   <data name="doctor" xml:space="preserve">
     <value>Sorry, ale teraz się doktoryzuję.</value>
   </data>

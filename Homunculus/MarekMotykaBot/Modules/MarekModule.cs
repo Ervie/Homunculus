@@ -40,7 +40,7 @@ namespace MarekMotykaBot.Modules
         [Command("NoCoSeMoge"), Alias("no"), Summary("He will tell you what you can do")]
         public async Task CoSeMogeAsync()
         {
-            int randomNumer = _rng.Next(1, 10);
+            int randomNumer = _rng.Next(0, 10);
 
             switch (randomNumer)
             {
@@ -157,6 +157,25 @@ namespace MarekMotykaBot.Modules
                 await Context.Channel.SendMessageAsync($"{string.Format(selectedResponse, selectedUser)}");
             }
         }
+
+		[Command("quote"), Alias("cytat", "q"), Summary("Ancient wisdom...")]
+		public async Task QuoteAsync()
+		{
+			List<Quote> quotes = _serializer.LoadFromFile<Quote>("quotes.json");
+
+			int randomQuoteIndex = _rng.Next(1, quotes.Count);
+
+			Quote selectedQuote = quotes[randomQuoteIndex];
+
+			var builder = new EmbedBuilder();
+
+			builder.WithFooter(selectedQuote.Author);
+			builder.WithTitle(selectedQuote.QuoteBody);
+
+			await Context.Channel.SendMessageAsync(StringResources.derpQuote);
+			await Task.Delay(3000);
+			await ReplyAsync("", false, builder.Build());
+		}
 
         [Command("blueribbon"), Summary("Passes for hidden gift")]
         public async Task UnityAsync()

@@ -88,6 +88,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Księga DerpRoomu mówi wyraźnie....
+        /// </summary>
+        internal static string derpQuote {
+            get {
+                return ResourceManager.GetString("derpQuote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, ale teraz się doktoryzuję..
         /// </summary>
         internal static string doctor {
