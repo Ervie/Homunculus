@@ -130,6 +130,12 @@
   <data name="derpQuote" xml:space="preserve">
     <value>Księga DerpRoomu mówi wyraźnie...</value>
   </data>
+  <data name="derpQuote2" xml:space="preserve">
+    <value>W Księdze DerpRoomu napisane jest jasno...</value>
+  </data>
+  <data name="derpQuote3" xml:space="preserve">
+    <value>Jak pisze w Księdze DerpRoomu czarno na białym...</value>
+  </data>
   <data name="doctor" xml:space="preserve">
     <value>Sorry, ale teraz się doktoryzuję.</value>
   </data>

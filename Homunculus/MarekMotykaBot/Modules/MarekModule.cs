@@ -163,7 +163,7 @@ namespace MarekMotykaBot.Modules
 		{
 			List<Quote> quotes = _serializer.LoadFromFile<Quote>("quotes.json");
 
-			int randomQuoteIndex = _rng.Next(1, quotes.Count);
+			int randomQuoteIndex = _rng.Next(1, quotes.Count + 1);
 
 			Quote selectedQuote = quotes[randomQuoteIndex];
 
@@ -172,7 +172,24 @@ namespace MarekMotykaBot.Modules
 			builder.WithFooter(selectedQuote.Author);
 			builder.WithTitle(selectedQuote.QuoteBody);
 
-			await Context.Channel.SendMessageAsync(StringResources.derpQuote);
+			string intro = string.Empty;
+
+			switch(_rng.Next(1, 4))
+			{
+				case 1:
+					intro = StringConsts.DerpQuote;
+					break;
+
+				case 2:
+					intro = StringConsts.DerpQuote2;
+					break;
+
+				case 3:
+					intro = StringConsts.DerpQuote3;
+					break;
+			}
+
+			await Context.Channel.SendMessageAsync(intro);
 			await Task.Delay(3000);
 			await ReplyAsync("", false, builder.Build());
 		}
