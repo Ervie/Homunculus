@@ -2,6 +2,7 @@
 using Discord.Commands;
 using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.DataTypes.Caches;
+using MarekMotykaBot.DataTypes.Enumerations;
 using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
@@ -9,161 +10,186 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Modules
 {
-    public class MarekModule : ModuleBase<SocketCommandContext>
-    {
-        private readonly ImgurService _imgur;
-        private readonly JSONSerializerService _serializer;
-        private readonly ImgFlipService _imgFlip;
-        private readonly Random _rng;
-        private readonly IConfiguration _configuration;
+	public class MarekModule : ModuleBase<SocketCommandContext>
+	{
+		private readonly ImgurService _imgur;
+		private readonly JSONSerializerService _serializer;
+		private readonly ImgFlipService _imgFlip;
+		private readonly Random _rng;
+		private readonly IConfiguration _configuration;
 
-        private readonly List<string> eightBallResponses;
-        
-        private const byte cacheSize = 10;
+		private readonly List<string> eightBallResponses;
 
-        public MarekModule(IConfiguration configuration, ImgurService imgur, JSONSerializerService serializer, ImgFlipService imgFlip, Random random)
-        {
-            _configuration = configuration;
-            _imgur = imgur;
-            _serializer = serializer;
-            _rng = random;
-            _imgFlip = imgFlip;
+		private const byte cacheSize = 10;
 
-            eightBallResponses = _serializer.LoadFromFile<string>("8ballResponses.json");
-        }
+		public MarekModule(IConfiguration configuration, ImgurService imgur, JSONSerializerService serializer, ImgFlipService imgFlip, Random random)
+		{
+			_configuration = configuration;
+			_imgur = imgur;
+			_serializer = serializer;
+			_rng = random;
+			_imgFlip = imgFlip;
 
-        [Command("NoCoSeMoge"), Alias("no"), Summary("He will tell you what you can do")]
-        public async Task CoSeMogeAsync()
-        {
-            int randomNumer = _rng.Next(0, 10);
+			eightBallResponses = _serializer.LoadFromFile<string>("8ballResponses.json");
+		}
 
-            switch (randomNumer)
-            {
-                case (1):
-                    await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
-                    await Task.Delay(3000);
-                    await Context.Channel.SendMessageAsync($"...");
-                    await Task.Delay(1000);
-                    await Context.Channel.SendMessageAsync($"...");
-                    await Task.Delay(1000);
-                    await Context.Channel.SendMessageAsync($"**{StringConsts.RunAway}**");
-                    break;
+		[Command("NoCoSeMoge"), Alias("no"), Summary("He will tell you what you can do")]
+		public async Task CoSeMogeAsync()
+		{
+			int randomNumer = _rng.Next(0, 10);
 
-                case (2):
-                case (3):
-                    await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
-                    await Task.Delay(3000);
-                    await Context.Channel.SendMessageAsync($"**{StringConsts.ShitString}**");
-                    await Task.Delay(1500);
-                    await Context.Channel.SendMessageAsync($"**{StringConsts.InTheJar}**");
-                    break;
+			switch (randomNumer)
+			{
+				case (1):
+					await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
+					await Task.Delay(3000);
+					await Context.Channel.SendMessageAsync($"...");
+					await Task.Delay(1000);
+					await Context.Channel.SendMessageAsync($"...");
+					await Task.Delay(1000);
+					await Context.Channel.SendMessageAsync($"**{StringConsts.RunAway}**");
+					break;
 
-                default:
-                    await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
-                    await Task.Delay(3000);
-                    await Context.Channel.SendMessageAsync($"**{StringConsts.ShitString}**");
-                    break;
-            }
-        }
+				case (2):
+				case (3):
+					await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
+					await Task.Delay(3000);
+					await Context.Channel.SendMessageAsync($"**{StringConsts.ShitString}**");
+					await Task.Delay(1500);
+					await Context.Channel.SendMessageAsync($"**{StringConsts.InTheJar}**");
+					break;
 
-        [Command("Sowa"), Alias("owl"), Summary("Post random owl image")]
-        public async Task SowaAsync()
-        {
-            string gifUrl;
-            gifUrl = await _imgur.GetRandomImageFromGallery("CbtU3");
+				default:
+					await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
+					await Task.Delay(3000);
+					await Context.Channel.SendMessageAsync($"**{StringConsts.ShitString}**");
+					break;
+			}
+		}
 
-            await ReplyAsync(gifUrl);
-        }
+		[Command("Sowa"), Alias("owl"), Summary("Post random owl image")]
+		public async Task SowaAsync()
+		{
+			string gifUrl;
+			gifUrl = await _imgur.GetRandomImageFromGallery("CbtU3");
 
-        [Command("MarekMeme"), Alias("meme"), Summary("Post random old Marek meme image")]
-        public async Task OldMemeAsync()
-        {
-            string gifUrl;
-            gifUrl = await _imgur.GetRandomImageFromAlbum("V5CPd");
+			await ReplyAsync(gifUrl);
+		}
 
-            await ReplyAsync(gifUrl);
-        }
+		[Command("MarekMeme"), Alias("meme"), Summary("Post random old Marek meme image")]
+		public async Task OldMemeAsync()
+		{
+			string gifUrl;
+			gifUrl = await _imgur.GetRandomImageFromAlbum("V5CPd");
 
-        [Command("MarekMeme"), Alias("meme"), Summary("Create your own Marek meme image, text split by semicolon")]
-        public async Task NewMemeAsync(params string[] text)
-        {
-            var captions = string.Join(" ", text).Split(';').ToList();
+			await ReplyAsync(gifUrl);
+		}
 
-            if (captions.Count < 2)
-                return;
+		[Command("MarekMeme"), Alias("meme"), Summary("Create your own Marek meme image, text split by semicolon")]
+		public async Task NewMemeAsync(params string[] text)
+		{
+			var captions = string.Join(" ", text).Split(';').ToList();
 
-            if (string.IsNullOrWhiteSpace(captions.ElementAt(0)) || string.IsNullOrWhiteSpace(captions.ElementAt(1)))
-                return;
+			if (captions.Count < 2)
+				return;
 
-            string toptext = captions.ElementAt(0).ToUpper();
-            string bottomtext = captions.ElementAt(1).ToUpper();
+			if (string.IsNullOrWhiteSpace(captions.ElementAt(0)) || string.IsNullOrWhiteSpace(captions.ElementAt(1)))
+				return;
 
-            string resultUrl = await _imgFlip.CreateMarekMeme(toptext, bottomtext);
+			string toptext = captions.ElementAt(0).ToUpper();
+			string bottomtext = captions.ElementAt(1).ToUpper();
 
-            await ReplyAsync(resultUrl);
-        }
+			string resultUrl = await _imgFlip.CreateMarekMeme(toptext, bottomtext);
 
-        [Command("Joke"), Summary("Marek's joke - you know the drill")]
-        public async Task JokeAsync()
-        {
-            List<OneLinerJoke> jokes = _serializer.LoadFromFile<OneLinerJoke>("oneLiners.json");
+			await ReplyAsync(resultUrl);
+		}
 
-            int randomJokeIndex = _rng.Next(1, jokes.Count);
+		[Command("Joke"), Summary("Marek's joke - you know the drill")]
+		public async Task JokeAsync()
+		{
+			List<OneLinerJoke> jokes = _serializer.LoadFromFile<OneLinerJoke>("oneLiners.json");
 
-            OneLinerJoke selectedJoke = jokes[randomJokeIndex];
+			int randomJokeIndex = _rng.Next(1, jokes.Count);
 
-            await Context.Channel.SendMessageAsync($"{selectedJoke.Question}");
-            await Task.Delay(3000);
-            await Context.Channel.SendMessageAsync($"{selectedJoke.Punchline}");
-        }
+			OneLinerJoke selectedJoke = jokes[randomJokeIndex];
 
-        [Command("8ball"), Summary("Binary answer for all your questions")]
-        public async Task EightBallAsync(params string[] text)
-        {
-            List<EightBallCache> cache = _serializer.LoadFromFile<EightBallCache>("cache8ball.json");
+			await Context.Channel.SendMessageAsync($"{selectedJoke.Question}");
+			await Task.Delay(3000);
+			await Context.Channel.SendMessageAsync($"{selectedJoke.Punchline}");
+		}
 
-            string messageKey = string.Join(" ", text);
-            string userKey = Context.User.DiscordId();
+		[Command("8ball"), Summary("Binary answer for all your questions")]
+		public async Task EightBallAsync(params string[] text)
+		{
+			List<EightBallCache> cache = _serializer.LoadFromFile<EightBallCache>("cache8ball.json");
 
-            // Check if message was not received earlier; If yes, send same answer
-            if (cache.Exists(x => x.Question == messageKey && x.DiscordUsername == userKey))
-            {
-                await Context.Channel.SendMessageAsync(cache.Find(x => x.Question == messageKey && x.DiscordUsername == userKey).Answer);
-            }
-            else
-            {
-                int randomResponseIndex = _rng.Next(0, eightBallResponses.ToList().Count - 1);
+			string messageKey = string.Join(" ", text);
+			string userKey = Context.User.DiscordId();
 
-                string selectedResponse = eightBallResponses.ElementAt(randomResponseIndex);
+			// Check if message was not received earlier; If yes, send same answer
+			if (cache.Exists(x => x.Question == messageKey && x.DiscordUsername == userKey))
+			{
+				await Context.Channel.SendMessageAsync(cache.Find(x => x.Question == messageKey && x.DiscordUsername == userKey).Answer);
+			}
+			else
+			{
+				int randomResponseIndex = _rng.Next(0, eightBallResponses.ToList().Count - 1);
 
-                var users = Context.Guild.Users.Where(x => !x.DiscordId().Equals("MarekMotykaBot#2213") && !x.DiscordId().Equals("Erina#5946")).ToList();
+				string selectedResponse = eightBallResponses.ElementAt(randomResponseIndex);
 
-                int randomUserIndex = _rng.Next(0, users.Count - 1);
+				var users = Context.Guild.Users.Where(x => !x.DiscordId().Equals("MarekMotykaBot#2213") && !x.DiscordId().Equals("Erina#5946")).ToList();
 
-                string selectedUser = users.ElementAt(randomUserIndex).Username;
+				int randomUserIndex = _rng.Next(0, users.Count - 1);
 
-                if (cache.Count > cacheSize)
-                    cache.RemoveAt(0);
+				string selectedUser = users.ElementAt(randomUserIndex).Username;
 
-                cache.Add(new EightBallCache(userKey, messageKey, string.Format(selectedResponse, selectedUser)));
+				if (cache.Count > cacheSize)
+					cache.RemoveAt(0);
 
-                _serializer.SaveToFile<EightBallCache>("cache8ball.json", cache);
+				cache.Add(new EightBallCache(userKey, messageKey, string.Format(selectedResponse, selectedUser)));
 
-                await Context.Channel.SendMessageAsync($"{string.Format(selectedResponse, selectedUser)}");
-            }
-        }
+				_serializer.SaveToFile<EightBallCache>("cache8ball.json", cache);
+
+				await Context.Channel.SendMessageAsync($"{string.Format(selectedResponse, selectedUser)}");
+			}
+		}
 
 		[Command("quote"), Alias("cytat", "q"), Summary("Ancient wisdom...")]
-		public async Task QuoteAsync()
+		public async Task QuoteAsync(params string[] category)
 		{
+			QuoteCategory filtercategory = QuoteCategory.None;
+
+			if (category.Length != 0)
+			{
+				switch (category[0].ToLower())
+				{
+					case ("i"):
+					case ("p"):
+					case ("insult"):
+					case ("pocisk"):
+						filtercategory = QuoteCategory.Insult;
+						break;
+					case ("m"):
+					case ("w"):
+					case ("mądrość"):
+					case ("wisdom"):
+						filtercategory = QuoteCategory.Wisdom;
+						break;
+					default:
+						break;
+				}
+			}
+
 			List<Quote> quotes = _serializer.LoadFromFile<Quote>("quotes.json");
 
-			int randomQuoteIndex = _rng.Next(1, quotes.Count + 1);
+			if (filtercategory != QuoteCategory.None)
+				quotes = quotes.Where(x => x.Category.Equals(filtercategory)).ToList();
+
+			int randomQuoteIndex = _rng.Next(0, quotes.Count);
 
 			Quote selectedQuote = quotes[randomQuoteIndex];
 
@@ -174,7 +200,7 @@ namespace MarekMotykaBot.Modules
 
 			string intro = string.Empty;
 
-			switch(_rng.Next(1, 4))
+			switch (_rng.Next(1, 4))
 			{
 				case 1:
 					intro = StringConsts.DerpQuote;
@@ -194,18 +220,18 @@ namespace MarekMotykaBot.Modules
 			await ReplyAsync("", false, builder.Build());
 		}
 
-        [Command("blueribbon"), Summary("Passes for hidden gift")]
-        public async Task UnityAsync()
-        {
-            if (!Context.User.DiscordId().Equals("Tarlfgar#9358"))
-            {
-                await Context.Channel.SendMessageAsync(String.Format(StringConsts.SecretGiftDeny, "Lonka!"));
-            }
-            else
-            {
-                await Context.Channel.SendMessageAsync("Helion user e-mail: " + _configuration["credentials:helionUser"]);
-                await Context.Channel.SendMessageAsync("Helion password: " + _configuration["credentials:helionPassword"]);
-            }
-        }
-    }
+		[Command("blueribbon"), Summary("Passes for hidden gift")]
+		public async Task UnityAsync()
+		{
+			if (!Context.User.DiscordId().Equals("Tarlfgar#9358"))
+			{
+				await Context.Channel.SendMessageAsync(String.Format(StringConsts.SecretGiftDeny, "Lonka!"));
+			}
+			else
+			{
+				await Context.Channel.SendMessageAsync("Helion user e-mail: " + _configuration["credentials:helionUser"]);
+				await Context.Channel.SendMessageAsync("Helion password: " + _configuration["credentials:helionPassword"]);
+			}
+		}
+	}
 }
