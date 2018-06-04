@@ -4,6 +4,7 @@
 	{
 		None,
 		Wisdom,
-		Insult
+		Insult,
+		Thought
 	}
 }
