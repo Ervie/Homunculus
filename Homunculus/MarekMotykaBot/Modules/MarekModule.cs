@@ -180,10 +180,17 @@ namespace MarekMotykaBot.Modules
 						filtercategory = QuoteCategory.Wisdom;
 						break;
 					case ("t"):
-					case ("r"):
 					case ("thought"):
-					case ("rozkmina"):
 						filtercategory = QuoteCategory.Thought;
+						break;
+					case ("f"):
+					case ("fiutt"):
+						filtercategory = QuoteCategory.Fiutt;
+						break;
+					case ("reaction"):
+					case ("reakcja"):
+					case ("r"):
+						filtercategory = QuoteCategory.Reaction;
 						break;
 					default:
 						break;

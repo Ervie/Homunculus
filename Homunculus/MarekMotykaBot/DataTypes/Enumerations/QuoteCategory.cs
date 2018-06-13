@@ -5,6 +5,8 @@
 		None,
 		Wisdom,
 		Insult,
-		Thought
+		Thought,
+		Reaction,
+		Fiutt
 	}
 }
