@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MarekMotykaBot
@@ -64,6 +65,7 @@ namespace MarekMotykaBot
                 await AddReactionAfterTriggerWord(context, message, _ziewaczWords, "ziewface");
 				await DetectMentions(context, message);
 				await DetectSwearWord(context, message);
+				await DetectStreamMonday(context, message);
 			}
 		}
 
@@ -199,6 +201,33 @@ namespace MarekMotykaBot
 					await _dropbox.UploadFileAsync("wordCounter.json", "wordCounter.json");
 				}
 			}
+		}
+
+		/// <summary>
+		/// Check for @Streamdziałek mention, show schedule.
+		/// </summary>
+		private async Task DetectStreamMonday(SocketCommandContext context, SocketUserMessage message)
+		{
+			if (message.MentionedRoles.Any(x => x.Name.Equals("Streamdziałek")))
+			{
+				List<string> schedule = _serializer.LoadFromFile<string>("streamMonday.json");
+
+				var builder = new EmbedBuilder();
+
+				DateTime today = DateTime.Today;
+				int daysUntilMonday = ((int)DayOfWeek.Monday - (int)today.DayOfWeek + 7) % 7;
+				DateTime nextMonday = today.AddDays(daysUntilMonday);
+				
+				builder.AddField(x =>
+				{
+					x.Name = "Rozkładówka na " + nextMonday.ToString("dd.MM");
+					x.Value = string.Join(Environment.NewLine, schedule.ToArray());
+					x.IsInline = false;
+				});
+
+				await context.Channel.SendMessageAsync("", false, builder.Build());
+			}
+			
 		}
 	}
 }
