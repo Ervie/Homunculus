@@ -223,6 +223,9 @@
   <data name="waitForIt" xml:space="preserve">
     <value>Patrzcie chłopaki jak mu pocisnę...</value>
   </data>
+  <data name="wrongQuestion" xml:space="preserve">
+    <value>Złe pytanie.</value>
+  </data>
   <data name="ytNotFound" xml:space="preserve">
     <value>Nie znalazłem takiego filmu jak {0}.</value>
   </data>

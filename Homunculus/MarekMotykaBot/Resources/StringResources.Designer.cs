@@ -358,6 +358,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Złe pytanie..
+        /// </summary>
+        internal static string wrongQuestion {
+            get {
+                return ResourceManager.GetString("wrongQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nie znalazłem takiego filmu jak {0}..
         /// </summary>
         internal static string ytNotFound {

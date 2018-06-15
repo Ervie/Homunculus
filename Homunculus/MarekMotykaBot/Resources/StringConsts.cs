@@ -273,5 +273,14 @@
 				return StringResources.ResourceManager.GetString("derpQuote3");
 			}
 		}
+
+		public static string WrongQuestion
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("wrongQuestion");
+			}
+		}
+
 	}
 }

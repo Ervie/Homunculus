@@ -125,36 +125,43 @@ namespace MarekMotykaBot.Modules
 		[Command("8ball"), Summary("Binary answer for all your questions")]
 		public async Task EightBallAsync(params string[] text)
 		{
-			List<EightBallCache> cache = _serializer.LoadFromFile<EightBallCache>("cache8ball.json");
-
 			string messageKey = string.Join(" ", text);
 			string userKey = Context.User.DiscordId();
 
-			// Check if message was not received earlier; If yes, send same answer
-			if (cache.Exists(x => x.Question == messageKey && x.DiscordUsername == userKey))
+			if (string.IsNullOrWhiteSpace(messageKey))
 			{
-				await Context.Channel.SendMessageAsync(cache.Find(x => x.Question == messageKey && x.DiscordUsername == userKey).Answer);
+				await Context.Channel.SendMessageAsync(StringConsts.WrongQuestion);
 			}
 			else
 			{
-				int randomResponseIndex = _rng.Next(0, eightBallResponses.ToList().Count - 1);
+				List<EightBallCache> cache = _serializer.LoadFromFile<EightBallCache>("cache8ball.json");
+				
+				// Check if message was not received earlier; If yes, send same answer
+				if (cache.Exists(x => x.Question == messageKey && x.DiscordUsername == userKey))
+				{
+					await Context.Channel.SendMessageAsync(cache.Find(x => x.Question == messageKey).Answer);
+				}
+				else
+				{
+					int randomResponseIndex = _rng.Next(1, eightBallResponses.ToList().Count);
 
-				string selectedResponse = eightBallResponses.ElementAt(randomResponseIndex);
+					string selectedResponse = eightBallResponses.ElementAt(randomResponseIndex);
 
-				var users = Context.Guild.Users.Where(x => !x.DiscordId().Equals("MarekMotykaBot#2213") && !x.DiscordId().Equals("Erina#5946")).ToList();
+					var users = Context.Guild.Users.Where(x => !x.DiscordId().Equals("MarekMotykaBot#2213") && !x.DiscordId().Equals("Erina#5946")).ToList();
 
-				int randomUserIndex = _rng.Next(0, users.Count - 1);
+					int randomUserIndex = _rng.Next(1, users.Count);
 
-				string selectedUser = users.ElementAt(randomUserIndex).Username;
+					string selectedUser = users.ElementAt(randomUserIndex).Username;
 
-				if (cache.Count > cacheSize)
-					cache.RemoveAt(0);
+					if (cache.Count > cacheSize)
+						cache.RemoveAt(0);
 
-				cache.Add(new EightBallCache(userKey, messageKey, string.Format(selectedResponse, selectedUser)));
+					cache.Add(new EightBallCache(userKey, messageKey, string.Format(selectedResponse, selectedUser)));
 
-				_serializer.SaveToFile<EightBallCache>("cache8ball.json", cache);
+					_serializer.SaveToFile<EightBallCache>("cache8ball.json", cache);
 
-				await Context.Channel.SendMessageAsync($"{string.Format(selectedResponse, selectedUser)}");
+					await Context.Channel.SendMessageAsync($"{string.Format(selectedResponse, selectedUser)}");
+				}
 			}
 		}
 
