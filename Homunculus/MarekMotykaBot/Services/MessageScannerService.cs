@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MarekMotykaBot
@@ -168,9 +169,13 @@ namespace MarekMotykaBot
 		/// </summary>
 		private async Task DetectSwearWord(SocketCommandContext context, SocketUserMessage message)
 		{
+			string compressedText = message.Content.RemoveRepeatingChars();
+			compressedText = new string(compressedText.Where(c => !char.IsWhiteSpace(c)).ToArray());
+			compressedText = compressedText.ToLowerInvariant();
+
 			foreach (string swearWord in _swearWordList)
 			{
-				if (message.Content.ToLowerInvariant().Contains(swearWord.ToLowerInvariant()) && !message.Author.IsBot)
+				if (compressedText.Contains(swearWord.ToLowerInvariant()) && !message.Author.IsBot)
 				{
 					var counterList = _serializer.LoadFromFile<WordCounterEntry>("wordCounter.json");
 
