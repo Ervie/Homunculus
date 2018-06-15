@@ -50,9 +50,8 @@ namespace MarekMotykaBot
 
 		public async Task ScanMessage(SocketMessage s)
 		{
-			var message = s as SocketUserMessage;
 
-			if (message == null)
+			if (!(s is SocketUserMessage message))
 				return;
 
 			var context = new SocketCommandContext(_client, message);
@@ -71,9 +70,8 @@ namespace MarekMotykaBot
 
 		public async Task ScanUpdateMessage(Cacheable<IMessage, ulong> oldMessage, SocketMessage s, ISocketMessageChannel channel)
 		{
-			var message = s as SocketUserMessage;
 
-			if (message == null)
+			if (!(s is SocketUserMessage message))
 				return;
 
 			var context = new SocketCommandContext(_client, message);

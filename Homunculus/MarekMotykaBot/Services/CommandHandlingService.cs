@@ -38,9 +38,8 @@ namespace MarekMotykaBot.Services
 
         private async Task OnMessageReceivedAsync(SocketMessage s)
         {
-            var msg = s as SocketUserMessage;
-            if (msg == null) return;
-            if (msg.Author == _discord.CurrentUser) return;
+			if (!(s is SocketUserMessage msg)) return;
+			if (msg.Author == _discord.CurrentUser) return;
 
             var context = new SocketCommandContext(_discord, msg);
 

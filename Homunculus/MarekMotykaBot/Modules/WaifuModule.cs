@@ -27,12 +27,13 @@ namespace MarekMotykaBot.Modules
         [Command("BetterWaifu"), Alias("bw"), Summary("Waifu selector, 2 waifus")]
         public async Task BetterWaifu(string firstWaifu, string secondWaifu)
         {
-            var waifus = new List<string>();
+			var waifus = new List<string>
+			{
+				firstWaifu,
+				secondWaifu
+			};
 
-            waifus.Add(firstWaifu);
-            waifus.Add(secondWaifu);
-
-            if (waifus.Contains("Legia"))
+			if (waifus.Contains("Legia"))
             {
                 await Context.Channel.SendMessageAsync(StringConsts.LegiaWarszawa);
                 return;
@@ -99,12 +100,13 @@ namespace MarekMotykaBot.Modules
         [Command("BetterHusbando"), Alias("bh"), Summary("Husbando selector, 2 husbandos")]
         public async Task BetterHusbando(string firstHusbando, string secondHusbando)
         {
-            var husbandos = new List<string>();
+			var husbandos = new List<string>
+			{
+				firstHusbando,
+				secondHusbando
+			};
 
-            husbandos.Add(firstHusbando);
-            husbandos.Add(secondHusbando);
-            
-            int selectedHusbandoIndex = _rng.Next(husbandos.Count);
+			int selectedHusbandoIndex = _rng.Next(husbandos.Count);
 
             await Context.Channel.SendMessageAsync(string.Format(StringConsts.HusbandoBetter, husbandos[selectedHusbandoIndex]));
         }

@@ -1,4 +1,5 @@
 ﻿using MarekMotykaBot.DataTypes.Enumerations;
+using System.Collections.Generic;
 
 namespace MarekMotykaBot.DataTypes
 {
@@ -8,13 +9,13 @@ namespace MarekMotykaBot.DataTypes
 
 		public string Author { get; set; }
 
-		public QuoteCategory Category { get; set; }
+		public ICollection<QuoteCategory> Categories { get; set; }
 
-		public Quote(string quoteBody, string author, QuoteCategory category)
+		public Quote(string quoteBody, string author, ICollection<QuoteCategory> categories)
 		{
 			this.QuoteBody = quoteBody;
 			this.Author = author;
-			this.Category = category;
+			this.Categories = categories;
 		}
 	}
 }

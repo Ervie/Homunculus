@@ -200,7 +200,7 @@ namespace MarekMotykaBot.Modules
 			List<Quote> quotes = _serializer.LoadFromFile<Quote>("quotes.json");
 
 			if (filtercategory != QuoteCategory.None)
-				quotes = quotes.Where(x => x.Category.Equals(filtercategory)).ToList();
+				quotes = quotes.Where(x => x.Categories.Contains(filtercategory)).ToList();
 
 			int randomQuoteIndex = _rng.Next(0, quotes.Count);
 
