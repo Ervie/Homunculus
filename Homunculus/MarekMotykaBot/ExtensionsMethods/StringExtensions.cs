@@ -1,4 +1,6 @@
-﻿namespace MarekMotykaBot.ExtensionsMethods
+﻿using System.Text.RegularExpressions;
+
+namespace MarekMotykaBot.ExtensionsMethods
 {
 	public static class StringExtensions
 	{
@@ -16,6 +18,21 @@
 			}
 
 			return newString;
+		}
+
+		public static string RemoveEmojis(this string inputString)
+		{
+			return Regex.Replace(inputString, "[^a-zA-Z0-9_.]+", "", RegexOptions.Compiled);
+		}
+
+		public static string RemoveEmotes(this string inputString)
+		{
+			return Regex.Replace(inputString, "(<:.+>)+", "", RegexOptions.Compiled);
+		}
+
+		public static string RemoveEmojisAndEmotes(this string inputString)
+		{
+			return inputString.RemoveEmotes().RemoveEmojis();
 		}
 	}
 }

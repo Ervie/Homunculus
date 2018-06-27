@@ -1,4 +1,5 @@
 ﻿using Discord.Commands;
+using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
 using System;
@@ -47,7 +48,7 @@ namespace MarekMotykaBot.Modules
 
             foreach (string waifu in _marekWaifuList)
             {
-                if (waifus.Contains(waifu))
+				if (waifus.Contains(waifu.RemoveEmojisAndEmotes()))
                 {
                     await Context.Channel.SendMessageAsync(string.Format(StringConsts.WaifuShit, waifu));
                     return;
@@ -73,7 +74,7 @@ namespace MarekMotykaBot.Modules
 
             foreach (string waifu in _marekWaifuList)
             {
-                if (waifusList.Contains(waifu))
+                if (waifusList.Contains(waifu.RemoveEmojisAndEmotes()))
                 {
                     await Context.Channel.SendMessageAsync(string.Format(StringConsts.WaifuShit, waifu));
                     return;

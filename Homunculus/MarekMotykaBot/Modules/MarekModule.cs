@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Modules
@@ -91,17 +92,23 @@ namespace MarekMotykaBot.Modules
 
 		[Command("MarekMeme"), Alias("meme"), Summary("Create your own Marek meme image, text split by semicolon")]
 		public async Task NewMemeAsync(params string[] text)
-		{
+		{			
 			var captions = string.Join(" ", text).Split(';').ToList();
-
+			
 			if (captions.Count < 2)
 				return;
 
-			if (string.IsNullOrWhiteSpace(captions.ElementAt(0)) || string.IsNullOrWhiteSpace(captions.ElementAt(1)))
+			for (int i = 0; i < captions.Count; i++)
+			{
+				captions[i] = captions[i].RemoveEmojisAndEmotes();
+			}
+
+
+			if (string.IsNullOrWhiteSpace(captions[0]) || string.IsNullOrWhiteSpace(captions[1]))
 				return;
 
-			string toptext = captions.ElementAt(0).ToUpper();
-			string bottomtext = captions.ElementAt(1).ToUpper();
+			string toptext = captions[0].ToUpper();
+			string bottomtext = captions[1].ToUpper();
 
 			string resultUrl = await _imgFlip.CreateMarekMeme(toptext, bottomtext);
 
