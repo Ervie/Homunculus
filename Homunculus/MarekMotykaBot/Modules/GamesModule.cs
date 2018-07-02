@@ -53,7 +53,7 @@ namespace MarekMotykaBot.Modules
                     {
                         i++;
                     }
-                    if (maxNumber == -1)
+                    if (maxNumber == -1 || maxNumber == 0)
                     {
                         await ReplyAsync(StringConsts.NoNumber);
 
