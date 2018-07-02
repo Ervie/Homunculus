@@ -22,7 +22,7 @@ namespace MarekMotykaBot.ExtensionsMethods
 
 		public static string RemoveEmojis(this string inputString)
 		{
-			return Regex.Replace(inputString, @"[^a-zA-Z0-9\s]+", "", RegexOptions.Compiled);
+			return Regex.Replace(inputString, @"[^a-zA-Z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ\s\?\.\,\!\-\']+", "", RegexOptions.Compiled);
 		}
 
 		public static string RemoveEmotes(this string inputString)
