@@ -41,7 +41,7 @@ namespace MarekMotykaBot.Modules
 		[Command("NoCoSeMoge"), Alias("no"), Summary("He will tell you what you can do")]
 		public async Task CoSeMogeAsync()
 		{
-			int randomNumer = _rng.Next(0, 10);
+			int randomNumer = _rng.Next(0, 15);
 
 			switch (randomNumer)
 			{
@@ -55,8 +55,16 @@ namespace MarekMotykaBot.Modules
 					await Context.Channel.SendMessageAsync($"**{StringConsts.RunAway}**");
 					break;
 
-				case (2):
 				case (3):
+					await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
+					await Task.Delay(3000);
+					await Context.Channel.SendMessageAsync($"**{StringConsts.ShitString}**");
+					await Task.Delay(1000);
+					break;
+
+				case (4):
+				case (5):
+				case (6):
 					await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
 					await Task.Delay(3000);
 					await Context.Channel.SendMessageAsync($"**{StringConsts.ShitString}**");
@@ -154,11 +162,7 @@ namespace MarekMotykaBot.Modules
 
 					string selectedResponse = eightBallResponses.ElementAt(randomResponseIndex);
 
-					var users = Context.Guild.Users.Where(x => !x.DiscordId().Equals("MarekMotykaBot#2213") && !x.DiscordId().Equals("Erina#5946")).ToList();
-
-					int randomUserIndex = _rng.Next(1, users.Count);
-
-					string selectedUser = users.ElementAt(randomUserIndex).Username;
+					string selectedUser = Context.Guild.GetRandomUserName(_rng);
 
 					if (cache.Count > cacheSize)
 						cache.RemoveAt(0);

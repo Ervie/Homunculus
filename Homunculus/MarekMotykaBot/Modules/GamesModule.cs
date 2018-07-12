@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using MarekMotykaBot.DataTypes;
+using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
 using System;
@@ -21,6 +22,11 @@ namespace MarekMotykaBot.Modules
             _rng = random;
             _serializer = serializer;
         }
+		[Command("Someone"), Alias("s"), Summary("Get random username from server")]
+		public async Task RandomUserAsync()
+		{
+			await ReplyAsync(Context.Guild.GetRandomUserName(_rng));
+		}
 
         [Command("Roll_k6"), Alias("k6"), Summary("Roll the k6 dice.")]
         public async Task RollK6Async()
