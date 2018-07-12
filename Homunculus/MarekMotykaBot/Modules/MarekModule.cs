@@ -43,11 +43,12 @@ namespace MarekMotykaBot.Modules
 		{
 			int randomNumer = _rng.Next(0, 15);
 
+			await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
+			await Task.Delay(3000);
+
 			switch (randomNumer)
 			{
 				case (1):
-					await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
-					await Task.Delay(3000);
 					await Context.Channel.SendMessageAsync($"...");
 					await Task.Delay(1000);
 					await Context.Channel.SendMessageAsync($"...");
@@ -55,26 +56,31 @@ namespace MarekMotykaBot.Modules
 					await Context.Channel.SendMessageAsync($"**{StringConsts.RunAway}**");
 					break;
 
+				case (2):
 				case (3):
-					await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
-					await Task.Delay(3000);
+					string victim = Context.Guild.GetRandomUserName(_rng, Context.User.DiscordId());
 					await Context.Channel.SendMessageAsync($"**{StringConsts.ShitString}**");
 					await Task.Delay(1000);
+					await Context.Channel.SendMessageAsync(string.Format(StringConsts.MissedThrow, victim));
 					break;
 
 				case (4):
+					await Context.Channel.SendMessageAsync($"**{StringConsts.FinishingBlow}**");
+					await Task.Delay(1000);
+					await Context.Channel.SendMessageAsync($"https://i.imgur.com/f0F9eqK.png");
+					await Task.Delay(1000);
+					await Context.Channel.SendMessageAsync($"**{StringConsts.GenkiDama}**");
+					break;
+
 				case (5):
 				case (6):
-					await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
-					await Task.Delay(3000);
+				case (7):
 					await Context.Channel.SendMessageAsync($"**{StringConsts.ShitString}**");
 					await Task.Delay(1500);
 					await Context.Channel.SendMessageAsync($"**{StringConsts.InTheJar}**");
 					break;
 
 				default:
-					await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
-					await Task.Delay(3000);
 					await Context.Channel.SendMessageAsync($"**{StringConsts.ShitString}**");
 					break;
 			}

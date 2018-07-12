@@ -124,6 +124,24 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HISSATSU.
+        /// </summary>
+        internal static string finishingBlow {
+            get {
+                return ResourceManager.GetString("finishingBlow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GÓWNO-DAMA!!!.
+        /// </summary>
+        internal static string genkiDama {
+            get {
+                return ResourceManager.GetString("genkiDama", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, akurat wyszedłem z Martyną..
         /// </summary>
         internal static string girlfriend {
@@ -219,6 +237,15 @@ namespace MarekMotykaBot.Resources {
         internal static string masterThesis {
             get {
                 return ResourceManager.GetString("masterThesis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to O kuźwa, nie trafiłem! Sorry {0} mordo!.
+        /// </summary>
+        internal static string missedThrow {
+            get {
+                return ResourceManager.GetString("missedThrow", resourceCulture);
             }
         }
         

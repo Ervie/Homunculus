@@ -282,5 +282,28 @@
 			}
 		}
 
+		public static string MissedThrow
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("missedThrow");
+			}
+		}
+
+		public static string FinishingBlow
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("finishingBlow");
+			}
+		}
+
+		public static string GenkiDama
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("genkiDama");
+			}
+		}
 	}
 }

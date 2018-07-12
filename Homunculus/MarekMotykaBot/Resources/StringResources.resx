@@ -139,6 +139,12 @@
   <data name="doctor" xml:space="preserve">
     <value>Sorry, ale teraz się doktoryzuję.</value>
   </data>
+  <data name="finishingBlow" xml:space="preserve">
+    <value>HISSATSU</value>
+  </data>
+  <data name="genkiDama" xml:space="preserve">
+    <value>GÓWNO-DAMA!!!</value>
+  </data>
   <data name="girlfriend" xml:space="preserve">
     <value>Sorry, akurat wyszedłem z Martyną.</value>
   </data>
@@ -174,6 +180,9 @@
   <data name="masterThesis" xml:space="preserve">
     <value>Sorry, ale muszę pisać magisterkę.</value>
     <comment>Cheeky excuse to not hangout with friends</comment>
+  </data>
+  <data name="missedThrow" xml:space="preserve">
+    <value>O kuźwa, nie trafiłem! Sorry {0} mordo!</value>
   </data>
   <data name="noNumber" xml:space="preserve">
     <value>Ni ma liczby, rzucam zwykłą.</value>
