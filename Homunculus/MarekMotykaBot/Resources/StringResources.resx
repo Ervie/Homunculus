@@ -187,6 +187,9 @@
   <data name="noNumber" xml:space="preserve">
     <value>Ni ma liczby, rzucam zwykłą.</value>
   </data>
+  <data name="quoteForToday" xml:space="preserve">
+    <value>Cytat na dziś:</value>
+  </data>
   <data name="runAway" xml:space="preserve">
     <value>Spierdalamyyyy!</value>
   </data>

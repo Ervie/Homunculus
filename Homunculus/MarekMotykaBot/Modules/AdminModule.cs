@@ -10,53 +10,62 @@ using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Modules
 {
-    public class AdminModule : ModuleBase<SocketCommandContext>
-    {
-        private readonly JSONSerializerService _serializer;
+	public class AdminModule : ModuleBase<SocketCommandContext>
+	{
+		private readonly JSONSerializerService _serializer;
 
-        private readonly List<string> _swearWordList;
+		private readonly TimerService _timerService;
 
-        public AdminModule(JSONSerializerService serializer)
-        {
-            _serializer = serializer;
+		private readonly List<string> _swearWordList;
 
-            _swearWordList = _serializer.LoadFromFile<string>("swearWords.json");
-        }
+		public AdminModule(JSONSerializerService serializer, TimerService timerService)
+		{
+			_serializer = serializer;
+			_timerService = timerService;
 
-        [Command("Penis"), Summary("This is a Christian server!"), RequireUserPermission(GuildPermission.Administrator)]
-        public async Task SwearWordCounterAsync()
-        {
-            StringBuilder sb = new StringBuilder();
+			_swearWordList = _serializer.LoadFromFile<string>("swearWords.json");
+		}
 
-            var counterList = _serializer.LoadFromFile<WordCounterEntry>("wordCounter.json");
+		[Command("Penis"), Summary("This is a Christian server!"), RequireUserPermission(GuildPermission.Administrator)]
+		public async Task SwearWordCounterAsync()
+		{
+			StringBuilder sb = new StringBuilder();
 
-            var builder = new EmbedBuilder()
-            {
-                Color = new Color(114, 137, 218),
-                Description = StringConsts.SwearWordCounterHeader
-            };
+			var counterList = _serializer.LoadFromFile<WordCounterEntry>("wordCounter.json");
 
-            foreach (string swearWord in _swearWordList)
-            {
-                var specificSwearWordEntries = counterList.Where(x => x.Word.Equals(swearWord)).OrderByDescending(x => x.CounterValue);
+			var builder = new EmbedBuilder()
+			{
+				Color = new Color(114, 137, 218),
+				Description = StringConsts.SwearWordCounterHeader
+			};
 
-                foreach (var entry in specificSwearWordEntries)
-                {
-                    sb.AppendLine(string.Format(StringConsts.SwearWordCounterEntry, entry.DiscordNickname, entry.Word, entry.CounterValue));
-                }
+			foreach (string swearWord in _swearWordList)
+			{
+				var specificSwearWordEntries = counterList.Where(x => x.Word.Equals(swearWord)).OrderByDescending(x => x.CounterValue);
 
-                if (!string.IsNullOrEmpty(sb.ToString()))
-                    builder.AddField(x =>
-                    {
-                        x.Name = swearWord;
-                        x.Value = sb.ToString();
-                        x.IsInline = true;
-                    });
+				foreach (var entry in specificSwearWordEntries)
+				{
+					sb.AppendLine(string.Format(StringConsts.SwearWordCounterEntry, entry.DiscordNickname, entry.Word, entry.CounterValue));
+				}
 
-                sb.Clear();
-            }
+				if (!string.IsNullOrEmpty(sb.ToString()))
+					builder.AddField(x =>
+					{
+						x.Name = swearWord;
+						x.Value = sb.ToString();
+						x.IsInline = true;
+					});
 
-            await ReplyAsync("", false, builder.Build());
-        }
-    }
+				sb.Clear();
+			}
+
+			await ReplyAsync("", false, builder.Build());
+		}
+
+		[Command("timer"), Alias("t"), Summary("Timer for special tasks"), RequireUserPermission(GuildPermission.Administrator)]
+		public async Task StartTimer()
+		{
+			_timerService.StartTimer();
+		}
+	}
 }

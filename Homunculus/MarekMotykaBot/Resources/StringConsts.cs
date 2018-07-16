@@ -305,5 +305,13 @@
 				return StringResources.ResourceManager.GetString("genkiDama");
 			}
 		}
+
+		public static string QuoteForToday
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("quoteForToday");
+			}
+		}
 	}
 }
