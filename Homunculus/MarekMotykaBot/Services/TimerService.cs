@@ -92,6 +92,8 @@ namespace MarekMotykaBot.Services
 
 			Quote selectedQuote = quotes[randomQuoteIndex];
 
+			_serializer.SaveToFile<Quote>("quoteOfTheDay.json", new List<Quote> { selectedQuote }) ;
+
 			var builder = new EmbedBuilder();
 
 			builder.WithFooter(selectedQuote.Author);

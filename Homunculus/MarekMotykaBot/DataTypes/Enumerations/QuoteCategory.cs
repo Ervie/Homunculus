@@ -7,6 +7,7 @@
 		Insult,
 		Thought,
 		Reaction,
-		Fiutt
+		Fiutt,
+		OfTheDay
 	}
 }

@@ -216,19 +216,31 @@ namespace MarekMotykaBot.Modules
 					case ("r"):
 						filtercategory = QuoteCategory.Reaction;
 						break;
+					case ("d"):
+						filtercategory = QuoteCategory.OfTheDay;
+						break;
 					default:
 						break;
 				}
 			}
 
-			List<Quote> quotes = _serializer.LoadFromFile<Quote>("quotes.json");
+			Quote selectedQuote;
 
-			if (filtercategory != QuoteCategory.None)
-				quotes = quotes.Where(x => x.Categories.Contains(filtercategory)).ToList();
+			if (filtercategory != QuoteCategory.OfTheDay)
+			{
+				List<Quote> quotes = _serializer.LoadFromFile<Quote>("quotes.json");
 
-			int randomQuoteIndex = _rng.Next(0, quotes.Count);
+				if (filtercategory != QuoteCategory.None)
+					quotes = quotes.Where(x => x.Categories.Contains(filtercategory)).ToList();
 
-			Quote selectedQuote = quotes[randomQuoteIndex];
+				int randomQuoteIndex = _rng.Next(0, quotes.Count);
+
+				 selectedQuote = quotes[randomQuoteIndex];
+			}
+			else
+			{
+				selectedQuote = _serializer.LoadFromFile<Quote>("quoteOfTheDay.json").First();
+			}
 
 			var builder = new EmbedBuilder();
 
