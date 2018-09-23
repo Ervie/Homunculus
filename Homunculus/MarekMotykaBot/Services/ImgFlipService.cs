@@ -8,8 +8,9 @@ namespace MarekMotykaBot.Services
     public class ImgFlipService: IDiscordService
     {
         private const int MarekTemplateId = 114558777;
+		private const int LaughingMarekTemplateId = 152110002;
 
-        private readonly ImgFlipAPISource _source;
+		private readonly ImgFlipAPISource _source;
         
         private readonly string _imgFlipUsername;
         private readonly string _imgFlipPassword;
@@ -34,5 +35,15 @@ namespace MarekMotykaBot.Services
             else
                 return string.Empty;
         }
-    }
+
+		public async Task<string> CreateLaughingMarekMeme(string topText, string bottomText)
+		{
+			CaptionMemeRoot freshMeme = await ImgFlipAPISource.Instance.CaptionMemeAsync(LaughingMarekTemplateId, _imgFlipUsername, _imgFlipPassword, topText, bottomText);
+
+			if (freshMeme.success)
+				return freshMeme.data.url;
+			else
+				return string.Empty;
+		}
+	}
 }

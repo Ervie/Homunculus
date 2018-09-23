@@ -104,7 +104,7 @@ namespace MarekMotykaBot.Modules
 			await ReplyAsync(gifUrl);
 		}
 
-		[Command("MarekMeme"), Alias("meme"), Summary("Create your own Marek meme image, text split by semicolon")]
+		[Command("MarekMeme"), Alias("meme"), Summary("Create your own Marek meme image, text split by semicolon - marekface version")]
 		public async Task NewMemeAsync(params string[] text)
 		{			
 			var captions = string.Join(" ", text).Split(';').ToList();
@@ -125,6 +125,31 @@ namespace MarekMotykaBot.Modules
 			string bottomtext = captions[1].ToUpper();
 
 			string resultUrl = await _imgFlip.CreateMarekMeme(toptext, bottomtext);
+
+			await ReplyAsync(resultUrl);
+		}
+
+		[Command("MarekMeme2"), Alias("meme2"), Summary("Create your own Marek meme image, text split by semicolon - laughing version")]
+		public async Task NewMeme2Async(params string[] text)
+		{
+			var captions = string.Join(" ", text).Split(';').ToList();
+
+			if (captions.Count < 2)
+				return;
+
+			for (int i = 0; i < captions.Count; i++)
+			{
+				captions[i] = captions[i].RemoveEmojisAndEmotes();
+			}
+
+
+			if (string.IsNullOrWhiteSpace(captions[0]) || string.IsNullOrWhiteSpace(captions[1]))
+				return;
+
+			string toptext = captions[0].ToUpper();
+			string bottomtext = captions[1].ToUpper();
+
+			string resultUrl = await _imgFlip.CreateLaughingMarekMeme(toptext, bottomtext);
 
 			await ReplyAsync(resultUrl);
 		}
