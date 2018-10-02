@@ -52,7 +52,8 @@ namespace MarekMotykaBot.Services
 
                     if (!result.IsSuccess &&
 						result.Error != CommandError.UnknownCommand &&
-						result.Error != CommandError.BadArgCount)
+						result.Error != CommandError.BadArgCount &&
+						result.Error != CommandError.ParseFailed)
                         await context.Channel.SendMessageAsync(result.ToString());
                 }
             }
