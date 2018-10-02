@@ -67,17 +67,29 @@ namespace MarekMotykaBot.Services
 			var builder = new EmbedBuilder();
 
 			DateTime today = DateTime.Today;
-			int daysUntilMonday = ((int)DayOfWeek.Monday - (int)today.DayOfWeek + 7) % 7;
-			DateTime nextMonday = today.AddDays(daysUntilMonday);
+			int daysUntilMonday = ((int)DayOfWeek.Tuesday - (int)today.DayOfWeek + 7) % 7;
+			DateTime nextTuesday = today.AddDays(daysUntilMonday);
 
 			builder.AddField(x =>
 			{
-				x.Name = "Rozkładówka na " + nextMonday.ToString("dd.MM");
+				x.Name = "Rozkładówka na " + nextTuesday.ToString("dd.MM");
 				x.Value = string.Join(Environment.NewLine, schedule.ToArray());
 				x.IsInline = false;
 			});
 
 			var channelToPost = _client.GetChannel(_destinationChannel) as IMessageChannel;
+
+			var guild = _client.Guilds.FirstOrDefault(x => x.Name.Equals(Configuration["tokens:destinationServerName"]));
+
+			if (guild != null)
+			{
+				var alias = guild.Roles.FirstOrDefault(x => x.Name.Equals("Streamdziałek"));
+
+				if (alias != null)
+				{
+					await channelToPost.SendMessageAsync(alias.Mention);
+				}
+			}
 
 			await channelToPost.SendMessageAsync("", false, builder.Build());
 		}
