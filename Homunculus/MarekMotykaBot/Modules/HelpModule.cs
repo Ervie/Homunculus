@@ -134,7 +134,7 @@ namespace MarekMotykaBot.Modules
 				x.IsInline = false;
 			});
 
-			var role = Context.Guild.Roles.First(x => x.Name.Equals("Streamdziałek"));
+			var role = Context.Guild.Roles.First(x => x.Name.Equals(_configuration["values:streamAlias"]));
 
 			if (role != null)
 			{
