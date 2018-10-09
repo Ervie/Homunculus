@@ -83,7 +83,7 @@ namespace MarekMotykaBot.Services
 
 			if (guild != null)
 			{
-				var alias = guild.Roles.FirstOrDefault(x => x.Name.Equals(Configuration["values:streamAlias"]));
+				var alias = guild.Roles.FirstOrDefault(x => x.Name.Equals(Configuration["configValues:streamAlias"]));
 
 				if (alias != null)
 				{
