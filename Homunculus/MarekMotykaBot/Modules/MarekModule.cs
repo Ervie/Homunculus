@@ -83,6 +83,12 @@ namespace MarekMotykaBot.Modules
 					await Context.Channel.SendMessageAsync($"**{StringConsts.ShitString}**");
 					break;
 			}
+
+			List<DeclineCache> declineCache = _serializer.LoadFromFile<DeclineCache>("declineCache.json");
+
+			declineCache.RemoveAll(x => x.DiscordUsername.Equals(Context.User.DiscordId()));
+
+			_serializer.SaveToFile("declineCache.json", declineCache);
 		}
 
 		[Command("Sowa"), Alias("owl"), Summary("Post random owl image")]

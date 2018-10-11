@@ -90,20 +90,23 @@ namespace MarekMotykaBot.Services
                 if (randomInt == 1)
                 {
                     commandDeclined = true;
-					addDeclineCache(context.User.DiscordId(), commandName);
+					AddDeclineCache(context.User.DiscordId(), commandName);
                     await context.Channel.SendMessageAsync(meanResponse);
                 }
             }
             return commandDeclined;
         }
 
-		private void addDeclineCache(string discordId, string commandName)
+		private void AddDeclineCache(string discordId, string commandName)
 		{
-			List<DeclineCache> declineCache = _jsonSerializer.LoadFromFile<DeclineCache>("declineCache.json");
+			if (commandName != "!no" && commandName != "!nocosemoge")
+			{
+				List<DeclineCache> declineCache = _jsonSerializer.LoadFromFile<DeclineCache>("declineCache.json");
 
-			declineCache.Add(new DeclineCache(discordId, commandName));
+				declineCache.Add(new DeclineCache(discordId, commandName));
 
-			_jsonSerializer.SaveToFile<DeclineCache>("declineCache.json", declineCache);
+				_jsonSerializer.SaveToFile<DeclineCache>("declineCache.json", declineCache);
+			}
 		}
 
 		private async Task<bool> BlockCommand(SocketCommandContext context, string commandName)
