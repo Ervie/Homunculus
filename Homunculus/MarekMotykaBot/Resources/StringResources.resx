@@ -217,6 +217,9 @@
     <value>Sorry, ale muszę uczyć się na obronę.</value>
     <comment>Another cheeky excuse to not hangout with friends</comment>
   </data>
+  <data name="toldYou" xml:space="preserve">
+    <value>Ech {0}, przecież mówiłem Ci że z {1} to se możesz... To wiesz co se możesz!</value>
+  </data>
   <data name="tooMuch" xml:space="preserve">
     <value>Za dużo :/</value>
   </data>

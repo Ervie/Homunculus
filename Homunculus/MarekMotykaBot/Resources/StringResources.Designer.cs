@@ -340,6 +340,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ech {0}, przecież mówiłem Ci że z {1} to se możesz... To wiesz co se możesz!.
+        /// </summary>
+        internal static string toldYou {
+            get {
+                return ResourceManager.GetString("toldYou", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Za dużo :/.
         /// </summary>
         internal static string tooMuch {

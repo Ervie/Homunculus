@@ -73,6 +73,9 @@
     <None Update="Resources\TextFiles\charadeCache.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\TextFiles\declineCache.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\TextFiles\marekTrigger.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

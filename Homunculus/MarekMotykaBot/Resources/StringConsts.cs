@@ -313,5 +313,13 @@
 				return StringResources.ResourceManager.GetString("quoteForToday");
 			}
 		}
+
+		public static string ToldYou
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("toldYou");
+			}
+		}
 	}
 }
