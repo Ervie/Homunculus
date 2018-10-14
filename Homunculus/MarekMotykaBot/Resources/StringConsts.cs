@@ -321,5 +321,13 @@
 				return StringResources.ResourceManager.GetString("toldYou");
 			}
 		}
+
+		public static string CustomLog
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("customLog");
+			}
+		}
 	}
 }

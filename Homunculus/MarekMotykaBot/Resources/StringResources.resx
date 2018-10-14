@@ -123,6 +123,9 @@
   <data name="charadeReset" xml:space="preserve">
     <value>Kesz do kalamburów zresetowany.</value>
   </data>
+  <data name="customLog" xml:space="preserve">
+    <value>Użytkownik {0} w kanale {1} usunął wiadomość o treści: {2}</value>
+  </data>
   <data name="declineCommand" xml:space="preserve">
     <value>Z {0} to se możesz... to wiesz co se możesz!</value>
     <comment>Sometimes he has enough</comment>

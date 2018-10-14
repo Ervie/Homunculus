@@ -79,6 +79,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Użytkownik {0} w kanale {1} usunął wiadomość o treści: {2}.
+        /// </summary>
+        internal static string customLog {
+            get {
+                return ResourceManager.GetString("customLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Z {0} to se możesz... to wiesz co se możesz!.
         /// </summary>
         internal static string declineCommand {

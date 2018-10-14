@@ -23,6 +23,8 @@ namespace MarekMotykaBot
 
 		private readonly DropboxService _dropbox;
 
+		private readonly LoggingService _logger;
+
 		private readonly List<string> _swearWordList;
 
 		private readonly List<string> _waifuList;
@@ -35,12 +37,13 @@ namespace MarekMotykaBot
 
         public IConfiguration Configuration { get; set; }
 
-		public MessageScannerService(DiscordSocketClient client, JSONSerializerService serializer, DropboxService dropbox, IConfiguration configuration)
+		public MessageScannerService(DiscordSocketClient client, JSONSerializerService serializer, DropboxService dropbox, IConfiguration configuration, LoggingService logger)
 		{
 			_client = client;
 			_serializer = serializer;
 			Configuration = configuration;
 			_dropbox = dropbox;
+			_logger = logger;
 
 			_swearWordList = _serializer.LoadFromFile<string>("swearWords.json");
 			_marekFaceWords = _serializer.LoadFromFile<string>("marekTrigger.json");
@@ -83,6 +86,11 @@ namespace MarekMotykaBot
 				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _takeuchiWords, "takeuchi"), "takeuchi");
                 await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _ziewaczWords, "ziewface"), "ziewface");
             }
+		}
+
+		public async Task ScanDeletedMessage(Cacheable<IMessage, ulong> deletedMessage, ISocketMessageChannel channel)
+		{
+			_logger.CustomLog(deletedMessage.Value);
 		}
 
 		/// <summary>

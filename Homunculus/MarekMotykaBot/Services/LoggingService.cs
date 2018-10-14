@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using MarekMotykaBot.Resources;
 using Microsoft.Extensions.Configuration;
 using NLog;
 using System;
@@ -30,6 +31,16 @@ namespace MarekMotykaBot.Services
             Initialize();
         }
 
+		public void CustomLog(IMessage message)
+		{
+			if (!(message is SocketUserMessage))
+				return;
+
+			string log = string.Format(StringConsts.CustomLog, message.Author, message.Channel, message.Content);
+
+			_logger.Log(LogLevel.Trace, log);
+		}
+
         private void Initialize()
         {
             _logDirectory = Path.Combine(AppContext.BaseDirectory, "Logs");
@@ -58,5 +69,6 @@ namespace MarekMotykaBot.Services
 
             return Task.CompletedTask;
         }
+
     }
 }
