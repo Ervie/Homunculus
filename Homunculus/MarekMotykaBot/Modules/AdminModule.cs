@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using MarekMotykaBot.DataTypes;
+using MarekMotykaBot.Modules.Interface;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Modules
 {
-	public class AdminModule : ModuleBase<SocketCommandContext>
+	public class AdminModule : ModuleBase<SocketCommandContext>, IDiscordModule
 	{
 		private readonly JSONSerializerService _serializer;
 
@@ -18,10 +19,15 @@ namespace MarekMotykaBot.Modules
 
 		private readonly List<string> _swearWordList;
 
-		public AdminModule(JSONSerializerService serializer, TimerService timerService)
+		public string ServiceName { get => "AdminModule"; }
+
+		public ILoggingService _loggingService { get; }
+
+		public AdminModule(JSONSerializerService serializer, TimerService timerService, LoggingService loggingService)
 		{
 			_serializer = serializer;
 			_timerService = timerService;
+			_loggingService = loggingService;
 
 			_swearWordList = _serializer.LoadFromFile<string>("swearWords.json");
 		}
@@ -60,12 +66,16 @@ namespace MarekMotykaBot.Modules
 			}
 
 			await ReplyAsync("", false, builder.Build());
+
+			_loggingService.CustomCommandLog(Context.Message);
 		}
 
 		[Command("timer"), Alias("t"), Summary("Timer for special tasks"), RequireUserPermission(GuildPermission.Administrator)]
 		public async Task StartTimer()
 		{
 			_timerService.StartTimer();
+
+			_loggingService.CustomCommandLog(Context.Message);
 		}
 	}
 }

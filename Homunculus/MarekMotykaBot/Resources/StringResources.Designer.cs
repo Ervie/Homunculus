@@ -79,11 +79,29 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Wywołano komendę {0} dla użytkownika {1} w kanale {2}.
+        /// </summary>
+        internal static string customCommandLog {
+            get {
+                return ResourceManager.GetString("customCommandLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Użytkownik {0} w kanale {1} usunął wiadomość o treści: {2}.
         /// </summary>
-        internal static string customLog {
+        internal static string customDeleteLog {
             get {
-                return ResourceManager.GetString("customLog", resourceCulture);
+                return ResourceManager.GetString("customDeleteLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dodano reakcję {0} dla wiadomości użytkownika {1} o treści {2} w kanale {3}.
+        /// </summary>
+        internal static string customReactionLog {
+            get {
+                return ResourceManager.GetString("customReactionLog", resourceCulture);
             }
         }
         

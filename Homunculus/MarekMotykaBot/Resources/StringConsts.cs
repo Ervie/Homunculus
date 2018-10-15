@@ -322,11 +322,27 @@
 			}
 		}
 
-		public static string CustomLog
+		public static string CustomDeleteLog
 		{
 			get
 			{
-				return StringResources.ResourceManager.GetString("customLog");
+				return StringResources.ResourceManager.GetString("customDeleteLog");
+			}
+		}
+
+		public static string CustomCommandLog
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("customCommandLog");
+			}
+		}
+
+		public static string CustomReactionLog
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("customReactionLog");
 			}
 		}
 	}

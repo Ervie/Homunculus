@@ -90,7 +90,7 @@ namespace MarekMotykaBot
 
 		public async Task ScanDeletedMessage(Cacheable<IMessage, ulong> deletedMessage, ISocketMessageChannel channel)
 		{
-			_logger.CustomLog(deletedMessage.Value);
+			_logger.CustomDeleteLog(deletedMessage.Value);
 		}
 
 		/// <summary>

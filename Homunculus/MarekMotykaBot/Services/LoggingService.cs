@@ -6,18 +6,19 @@ using Microsoft.Extensions.Configuration;
 using NLog;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services
 {
-    public class LoggingService : IDiscordService
+    public class LoggingService : IDiscordService, ILoggingService
     {
         private readonly DiscordSocketClient _discord;
         private readonly CommandService _commands;
 
         public IConfiguration Configuration { get; set; }
 
-        private Logger _logger;
+		public Logger Logger { get; set; }
 
         private string _logDirectory;
         
@@ -31,16 +32,6 @@ namespace MarekMotykaBot.Services
             Initialize();
         }
 
-		public void CustomLog(IMessage message)
-		{
-			if (!(message is SocketUserMessage))
-				return;
-
-			string log = string.Format(StringConsts.CustomLog, message.Author, message.Channel, message.Content);
-
-			_logger.Log(LogLevel.Trace, log);
-		}
-
         private void Initialize()
         {
             _logDirectory = Path.Combine(AppContext.BaseDirectory, "Logs");
@@ -48,9 +39,9 @@ namespace MarekMotykaBot.Services
             if (!Directory.Exists(_logDirectory))
                 Directory.CreateDirectory(_logDirectory);
 
-            _logger = LogManager.GetCurrentClassLogger();
+            Logger = LogManager.GetCurrentClassLogger();
 
-            _logger.Info("Logger init");    
+            Logger.Info("Logger init");    
 
             _discord.Log += OnLogAsync;
             _commands.Log += OnLogAsync;
@@ -60,15 +51,47 @@ namespace MarekMotykaBot.Services
         {
             if (msg.Exception != null)
             {
-                _logger.Error(msg.Exception.ToString());
+                Logger.Error(msg.Exception.ToString());
             }
             else
             {
-                _logger.Info(msg.Message);
+                Logger.Info(msg.Message);
             }
 
             return Task.CompletedTask;
         }
 
-    }
+
+		public void CustomDeleteLog(IMessage message)
+		{
+			if (!(message is SocketUserMessage))
+				return;
+
+			string log = string.Format(StringConsts.CustomDeleteLog, message.Author, message.Channel, message.Content);
+
+			Logger.Log(LogLevel.Trace, log);
+		}
+
+		public void CustomCommandLog(IMessage message)
+		{
+			if (!(message is SocketUserMessage))
+				return;
+
+			string commandName = message.Content.Split(' ').First();
+
+			string log = string.Format(StringConsts.CustomCommandLog, commandName, message.Author, message.Channel);
+
+			Logger.Log(LogLevel.Trace, log);
+		}
+
+		public void CustomReactionLog(IMessage message, string reactionName)
+		{
+			if (!(message is SocketUserMessage))
+				return;
+
+			string log = string.Format(StringConsts.CustomReactionLog, reactionName, message.Author, message.Content, message.Channel);
+
+			Logger.Log(LogLevel.Trace, log);
+		}
+	}
 }
