@@ -23,7 +23,7 @@ namespace MarekMotykaBot
 
 		private readonly DropboxService _dropbox;
 
-		private readonly LoggingService _logger;
+		private readonly ILoggingService _logger;
 
 		private readonly List<string> _swearWordList;
 
@@ -36,7 +36,7 @@ namespace MarekMotykaBot
         private readonly List<string> _ziewaczWords;
 
         public IConfiguration Configuration { get; set; }
-
+		
 		public MessageScannerService(DiscordSocketClient client, JSONSerializerService serializer, DropboxService dropbox, IConfiguration configuration, LoggingService logger)
 		{
 			_client = client;
@@ -110,6 +110,7 @@ namespace MarekMotykaBot
 					if (emote != null)
 					{
 						await message.AddReactionAsync(emote);
+						_logger.CustomReactionLog(message, emote.Name);
 					}
 					return false;
 				}
