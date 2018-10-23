@@ -1,5 +1,6 @@
 ﻿using Discord.Commands;
 using MarekMotykaBot.ExtensionsMethods;
+using MarekMotykaBot.Modules.Interface;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Modules
 {
-    public class WaifuModule : ModuleBase<SocketCommandContext>
+    public class WaifuModule : ModuleBase<SocketCommandContext>, IDiscordModule
     {
         private readonly Random _rng;
 
@@ -17,10 +18,15 @@ namespace MarekMotykaBot.Modules
 
         private readonly List<string> _marekWaifuList;
 
-        public WaifuModule(Random random, JSONSerializerService serializer)
+		public string ServiceName { get => "WaifuModule"; }
+
+		public ILoggingService _loggingService { get; }
+
+		public WaifuModule(Random random, JSONSerializerService serializer, LoggingService loggingService)
         {
             _rng = random;
             _serializer = serializer;
+			_loggingService = loggingService;
 
             _marekWaifuList = serializer.LoadFromFile<string>("marekWaifus.json");
         }
@@ -58,7 +64,9 @@ namespace MarekMotykaBot.Modules
             int selectedWaifuIndex = _rng.Next(waifus.Count);
 
             await Context.Channel.SendMessageAsync(string.Format(StringConsts.WaifuBetter, waifus[selectedWaifuIndex]));
-        }
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+		}
 
         [Command("BetterWaifu"), Alias("bw"), Summary("Waifu selector, multiple waifus separated with spaces")]
         public async Task BetterWaifu(params string[] waifus)
@@ -94,9 +102,11 @@ namespace MarekMotykaBot.Modules
                     break;
                 default:
                     await Context.Channel.SendMessageAsync(string.Format(StringConsts.WaifuBest, waifusList[selectedWaifuIndex]));
-                    break; 
-            }
-        }
+                    break;
+			}
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+		}
 
         [Command("BetterHusbando"), Alias("bh"), Summary("Husbando selector, 2 husbandos")]
         public async Task BetterHusbando(string firstHusbando, string secondHusbando)
@@ -110,7 +120,9 @@ namespace MarekMotykaBot.Modules
 			int selectedHusbandoIndex = _rng.Next(husbandos.Count);
 
             await Context.Channel.SendMessageAsync(string.Format(StringConsts.HusbandoBetter, husbandos[selectedHusbandoIndex]));
-        }
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+		}
 
         [Command("BetterHusbando"), Alias("bh"), Summary("Husbando selector, multiple husbandos separated with spaces")]
         public async Task BetterHusbando(params string[] husbandos)
@@ -132,7 +144,9 @@ namespace MarekMotykaBot.Modules
                 default:
                     await Context.Channel.SendMessageAsync(string.Format(StringConsts.HusbandoBetter, husbandos[selectedHusbandoIndex]));
                     break;
-            }
-        }
+			}
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+		}
     }
 }

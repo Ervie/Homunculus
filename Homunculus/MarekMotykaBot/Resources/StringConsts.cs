@@ -330,6 +330,14 @@
 			}
 		}
 
+		public static string CustomEditLog
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("customEditLog");
+			}
+		}
+
 		public static string CustomCommandLog
 		{
 			get

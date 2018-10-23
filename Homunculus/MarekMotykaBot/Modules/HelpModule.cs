@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using MarekMotykaBot.Modules.Interface;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
 using Microsoft.Extensions.Configuration;
@@ -12,19 +13,23 @@ using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Modules
 {
-	public class HelpModule : ModuleBase<SocketCommandContext>
+	public class HelpModule : ModuleBase<SocketCommandContext>, IDiscordModule
 	{
 		private readonly CommandService _service;
 		private readonly IConfiguration _configuration;
 		private readonly JSONSerializerService _serializer;
 
-		public HelpModule(CommandService service, IConfiguration configuration, JSONSerializerService serializer)
+		public ILoggingService _loggingService { get; }
+
+		public HelpModule(CommandService service, IConfiguration configuration, JSONSerializerService serializer, LoggingService loggingService)
 		{
 			_service = service;
 			_configuration = configuration;
 			_serializer = serializer;
+			_loggingService = loggingService;
 		}
 
+		public string ServiceName { get => "HelpModule"; }
 		[Command("Version"), Alias("v"), Summary("Prints version information")]
 		public async Task AboutAsync()
 		{
@@ -45,6 +50,8 @@ namespace MarekMotykaBot.Modules
 			});
 
 			await ReplyAsync("", false, builder.Build());
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
 		[Command("Help"), Alias("h"), Summary("List all the commands")]
@@ -114,6 +121,8 @@ namespace MarekMotykaBot.Modules
 			}
 
 			await ReplyAsync("", false, builder.Build());
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
 		[Command("StreamMonday"), Alias("sm", "Streamdziałek"), Summary("Prints schedule for next StreamMonday")]
@@ -141,6 +150,8 @@ namespace MarekMotykaBot.Modules
 				await ReplyAsync(role.Mention);
 			}
 			await ReplyAsync("", false, builder.Build());
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using Discord.Commands;
 using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.ExtensionsMethods;
+using MarekMotykaBot.Modules.Interface;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
 using System;
@@ -11,21 +12,29 @@ using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Modules
 {
-    public class GamesModule : ModuleBase<SocketCommandContext>
-    {
+    public class GamesModule : ModuleBase<SocketCommandContext>, IDiscordModule
+	{
         private readonly Random _rng;
 
         private readonly JSONSerializerService _serializer;
 
-        public GamesModule(Random random, JSONSerializerService serializer)
+		public string ServiceName { get => "GamesModule"; }
+
+		public ILoggingService _loggingService { get; }
+
+		public GamesModule(Random random, JSONSerializerService serializer, LoggingService loggingService)
         {
             _rng = random;
             _serializer = serializer;
+			_loggingService = loggingService;
         }
+
 		[Command("Someone"), Alias("s"), Summary("Get random username from server")]
 		public async Task RandomUserAsync()
 		{
 			await ReplyAsync(Context.Guild.GetRandomUserName(_rng));
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
         [Command("Roll_k6"), Alias("k6"), Summary("Roll the k6 dice.")]
@@ -34,7 +43,9 @@ namespace MarekMotykaBot.Modules
             int rolledNumber = _rng.Next(0, 6) + 1;
 
             await ReplyAsync(Context.User.Username + ": " + rolledNumber.ToString());
-        }
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+		}
 
         [Command("Roll_k100"), Alias("k100"), Summary("Roll the k100 dice.")]
         public async Task RollK100Async()
@@ -42,7 +53,9 @@ namespace MarekMotykaBot.Modules
             int rolledNumber = _rng.Next(0, 100) + 1;
 
             await ReplyAsync(Context.User.Username + ": " + rolledNumber.ToString());
-        }
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+		}
 
         [Command("Roll"), Alias("k"), Summary("Roll customizable dice.")]
         public async Task RollDiceAsync(params string[] diceSize)
@@ -117,8 +130,10 @@ namespace MarekMotykaBot.Modules
             }
             catch (Exception)
             {
-            }
-        }
+			}
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+		}
 
         [Command("Flip_coin"), Alias("flip"), Summary("Flip the coin.")]
         public async Task FlipCoinAsync()
@@ -128,7 +143,9 @@ namespace MarekMotykaBot.Modules
             string resultString = result == 1 ? "Orzeł" : "Reszka";
 
             await ReplyAsync(Context.User.Username + ": " + resultString);
-        }
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+		}
 
         [Command("Charade"), Alias("kalambury", "c"), Summary("Draw a random entry for charade game.")]
         public async Task CharadeAsync()
@@ -181,8 +198,10 @@ namespace MarekMotykaBot.Modules
                 _serializer.SaveToFile<int>("charadeCache.json", charadeCache);
 
                 break;
-            }
-        }
+			}
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+		}
 
         [Command("ResetCharade"), Alias("reset", "r"), Summary("Reset charade cache")]
         public async Task CharadeResetAsync()
@@ -192,6 +211,8 @@ namespace MarekMotykaBot.Modules
             _serializer.SaveToFile<int>("charadeCache.json", emptyList);
 
             await ReplyAsync(StringConsts.CharadeReset);
-        }
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+		}
     }
 }

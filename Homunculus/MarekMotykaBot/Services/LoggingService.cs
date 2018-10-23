@@ -72,14 +72,24 @@ namespace MarekMotykaBot.Services
 			Logger.Log(LogLevel.Trace, log);
 		}
 
-		public void CustomCommandLog(IMessage message)
+		public void CustomEditLog(IMessage message, IMessage oldMessage)
+		{
+			if (!(message is SocketUserMessage) || message.Content == oldMessage.Content)
+				return;
+
+			string log = string.Format(StringConsts.CustomEditLog, message.Author, message.Channel, oldMessage.Content, message.Content);
+
+			Logger.Log(LogLevel.Trace, log);
+		}
+
+		public void CustomCommandLog(IMessage message, string moduleName)
 		{
 			if (!(message is SocketUserMessage))
 				return;
 
 			string commandName = message.Content.Split(' ').First();
 
-			string log = string.Format(StringConsts.CustomCommandLog, commandName, message.Author, message.Channel);
+			string log = string.Format(StringConsts.CustomCommandLog, moduleName, commandName, message.Author, message.Channel);
 
 			Logger.Log(LogLevel.Trace, log);
 		}
@@ -93,5 +103,6 @@ namespace MarekMotykaBot.Services
 
 			Logger.Log(LogLevel.Trace, log);
 		}
+
 	}
 }

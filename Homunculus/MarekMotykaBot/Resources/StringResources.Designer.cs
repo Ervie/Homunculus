@@ -79,7 +79,7 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wywołano komendę {0} dla użytkownika {1} w kanale {2}.
+        ///   Looks up a localized string similar to Wywołano komendę {0} modułu {1} dla użytkownika {2} w kanale {3}.
         /// </summary>
         internal static string customCommandLog {
             get {
@@ -93,6 +93,15 @@ namespace MarekMotykaBot.Resources {
         internal static string customDeleteLog {
             get {
                 return ResourceManager.GetString("customDeleteLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Użytkownik {0} w kanale {1} zmienił wiadomość: {2} -&gt; {3}.
+        /// </summary>
+        internal static string customEditLog {
+            get {
+                return ResourceManager.GetString("customEditLog", resourceCulture);
             }
         }
         

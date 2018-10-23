@@ -67,7 +67,7 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync("", false, builder.Build());
 
-			_loggingService.CustomCommandLog(Context.Message);
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
 		[Command("timer"), Alias("t"), Summary("Timer for special tasks"), RequireUserPermission(GuildPermission.Administrator)]
@@ -75,7 +75,7 @@ namespace MarekMotykaBot.Modules
 		{
 			_timerService.StartTimer();
 
-			_loggingService.CustomCommandLog(Context.Message);
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 	}
 }

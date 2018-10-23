@@ -8,7 +8,9 @@ namespace MarekMotykaBot.Services
 
 		void CustomDeleteLog(IMessage message);
 
-		void CustomCommandLog(IMessage message);
+		void CustomEditLog(IMessage message, IMessage oldMessage);
+
+		void CustomCommandLog(IMessage message, string moduleName);
 
 		void CustomReactionLog(IMessage message, string reactionName);
 	}
