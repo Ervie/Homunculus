@@ -89,7 +89,7 @@ namespace MarekMotykaBot.Services
 
 			string commandName = message.Content.Split(' ').First();
 
-			string log = string.Format(StringConsts.CustomCommandLog, moduleName, commandName, message.Author, message.Channel);
+			string log = string.Format(StringConsts.CustomCommandLog, commandName, moduleName, message.Author, message.Channel);
 
 			Logger.Log(LogLevel.Trace, log);
 		}
@@ -101,7 +101,7 @@ namespace MarekMotykaBot.Services
 
 			string commandName = message.Content.Split(' ').First();
 
-			string log = string.Format(StringConsts.CustomCommandLog, moduleName, commandName, message.Author, message.Channel)
+			string log = string.Format(StringConsts.CustomCommandLog, commandName, moduleName, message.Author, message.Channel)
 				+ ' ' + string.Format(StringConsts.Parameters, parameters);
 
 			Logger.Log(LogLevel.Trace, log);
