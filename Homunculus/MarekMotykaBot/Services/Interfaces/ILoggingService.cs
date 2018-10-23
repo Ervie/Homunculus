@@ -12,6 +12,8 @@ namespace MarekMotykaBot.Services
 
 		void CustomCommandLog(IMessage message, string moduleName);
 
+		void CustomCommandLog(IMessage message, string moduleName, string parameters);
+
 		void CustomReactionLog(IMessage message, string reactionName);
 	}
 }

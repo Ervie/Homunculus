@@ -295,6 +295,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parametry: {0}.
+        /// </summary>
+        internal static string parameters {
+            get {
+                return ResourceManager.GetString("parameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cytat na dziś:.
         /// </summary>
         internal static string quoteForToday {

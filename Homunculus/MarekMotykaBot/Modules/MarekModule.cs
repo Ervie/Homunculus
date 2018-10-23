@@ -145,7 +145,7 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync(resultUrl);
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			_loggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', captions));
 		}
 
 		[Command("MarekMeme2"), Alias("meme2"), Summary("Create your own Marek meme image, text split by semicolon - laughing version")]
@@ -172,7 +172,7 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync(resultUrl);
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			_loggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', captions));
 		}
 
 		[Command("Joke"), Summary("Marek's joke - you know the drill")]
@@ -229,7 +229,7 @@ namespace MarekMotykaBot.Modules
 				}
 			}
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			_loggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', messageKey));
 		}
 
 		[Command("quote"), Alias("cytat", "q"), Summary("Ancient wisdom...")]
@@ -318,7 +318,7 @@ namespace MarekMotykaBot.Modules
 			await Task.Delay(3000);
 			await ReplyAsync("", false, builder.Build());
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			_loggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', category));
 		}
 
 		[Command("blueribbon"), Summary("Passes for hidden gift")]

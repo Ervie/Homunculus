@@ -132,7 +132,7 @@ namespace MarekMotykaBot.Modules
             {
 			}
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			_loggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', diceSize));
 		}
 
         [Command("Flip_coin"), Alias("flip"), Summary("Flip the coin.")]

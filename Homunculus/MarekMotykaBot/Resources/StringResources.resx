@@ -199,6 +199,9 @@
   <data name="noNumber" xml:space="preserve">
     <value>Ni ma liczby, rzucam zwykłą.</value>
   </data>
+  <data name="parameters" xml:space="preserve">
+    <value>Parametry: {0}</value>
+  </data>
   <data name="quoteForToday" xml:space="preserve">
     <value>Cytat na dziś:</value>
   </data>

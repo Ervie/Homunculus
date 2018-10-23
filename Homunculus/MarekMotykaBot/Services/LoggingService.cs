@@ -94,6 +94,19 @@ namespace MarekMotykaBot.Services
 			Logger.Log(LogLevel.Trace, log);
 		}
 
+		public void CustomCommandLog(IMessage message, string moduleName, string parameters)
+		{
+			if (!(message is SocketUserMessage))
+				return;
+
+			string commandName = message.Content.Split(' ').First();
+
+			string log = string.Format(StringConsts.CustomCommandLog, moduleName, commandName, message.Author, message.Channel)
+				+ ' ' + string.Format(StringConsts.Parameters, parameters);
+
+			Logger.Log(LogLevel.Trace, log);
+		}
+
 		public void CustomReactionLog(IMessage message, string reactionName)
 		{
 			if (!(message is SocketUserMessage))

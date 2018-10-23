@@ -353,5 +353,13 @@
 				return StringResources.ResourceManager.GetString("customReactionLog");
 			}
 		}
+
+		public static string Parameters
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("parameters");
+			}
+		}
 	}
 }
