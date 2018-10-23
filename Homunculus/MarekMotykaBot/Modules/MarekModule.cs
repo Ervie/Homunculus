@@ -46,27 +46,33 @@ namespace MarekMotykaBot.Modules
 		[Command("NoCoSeMoge"), Alias("no"), Summary("He will tell you what you can do")]
 		public async Task CoSeMogeAsync()
 		{
-			int randomNumer = _rng.Next(0, 15);
-
 			await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
 			await Task.Delay(3000);
 
-			switch (randomNumer)
+			int hitNumber = _rng.Next(0, 15);
+
+			if (hitNumber == 1)
+			{
+				await Context.Channel.SendMessageAsync($"...");
+				await Task.Delay(1000);
+				await Context.Channel.SendMessageAsync($"...");
+				await Task.Delay(1000);
+				await Context.Channel.SendMessageAsync($"**{StringConsts.RunAway}**");
+				return;
+			}
+
+			int damageNumber = _rng.Next(0, 15);
+			switch (damageNumber)
 			{
 				case (1):
-					await Context.Channel.SendMessageAsync($"...");
-					await Task.Delay(1000);
-					await Context.Channel.SendMessageAsync($"...");
-					await Task.Delay(1000);
-					await Context.Channel.SendMessageAsync($"**{StringConsts.RunAway}**");
+				case (2):
+					await Context.Channel.SendMessageAsync($"**{StringConsts.EggString}**");
 					break;
 
-				case (2):
 				case (3):
-					string victim = Context.Guild.GetRandomUserName(_rng, Context.User.DiscordId());
-					await Context.Channel.SendMessageAsync($"**{StringConsts.ShitString}**");
-					await Task.Delay(1000);
-					await Context.Channel.SendMessageAsync(string.Format(StringConsts.MissedThrow, victim));
+					await Context.Channel.SendMessageAsync($"**{StringConsts.EggString}**");
+					await Task.Delay(1500);
+					await Context.Channel.SendMessageAsync($"**{StringConsts.InTheJar}**");
 					break;
 
 				case (4):
@@ -89,6 +95,25 @@ namespace MarekMotykaBot.Modules
 					await Context.Channel.SendMessageAsync($"**{StringConsts.ShitString}**");
 					break;
 			}
+
+			switch (hitNumber)
+			{
+				case (2):
+					await Task.Delay(1000);
+					await Context.Channel.SendMessageAsync(StringConsts.MissedThrow2);
+					break;
+
+				case (3):
+				case (4):
+					string victim = Context.Guild.GetRandomUserName(_rng, Context.User.DiscordId());
+					await Task.Delay(1000);
+					await Context.Channel.SendMessageAsync(string.Format(StringConsts.MissedThrow, victim));
+					break;
+
+				default:
+					break;
+			}
+
 
 			List<DeclineCache> declineCache = _serializer.LoadFromFile<DeclineCache>("declineCache.json");
 

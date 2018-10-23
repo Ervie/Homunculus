@@ -151,6 +151,9 @@
   <data name="doctor" xml:space="preserve">
     <value>Sorry, ale teraz się doktoryzuję.</value>
   </data>
+  <data name="eggString" xml:space="preserve">
+    <value>JAJCO</value>
+  </data>
   <data name="finishingBlow" xml:space="preserve">
     <value>HISSATSU</value>
   </data>
@@ -195,6 +198,9 @@
   </data>
   <data name="missedThrow" xml:space="preserve">
     <value>O kuźwa, nie trafiłem! Sorry {0} mordo!</value>
+  </data>
+  <data name="missedThrow2" xml:space="preserve">
+    <value>Tsk... Nie trafiłem.</value>
   </data>
   <data name="noNumber" xml:space="preserve">
     <value>Ni ma liczby, rzucam zwykłą.</value>

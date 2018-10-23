@@ -290,6 +290,14 @@
 			}
 		}
 
+		public static string MissedThrow2
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("missedThrow2");
+			}
+		}
+
 		public static string FinishingBlow
 		{
 			get
@@ -359,6 +367,14 @@
 			get
 			{
 				return StringResources.ResourceManager.GetString("parameters");
+			}
+		}
+
+		public static string EggString
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("eggString");
 			}
 		}
 	}

@@ -160,6 +160,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to JAJCO.
+        /// </summary>
+        internal static string eggString {
+            get {
+                return ResourceManager.GetString("eggString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HISSATSU.
         /// </summary>
         internal static string finishingBlow {
@@ -282,6 +291,15 @@ namespace MarekMotykaBot.Resources {
         internal static string missedThrow {
             get {
                 return ResourceManager.GetString("missedThrow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tsk... Nie trafiłem..
+        /// </summary>
+        internal static string missedThrow2 {
+            get {
+                return ResourceManager.GetString("missedThrow2", resourceCulture);
             }
         }
         
