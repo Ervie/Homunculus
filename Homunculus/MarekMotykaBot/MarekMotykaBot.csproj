@@ -5,9 +5,9 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <StartupObject />
-    <Version>2.7.0</Version>
-    <AssemblyVersion>2.7.0.0</AssemblyVersion>
-    <FileVersion>2.7.0.0</FileVersion>
+    <Version>2.7.1</Version>
+    <AssemblyVersion>2.7.0.1</AssemblyVersion>
+    <FileVersion>2.7.0.1</FileVersion>
     <Description>Simple mimicking Discord bot written with .Net Core and Discord.Net.</Description>
     <PackageLicenseUrl>https://github.com/Ervie/Homunculus/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Ervie/Homunculus</PackageProjectUrl>
@@ -29,12 +29,12 @@
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="2.0.0-beta" />
     <PackageReference Include="Dropbox.Api" Version="4.9.0" />
-    <PackageReference Include="Google.Apis" Version="1.35.2" />
-    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.35.2.1226" />
+    <PackageReference Include="Google.Apis" Version="1.36.1" />
+    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.36.1.1226" />
     <PackageReference Include="Imgur.API" Version="5.0.0-beta1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0-preview2-35157" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.2.0-preview2-35157" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0-preview2-35157" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0-preview3-35497" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.2.0-preview3-35497" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0-preview3-35497" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="NLog" Version="4.5.10" />
   </ItemGroup>
