@@ -31,6 +31,8 @@ namespace MarekMotykaBot
 
 		private readonly List<string> _marekFaceWords;
 
+		private readonly List<string> _skeletorWords;
+
 		private readonly List<string> _takeuchiWords;
 
         private readonly List<string> _ziewaczWords;
@@ -47,6 +49,7 @@ namespace MarekMotykaBot
 
 			_swearWordList = _serializer.LoadFromFile<string>("swearWords.json");
 			_marekFaceWords = _serializer.LoadFromFile<string>("marekTrigger.json");
+			_skeletorWords = _serializer.LoadFromFile<string>("skeletorTrigger.json");
 			_waifuList = serializer.LoadFromFile<string>("marekWaifus.json");
 			_takeuchiWords = serializer.LoadFromFile<string>("takeuchiTrigger.json");
             _ziewaczWords = serializer.LoadFromFile<string>("ziewaczTrigger.json");
@@ -63,7 +66,8 @@ namespace MarekMotykaBot
 			if (!message.Author.IsBot && !message.Content.StartsWith(Configuration["prefix"]))
 			{
 				await DetectWaifus(context, message);
-				await AddReactionAfterTriggerWord(context, message, _marekFaceWords, "marekface");
+				//await AddReactionAfterTriggerWord(context, message, _marekFaceWords, "marekface");
+				await AddReactionAfterTriggerWord(context, message, _skeletorWords, "skeletor");
 				await AddReactionAfterTriggerWord(context, message, _takeuchiWords, "takeuchi");
                 await AddReactionAfterTriggerWord(context, message, _ziewaczWords, "ziewface");
 				await DetectMentions(context, message);
@@ -82,7 +86,8 @@ namespace MarekMotykaBot
 
 			if (!message.Author.IsBot)
 			{
-				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _marekFaceWords, "marekface"), "marekface");
+				//await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _marekFaceWords, "marekface"), "marekface");
+				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _marekFaceWords, "skeletor"), "skeletor");
 				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _takeuchiWords, "takeuchi"), "takeuchi");
                 await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _ziewaczWords, "ziewface"), "ziewface");
             }
