@@ -36,18 +36,18 @@ namespace MarekMotykaBot.Modules
 			_loggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
-  //      [Command("Youtube"), Alias("yt"), Summary("Search for video with given query.")]
-  //      public async Task SearchYTvideo(params string[] args)
-  //      {
-  //          string query = string.Join(" ", args);
-  //          var video = await _youtube.SearchYoutubeAsync(query, "youtube#video");
+		[Command("Youtube"), Alias("yt"), Summary("Search for video with given query.")]
+		public async Task SearchYTvideo(params string[] args)
+		{
+			string query = string.Join(" ", args);
+			var video = await _youtube.SearchYoutubeAsync(query, "youtube#video");
 
-  //          if (video == null)
-  //              await ReplyAsync(string.Format(StringConsts.YtNotFound, query));
-  //          else
-  //              await ReplyAsync($"http://youtube.com/watch?v={video.Id.VideoId}");
+			if (video == null)
+				await ReplyAsync(string.Format(StringConsts.YtNotFound, query));
+			else
+				await ReplyAsync($"http://youtube.com/watch?v={video.Id.VideoId}");
 
-		//	_loggingService.CustomCommandLog(Context.Message, ServiceName);
-		//}
-    }
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+		}
+	}
 }

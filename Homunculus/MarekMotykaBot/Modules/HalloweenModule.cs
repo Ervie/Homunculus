@@ -36,7 +36,7 @@ namespace MarekMotykaBot.Modules
 			_youtube = ytService;
 		}
 
-		[Command("MarekMeme"), Alias("meme"), Summary("Skeleton meme")]
+		[Command("Skeleton"), Alias("sk", "skmeme"), Summary("Skeleton meme")]
 		public async Task OldMemeAsync()
 		{
 			string gifUrl;
@@ -47,18 +47,7 @@ namespace MarekMotykaBot.Modules
 			_loggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
-		[Command("Sowa"), Alias("owl"), Summary("Accually skeleton meme")]
-		public async Task SowaAsync()
-		{
-			string gifUrl;
-			gifUrl = await _imgur.GetRandomImageFromAlbum("HuEZ2QX");
-
-			await ReplyAsync(gifUrl);
-
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
-		}
-
-		[Command("quote"), Alias("cytat", "q"), Summary("Ancient wisdom...")]
+		[Command("Skeletor"), Alias("skq"), Summary("Ancient wisdom... of Skeletor")]
 		public async Task QuoteAsync()
 		{
 			int randomImgNumber = _rng.Next(1, 16);
@@ -74,7 +63,7 @@ namespace MarekMotykaBot.Modules
 
 		}
 
-		[Command("MarekMeme"), Alias("meme"), Summary("Create your own Marek meme image, text split by semicolon - marekface version")]
+		[Command("MarekSkeletorMeme"), Alias("meme3"), Summary("Create your own Marek meme image, text split by semicolon - skeletor version")]
 		public async Task NewMemeAsync(params string[] text)
 		{
 			var captions = string.Join(" ", text).Split(';').ToList();
@@ -99,58 +88,6 @@ namespace MarekMotykaBot.Modules
 			await ReplyAsync(resultUrl);
 
 			_loggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', captions));
-		}
-
-		[Command("Joke"), Summary("Marek's joke - you know the drill")]
-		public async Task JokeAsync()
-		{
-			List<OneLinerJoke> jokes = _serializer.LoadFromFile<OneLinerJoke>("skeletonJokes.json");
-
-			int randomJokeIndex = _rng.Next(1, jokes.Count);
-
-			OneLinerJoke selectedJoke = jokes[randomJokeIndex];
-
-			await Context.Channel.SendMessageAsync($"{selectedJoke.Question}");
-			await Task.Delay(3000);
-			await Context.Channel.SendMessageAsync($"{selectedJoke.Punchline}");
-
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
-		}
-
-		[Command("Youtube"), Alias("yt"), Summary("Search for video with given query.")]
-		public async Task SearchYTvideo(params string[] args)
-		{
-			int randomNumber = _rng.Next(1, 5);
-
-			string query; 
-
-			switch (randomNumber)
-			{
-				case (1):
-					query = "The Skeleton Dance";
-					break;
-				case (2):
-					query = "ivan el trolazo";
-					break;
-				case (3):
-					query = "skeletor myah";
-					break;
-				case (4):
-					query = "Nyeh Heh Heh 10 Hours";
-					break;
-				default:
-					query = "Undertale Megalovania";
-					break;
-			}
-
-			var video = await _youtube.SearchYoutubeAsync(query, "youtube#video");
-
-			if (video == null)
-				await ReplyAsync(string.Format(StringConsts.YtNotFound, query));
-			else
-				await ReplyAsync($"http://youtube.com/watch?v={video.Id.VideoId}");
-
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 	}
 }

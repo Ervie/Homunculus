@@ -124,97 +124,97 @@ namespace MarekMotykaBot.Modules
 			_loggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
-		//[Command("Sowa"), Alias("owl"), Summary("Post random owl image")]
-		//public async Task SowaAsync()
-		//{
-		//	string gifUrl;
-		//	gifUrl = await _imgur.GetRandomImageFromGallery("CbtU3");
+		[Command("Sowa"), Alias("owl"), Summary("Post random owl image")]
+		public async Task SowaAsync()
+		{
+			string gifUrl;
+			gifUrl = await _imgur.GetRandomImageFromGallery("CbtU3");
 
-		//	await ReplyAsync(gifUrl);
+			await ReplyAsync(gifUrl);
 
-		//	_loggingService.CustomCommandLog(Context.Message, ServiceName);
-		//}
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+		}
 
-		//[Command("MarekMeme"), Alias("meme"), Summary("Post random old Marek meme image")]
-		//public async Task OldMemeAsync()
-		//{
-		//	string gifUrl;
-		//	gifUrl = await _imgur.GetRandomImageFromAlbum("V5CPd");
+		[Command("MarekMeme"), Alias("meme"), Summary("Post random old Marek meme image")]
+		public async Task OldMemeAsync()
+		{
+			string gifUrl;
+			gifUrl = await _imgur.GetRandomImageFromAlbum("V5CPd");
 
-		//	await ReplyAsync(gifUrl);
+			await ReplyAsync(gifUrl);
 
-		//	_loggingService.CustomCommandLog(Context.Message, ServiceName);
-		//}
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+		}
 
-		//[Command("MarekMeme"), Alias("meme"), Summary("Create your own Marek meme image, text split by semicolon - marekface version")]
-		//public async Task NewMemeAsync(params string[] text)
-		//{			
-		//	var captions = string.Join(" ", text).Split(';').ToList();
-			
-		//	if (captions.Count < 2)
-		//		return;
+		[Command("MarekMeme"), Alias("meme"), Summary("Create your own Marek meme image, text split by semicolon - marekface version")]
+		public async Task NewMemeAsync(params string[] text)
+		{
+			var captions = string.Join(" ", text).Split(';').ToList();
 
-		//	for (int i = 0; i < captions.Count; i++)
-		//	{
-		//		captions[i] = captions[i].RemoveEmojisAndEmotes();
-		//	}
+			if (captions.Count < 2)
+				return;
 
-
-		//	if (string.IsNullOrWhiteSpace(captions[0]) || string.IsNullOrWhiteSpace(captions[1]))
-		//		return;
-
-		//	string toptext = captions[0].ToUpper();
-		//	string bottomtext = captions[1].ToUpper();
-
-		//	string resultUrl = await _imgFlip.CreateMarekMeme(toptext, bottomtext);
-
-		//	await ReplyAsync(resultUrl);
-
-		//	_loggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', captions));
-		//}
-
-		//[Command("MarekMeme2"), Alias("meme2"), Summary("Create your own Marek meme image, text split by semicolon - laughing version")]
-		//public async Task NewMeme2Async(params string[] text)
-		//{
-		//	var captions = string.Join(" ", text).Split(';').ToList();
-
-		//	if (captions.Count < 2)
-		//		return;
-
-		//	for (int i = 0; i < captions.Count; i++)
-		//	{
-		//		captions[i] = captions[i].RemoveEmojisAndEmotes();
-		//	}
+			for (int i = 0; i < captions.Count; i++)
+			{
+				captions[i] = captions[i].RemoveEmojisAndEmotes();
+			}
 
 
-		//	if (string.IsNullOrWhiteSpace(captions[0]) || string.IsNullOrWhiteSpace(captions[1]))
-		//		return;
+			if (string.IsNullOrWhiteSpace(captions[0]) || string.IsNullOrWhiteSpace(captions[1]))
+				return;
 
-		//	string toptext = captions[0].ToUpper();
-		//	string bottomtext = captions[1].ToUpper();
+			string toptext = captions[0].ToUpper();
+			string bottomtext = captions[1].ToUpper();
 
-		//	string resultUrl = await _imgFlip.CreateLaughingMarekMeme(toptext, bottomtext);
+			string resultUrl = await _imgFlip.CreateMarekMeme(toptext, bottomtext);
 
-		//	await ReplyAsync(resultUrl);
+			await ReplyAsync(resultUrl);
 
-		//	_loggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', captions));
-		//}
+			_loggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', captions));
+		}
 
-		//[Command("Joke"), Summary("Marek's joke - you know the drill")]
-		//public async Task JokeAsync()
-		//{
-		//	List<OneLinerJoke> jokes = _serializer.LoadFromFile<OneLinerJoke>("oneLiners.json");
+		[Command("MarekMeme2"), Alias("meme2"), Summary("Create your own Marek meme image, text split by semicolon - laughing version")]
+		public async Task NewMeme2Async(params string[] text)
+		{
+			var captions = string.Join(" ", text).Split(';').ToList();
 
-		//	int randomJokeIndex = _rng.Next(1, jokes.Count);
+			if (captions.Count < 2)
+				return;
 
-		//	OneLinerJoke selectedJoke = jokes[randomJokeIndex];
+			for (int i = 0; i < captions.Count; i++)
+			{
+				captions[i] = captions[i].RemoveEmojisAndEmotes();
+			}
 
-		//	await Context.Channel.SendMessageAsync($"{selectedJoke.Question}");
-		//	await Task.Delay(3000);
-		//	await Context.Channel.SendMessageAsync($"{selectedJoke.Punchline}");
 
-		//	_loggingService.CustomCommandLog(Context.Message, ServiceName);
-		//}
+			if (string.IsNullOrWhiteSpace(captions[0]) || string.IsNullOrWhiteSpace(captions[1]))
+				return;
+
+			string toptext = captions[0].ToUpper();
+			string bottomtext = captions[1].ToUpper();
+
+			string resultUrl = await _imgFlip.CreateLaughingMarekMeme(toptext, bottomtext);
+
+			await ReplyAsync(resultUrl);
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', captions));
+		}
+
+		[Command("Joke"), Summary("Marek's joke - you know the drill")]
+		public async Task JokeAsync()
+		{
+			List<OneLinerJoke> jokes = _serializer.LoadFromFile<OneLinerJoke>("oneLiners.json");
+
+			int randomJokeIndex = _rng.Next(1, jokes.Count);
+
+			OneLinerJoke selectedJoke = jokes[randomJokeIndex];
+
+			await Context.Channel.SendMessageAsync($"{selectedJoke.Question}");
+			await Task.Delay(3000);
+			await Context.Channel.SendMessageAsync($"{selectedJoke.Punchline}");
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+		}
 
 		[Command("8ball"), Summary("Binary answer for all your questions")]
 		public async Task EightBallAsync(params string[] text)
@@ -257,94 +257,94 @@ namespace MarekMotykaBot.Modules
 			_loggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', messageKey));
 		}
 
-		//[Command("quote"), Alias("cytat", "q"), Summary("Ancient wisdom...")]
-		//public async Task QuoteAsync(params string[] category)
-		//{
-		//	QuoteCategory filtercategory = QuoteCategory.None;
+		[Command("quote"), Alias("cytat", "q"), Summary("Ancient wisdom...")]
+		public async Task QuoteAsync(params string[] category)
+		{
+			QuoteCategory filtercategory = QuoteCategory.None;
 
-		//	if (category.Length != 0)
-		//	{
-		//		switch (category[0].ToLower())
-		//		{
-		//			case ("i"):
-		//			case ("p"):
-		//			case ("insult"):
-		//			case ("pocisk"):
-		//				filtercategory = QuoteCategory.Insult;
-		//				break;
-		//			case ("m"):
-		//			case ("w"):
-		//			case ("mądrość"):
-		//			case ("wisdom"):
-		//				filtercategory = QuoteCategory.Wisdom;
-		//				break;
-		//			case ("t"):
-		//			case ("thought"):
-		//				filtercategory = QuoteCategory.Thought;
-		//				break;
-		//			case ("f"):
-		//			case ("fiutt"):
-		//				filtercategory = QuoteCategory.Fiutt;
-		//				break;
-		//			case ("reaction"):
-		//			case ("reakcja"):
-		//			case ("r"):
-		//				filtercategory = QuoteCategory.Reaction;
-		//				break;
-		//			case ("d"):
-		//				filtercategory = QuoteCategory.OfTheDay;
-		//				break;
-		//			default:
-		//				break;
-		//		}
-		//	}
+			if (category.Length != 0)
+			{
+				switch (category[0].ToLower())
+				{
+					case ("i"):
+					case ("p"):
+					case ("insult"):
+					case ("pocisk"):
+						filtercategory = QuoteCategory.Insult;
+						break;
+					case ("m"):
+					case ("w"):
+					case ("mądrość"):
+					case ("wisdom"):
+						filtercategory = QuoteCategory.Wisdom;
+						break;
+					case ("t"):
+					case ("thought"):
+						filtercategory = QuoteCategory.Thought;
+						break;
+					case ("f"):
+					case ("fiutt"):
+						filtercategory = QuoteCategory.Fiutt;
+						break;
+					case ("reaction"):
+					case ("reakcja"):
+					case ("r"):
+						filtercategory = QuoteCategory.Reaction;
+						break;
+					case ("d"):
+						filtercategory = QuoteCategory.OfTheDay;
+						break;
+					default:
+						break;
+				}
+			}
 
-		//	Quote selectedQuote;
+			Quote selectedQuote;
 
-		//	if (filtercategory != QuoteCategory.OfTheDay)
-		//	{
-		//		List<Quote> quotes = _serializer.LoadFromFile<Quote>("quotes.json");
+			if (filtercategory != QuoteCategory.OfTheDay)
+			{
+				List<Quote> quotes = _serializer.LoadFromFile<Quote>("quotes.json");
 
-		//		if (filtercategory != QuoteCategory.None)
-		//			quotes = quotes.Where(x => x.Categories.Contains(filtercategory)).ToList();
+				if (filtercategory != QuoteCategory.None)
+					quotes = quotes.Where(x => x.Categories.Contains(filtercategory)).ToList();
 
-		//		int randomQuoteIndex = _rng.Next(0, quotes.Count);
+				int randomQuoteIndex = _rng.Next(0, quotes.Count);
 
-		//		 selectedQuote = quotes[randomQuoteIndex];
-		//	}
-		//	else
-		//	{
-		//		selectedQuote = _serializer.LoadFromFile<Quote>("quoteOfTheDay.json").First();
-		//	}
+				selectedQuote = quotes[randomQuoteIndex];
+			}
+			else
+			{
+				selectedQuote = _serializer.LoadFromFile<Quote>("quoteOfTheDay.json").First();
+			}
 
-		//	var builder = new EmbedBuilder();
+			var builder = new EmbedBuilder();
 
-		//	builder.WithFooter(selectedQuote.Author);
-		//	builder.WithTitle(selectedQuote.QuoteBody);
+			builder.WithFooter(selectedQuote.Author);
+			builder.WithTitle(selectedQuote.QuoteBody);
 
-		//	string intro = string.Empty;
+			string intro = string.Empty;
 
-		//	switch (_rng.Next(1, 4))
-		//	{
-		//		case 1:
-		//			intro = StringConsts.DerpQuote;
-		//			break;
+			switch (_rng.Next(1, 4))
+			{
+				case 1:
+					intro = StringConsts.DerpQuote;
+					break;
 
-		//		case 2:
-		//			intro = StringConsts.DerpQuote2;
-		//			break;
+				case 2:
+					intro = StringConsts.DerpQuote2;
+					break;
 
-		//		case 3:
-		//			intro = StringConsts.DerpQuote3;
-		//			break;
-		//	}
+				case 3:
+					intro = StringConsts.DerpQuote3;
+					break;
+			}
 
-		//	await Context.Channel.SendMessageAsync(intro);
-		//	await Task.Delay(3000);
-		//	await ReplyAsync("", false, builder.Build());
+			await Context.Channel.SendMessageAsync(intro);
+			await Task.Delay(3000);
+			await ReplyAsync("", false, builder.Build());
 
-		//	_loggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', category));
-		//}
+			_loggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', category));
+		}
 
 		[Command("blueribbon"), Summary("Passes for hidden gift")]
 		public async Task UnityAsync()
