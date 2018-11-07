@@ -53,7 +53,8 @@ namespace MarekMotykaBot.Services
 
 			foreach (var task in TimedTasks)
 			{
-				if (task.Hours.Contains(currentDateTime.Hour) && task.DaysOfWeek.Contains(currentDateTime.DayOfWeek))
+				if (task.Hours.Contains(currentDateTime.Hour) && 
+					(task.DaysOfWeek.Contains(currentDateTime.DayOfWeek) || task.DaysOfMonth.Contains(currentDateTime.Day)))
 				{
 					this.GetType().GetMethod(task.Name).Invoke(this, null);
 				}
@@ -115,6 +116,43 @@ namespace MarekMotykaBot.Services
 
 			await channelToPost.SendMessageAsync(StringConsts.QuoteForToday);
 			await Task.Delay(1000);
+			await channelToPost.SendMessageAsync("", false, builder.Build());
+		}
+
+		public async Task SwearWordCount()
+		{
+			StringBuilder sb = new StringBuilder();
+
+			var counterList = _serializer.LoadFromFile<WordCounterEntry>("wordCounter.json");
+
+			var builder = new EmbedBuilder()
+			{
+				Color = new Color(114, 137, 218),
+				Description = StringConsts.SwearWordCounterHeader
+			};
+
+			foreach (string swearWord in counterList.Select(x => x.Word).Distinct())
+			{
+				var specificSwearWordEntries = counterList.Where(x => x.Word.Equals(swearWord)).OrderByDescending(x => x.CounterValue);
+
+				foreach (var entry in specificSwearWordEntries)
+				{
+					sb.AppendLine(string.Format(StringConsts.SwearWordCounterEntry, entry.DiscordNickname, entry.Word, entry.CounterValue));
+				}
+
+				if (!string.IsNullOrEmpty(sb.ToString()))
+					builder.AddField(x =>
+					{
+						x.Name = swearWord;
+						x.Value = sb.ToString();
+						x.IsInline = true;
+					});
+
+				sb.Clear();
+			}
+
+			var channelToPost = _client.GetChannel(_destinationChannel) as IMessageChannel;
+
 			await channelToPost.SendMessageAsync("", false, builder.Build());
 		}
 	}
