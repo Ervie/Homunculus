@@ -87,7 +87,7 @@ namespace MarekMotykaBot
 			if (!message.Author.IsBot)
 			{
 				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _marekFaceWords, "marekface"), "marekface");
-				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _marekFaceWords, "skeletor"), "skeletor");
+				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _skeletorWords, "skeletor"), "skeletor");
 				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _takeuchiWords, "takeuchi"), "takeuchi");
                 await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _ziewaczWords, "ziewface"), "ziewface");
             }
