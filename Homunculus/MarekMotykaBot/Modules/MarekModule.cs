@@ -173,6 +173,33 @@ namespace MarekMotykaBot.Modules
 			_loggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', captions));
 		}
 
+		[Command("DrakeMeme"), Alias("drake"), Summary("Create your own Marek meme image, text split by semicolon - Marek Drake version")]
+		public async Task DrakeMemeAsync(params string[] text)
+		{
+			var captions = string.Join(" ", text).Split(';').ToList();
+
+			if (captions.Count < 2)
+				return;
+
+			for (int i = 0; i < captions.Count; i++)
+			{
+				captions[i] = captions[i].RemoveEmojisAndEmotes();
+			}
+
+
+			if (string.IsNullOrWhiteSpace(captions[0]) || string.IsNullOrWhiteSpace(captions[1]))
+				return;
+
+			string toptext = captions[0].ToUpper();
+			string bottomtext = captions[1].ToUpper();
+
+			string resultUrl = await _imgFlip.CreateDrakeMarekMeme(toptext, bottomtext);
+
+			await ReplyAsync(resultUrl);
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', captions));
+		}
+
 		[Command("MarekMeme2"), Alias("meme2"), Summary("Create your own Marek meme image, text split by semicolon - laughing version")]
 		public async Task NewMeme2Async(params string[] text)
 		{

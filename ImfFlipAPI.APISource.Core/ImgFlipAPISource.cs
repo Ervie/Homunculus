@@ -116,6 +116,17 @@ namespace ImgFlipAPI.APISource.Core
         }
         #endregion
 
+		protected internal void AddBoxesContent(ref MultipartFormDataContent formDataContent, TextBox textBox, int textBoxIndex)
+		{
+			formDataContent.Add(new StringContent(textBox.text), "boxes[" + textBoxIndex + "][text]");
+			formDataContent.Add(new StringContent(textBox.x.ToString()), "boxes[" + textBoxIndex + "][x]");
+			formDataContent.Add(new StringContent(textBox.y.ToString()), "boxes[" + textBoxIndex + "][y]");
+			formDataContent.Add(new StringContent(textBox.width.ToString()), "boxes[" + textBoxIndex + "][width]");
+			formDataContent.Add(new StringContent(textBox.height.ToString()), "boxes[" + textBoxIndex + "][height]");
+			formDataContent.Add(new StringContent(textBox.color), "boxes[" + textBoxIndex + "][color]");
+			formDataContent.Add(new StringContent(textBox.outline_color), "boxes[" + textBoxIndex + "][outline_color]");
+		}
+
         #region [API] General Endpoint
         /// <summary>
         /// Gets an array of popular memes that may be captioned with this API. The size of this array and the order of memes may change at any time. When this description was written, it returned 100 memes ordered by how many times they were captioned in the last 30 days. 
@@ -134,7 +145,7 @@ namespace ImgFlipAPI.APISource.Core
         /// <param name="Title">The title of the image.</param>
         /// <param name="Description">The description of the image.</param>
         /// <returns></returns>
-        public async Task<CaptionMemeRoot> CaptionMemeAsync(String TemplateID, String username, String password, String TopText, String BottomText)
+        public async Task<CaptionMemeRoot> CaptionMemeAsync(String TemplateID, String username, String password, String TopText, String BottomText, TextBox[] boxes = null)
         {
             MultipartFormDataContent content = new MultipartFormDataContent(BoundaryGuid.ToString());
             if (TemplateID != String.Empty)
@@ -158,7 +169,14 @@ namespace ImgFlipAPI.APISource.Core
             {
                 content.Add(new StringContent(BottomText), "text1");
             }
-            String responseString = await PostAnonymousImgflipDataAsync(ImgFlipEndpoints.CaptionImage, content);
+			if (boxes != null)
+			{
+				for (int i = 0; i < boxes.Length; i++)
+				{
+					AddBoxesContent(ref content, boxes[i], i);
+				}
+			}
+			String responseString = await PostAnonymousImgflipDataAsync(ImgFlipEndpoints.CaptionImage, content);
             CaptionMemeRoot x = await Task.Run(() => JsonConvert.DeserializeObject<CaptionMemeRoot>(responseString, _defaultSerializerSettings));
 
             return x;
@@ -188,10 +206,10 @@ namespace ImgFlipAPI.APISource.Core
         /// <param name="TopText">Text on the top line of the meme</param>
         /// <param name="BottomText">Text on the bottom line of the meme</param>
         /// <returns></returns>
-        public async Task<CaptionMemeRoot> CaptionMemeAsync(int memeID, String username, String password, String TopText, String BottomText)
+        public async Task<CaptionMemeRoot> CaptionMemeAsync(int memeID, String username, String password, String TopText, String BottomText, TextBox[] boxes = null)
         {
             String templateIDToUse = memeID.ToString();
-            CaptionMemeRoot x = await CaptionMemeAsync(templateIDToUse, username, password, TopText, BottomText);
+            CaptionMemeRoot x = await CaptionMemeAsync(templateIDToUse, username, password, TopText, BottomText, boxes);
             return x;
         }
 

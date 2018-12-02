@@ -12,7 +12,8 @@ namespace ImgFlipAPI.APISource.Core.Models
         public string url { get; set; }
         public int width { get; set; }
         public int height { get; set; }
-    }
+		public TextBox[] boxes { get; set; }
+	}
 
     public class MemeList
     {
@@ -24,4 +25,15 @@ namespace ImgFlipAPI.APISource.Core.Models
         public bool success { get; set; }
         public MemeList data { get; set; }
     }
+
+	public class TextBox
+	{
+		public string text { get; set; }
+		public int x { get; set; }
+		public int y { get; set; }
+		public int width { get; set; }
+		public int height { get; set; }
+		public string color { get; set; }
+		public string outline_color { get; set; }
+	}
 }
