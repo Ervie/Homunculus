@@ -16,7 +16,9 @@ namespace MarekMotykaBot.DataTypes
 
         public string[] Translations { get; set; }
 
-        public CharadeEntry(int id, string title, string[] translations, int[] animeId, int[] mangaId, string picUrl)
+		public string[] Users { get; set; }
+
+		public CharadeEntry(int id, string title, string[] translations, int[] animeId, int[] mangaId, string picUrl)
         {
             Title = title;
             Translations = translations;

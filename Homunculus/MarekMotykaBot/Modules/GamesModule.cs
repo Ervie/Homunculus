@@ -191,7 +191,17 @@ namespace MarekMotykaBot.Modules
                     });
                 }
 
-                await ReplyAsync("", false, builder.Build());
+				if (selectedEntry.Users.Count() > 0)
+				{
+					builder.AddField(x =>
+					{
+						x.Name = "Obejrzane/przeczytane przez:";
+						x.Value = string.Join(Environment.NewLine, selectedEntry.Users);
+						x.IsInline = false;
+					});
+				}
+
+				await ReplyAsync("", false, builder.Build());
 
                 charadeCache.Add(selectedEntry.Id);
 
