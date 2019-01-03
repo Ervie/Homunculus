@@ -22,8 +22,7 @@ namespace MarekMotykaBot.Services
         private readonly IServiceProvider _provider;
 
         public IConfiguration Configuration { get; set; }
-
-        // DiscordSocketClient, CommandService, and IServiceProvider are injected automatically from the IServiceProvider
+		
         public CommandHandlingService(IConfiguration configuration, DiscordSocketClient discord, CommandService commands, MessageScannerService scanner, Random random, IServiceProvider provider, JSONSerializerService jSONSerializer)
         {
             _discord = discord;
