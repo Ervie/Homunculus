@@ -77,5 +77,39 @@ namespace MarekMotykaBot.Modules
 
 			_loggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
+
+		[Command("addSMEntry"), Alias("sma"), Summary("Add entry to StreamMonday schedule"), RequireUserPermission(GuildPermission.Administrator)]
+		public async Task AddEntryToStreamMonday(params string[] text)
+		{
+			string entry = string.Join(" ", text);
+
+			List<string> schedule = _serializer.LoadFromFile<string>("streamMonday.json");
+
+			if (!schedule.Contains(entry))
+			{
+				schedule.Add(entry);
+			}
+
+			_serializer.SaveToFile<string>("streamMonday.json", schedule);
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName, entry);
+		}
+
+		[Command("removeSMEntry"), Alias("smr"), Summary("Remove entry from StreamMonday schedule"), RequireUserPermission(GuildPermission.Administrator)]
+		public async Task RemoveEntryFromStreamMonday(params string[] text)
+		{
+			string entry = string.Join(" ", text);
+
+			List<string> schedule = _serializer.LoadFromFile<string>("streamMonday.json");
+
+			if (schedule.Contains(entry))
+			{
+				schedule.Remove(entry);
+			}
+
+			_serializer.SaveToFile<string>("streamMonday.json", schedule);
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName, entry);
+		}
 	}
 }
