@@ -375,7 +375,7 @@ namespace MarekMotykaBot.Modules
                     ? StringConsts.SorryForLateArrivalMessage1 
                     : StringConsts.SorryForLateArrivalMessage2;
                 await Context.Channel.SendMessageAsync(lateArrivalMessage);
-                await Task.Delay(2000);
+                await Task.Delay(3000);
             }
 
 			await Context.Channel.SendMessageAsync(intro);
