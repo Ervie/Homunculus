@@ -376,6 +376,22 @@
 			{
 				return StringResources.ResourceManager.GetString("eggString");
 			}
-		}
-	}
+        }
+
+        public static string SorryForLateArrivalMessage1
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("lateArrivalMessage1");
+            }
+        }
+
+        public static string SorryForLateArrivalMessage2
+        {
+            get
+            {
+                return StringResources.ResourceManager.GetString("lateArrivalMessage2");
+            }
+        }
+    }
 }
