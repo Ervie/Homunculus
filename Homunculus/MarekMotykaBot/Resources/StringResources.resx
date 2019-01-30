@@ -181,6 +181,12 @@
   <data name="job" xml:space="preserve">
     <value>Sorry, teraz pracuję.</value>
   </data>
+  <data name="lateArrivalMessage1" xml:space="preserve">
+    <value>Sorry, mordo! Autobus mi uciekł i się spóźniłem.</value>
+  </data>
+  <data name="lateArrivalMessage2" xml:space="preserve">
+    <value>Stary, wybacz spóźnienie! Myślałem, że też się spóźnisz.</value>
+  </data>
   <data name="legiaWarszawa" xml:space="preserve">
     <value>Legia Warszawa to najlepszy klub, kto nie wierzy, to chuj mu w dziób!</value>
   </data>

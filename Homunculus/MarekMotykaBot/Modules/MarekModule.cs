@@ -366,6 +366,18 @@ namespace MarekMotykaBot.Modules
 					break;
 			}
 
+            int lateArrivalProbability = _rng.Next(0, 10);
+            if (lateArrivalProbability == 1)
+            {
+                await Task.Delay(5000);
+                int lateMessageId = _rng.Next(0, 2);
+                string lateArrivalMessage = lateMessageId == 0 
+                    ? StringConsts.SorryForLateArrivalMessage1 
+                    : StringConsts.SorryForLateArrivalMessage2;
+                await Context.Channel.SendMessageAsync(lateArrivalMessage);
+                await Task.Delay(3000);
+            }
+
 			await Context.Channel.SendMessageAsync(intro);
 			await Task.Delay(3000);
 			await ReplyAsync("", false, builder.Build());
