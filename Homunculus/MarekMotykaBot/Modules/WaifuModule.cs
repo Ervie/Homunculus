@@ -139,10 +139,10 @@ namespace MarekMotykaBot.Modules
                     await Context.Channel.SendMessageAsync("...");
                     break;
                 case 2:
-                    await Context.Channel.SendMessageAsync(string.Format(StringConsts.HusbandoBest, husbandoList[selectedHusbandoIndex]));
+                    await Context.Channel.SendMessageAsync(string.Format(StringConsts.HusbandoBetter, husbandoList[selectedHusbandoIndex]));
                     break;
                 default:
-                    await Context.Channel.SendMessageAsync(string.Format(StringConsts.HusbandoBetter, husbandos[selectedHusbandoIndex]));
+                    await Context.Channel.SendMessageAsync(string.Format(StringConsts.HusbandoBest, husbandos[selectedHusbandoIndex]));
                     break;
 			}
 
