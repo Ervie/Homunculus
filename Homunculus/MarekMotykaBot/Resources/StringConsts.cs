@@ -393,5 +393,13 @@
                 return StringResources.ResourceManager.GetString("lateArrivalMessage2");
             }
         }
-    }
+
+		public static string RabbitMissing
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("rabbitMissing");
+			}
+		}
+	}
 }

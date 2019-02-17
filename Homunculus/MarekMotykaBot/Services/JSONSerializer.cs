@@ -20,7 +20,16 @@ namespace MarekMotykaBot.Services
             resourcesPath = AppContext.BaseDirectory + configuration["configValues:resourcePath"];
         }
 
-        public List<T> LoadFromFile<T>(string fileName)
+		public T LoadSingleFromFile<T>(string fileName)
+		{
+			var text = File.ReadAllText(resourcesPath + fileName, Encoding.UTF8);
+
+			var deserialized = JsonConvert.DeserializeObject<T>(text);
+
+			return deserialized;
+		}
+
+		public List<T> LoadFromFile<T>(string fileName)
         {
             var text = File.ReadAllText(resourcesPath + fileName, Encoding.UTF8);
 
@@ -29,7 +38,13 @@ namespace MarekMotykaBot.Services
             return deserializedList ?? new List<T>();
         }
 
-        public void SaveToFile<T>(string fileName, List<T> dataToSave)
+		public void SaveSingleToFile<T>(string fileName, T dataToSave)
+		{
+			var json = JsonConvert.SerializeObject(dataToSave);
+			File.WriteAllText(resourcesPath + fileName, json, Encoding.UTF8);
+		}
+
+		public void SaveToFile<T>(string fileName, List<T> dataToSave)
         {
             var json = JsonConvert.SerializeObject(dataToSave);
             File.WriteAllText(resourcesPath + fileName, json, Encoding.UTF8);

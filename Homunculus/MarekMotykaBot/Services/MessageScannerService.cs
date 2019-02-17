@@ -73,6 +73,7 @@ namespace MarekMotykaBot
 				await DetectMentions(context, message);
 				await DetectSwearWord(context, message);
 				await DetectStreamMonday(context, message);
+				await DetectRabbitLink(context, message);
 			}
 		}
 
@@ -247,6 +248,18 @@ namespace MarekMotykaBot
 				await context.Channel.SendMessageAsync("", false, builder.Build());
 			}
 			
+		}
+
+		private async Task DetectRabbitLink(SocketCommandContext context, SocketUserMessage message)
+		{
+			if (message.Content.Contains("https://www.rabb.it/Tarlfgar"))
+			{
+				bool rabbitLinkedFlag = _serializer.LoadSingleFromFile<bool>("hasLonkLinkedRabbit.json");
+
+				rabbitLinkedFlag = true;
+
+				_serializer.SaveSingleToFile<bool>("hasLonkLinkedRabbit.json", rabbitLinkedFlag);
+			}
 		}
 	}
 }

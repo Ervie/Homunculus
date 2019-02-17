@@ -8,6 +8,7 @@ using Discord;
 using Discord.WebSocket;
 using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.DataTypes.Enumerations;
+using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
 using Microsoft.Extensions.Configuration;
 
@@ -36,7 +37,7 @@ namespace MarekMotykaBot.Services
 
 			TimedTasks = _serializer.LoadFromFile<TimedTask>("timedTasks.json");
 
-			_timer = new Timer(60 * 60 * 1000);
+			_timer = new Timer(60 * 1000);
 
 			_timer.Elapsed += new ElapsedEventHandler(HourlyTimerTick);
 		}
@@ -53,7 +54,8 @@ namespace MarekMotykaBot.Services
 
 			foreach (var task in TimedTasks)
 			{
-				if (task.Hours.Contains(currentDateTime.Hour) && 
+				if (task.Hours.Contains(currentDateTime.Hour) &&
+					task.Minutes.Contains(currentDateTime.Minute) &&
 					(task.DaysOfWeek.Contains(currentDateTime.DayOfWeek) || task.DaysOfMonth.Contains(currentDateTime.Day)))
 				{
 					this.GetType().GetMethod(task.Name).Invoke(this, null);
@@ -73,7 +75,7 @@ namespace MarekMotykaBot.Services
 
 			builder.AddField(x =>
 			{
-				x.Name = "Rozkładówka na " + nextTuesday.ToString("dd.MM");
+				x.Name = "Rozkładówka (backlog) na " + nextTuesday.ToString("dd.MM");
 				x.Value = string.Join(Environment.NewLine, schedule.ToArray());
 				x.IsInline = false;
 			});
@@ -93,6 +95,39 @@ namespace MarekMotykaBot.Services
 			}
 
 			await channelToPost.SendMessageAsync("", false, builder.Build());
+		}
+
+		public async Task RabbitReminder()
+		{
+			bool rabbitLinkedFlag = _serializer.LoadSingleFromFile<bool>("hasLonkLinkedRabbit.json");
+
+			if (!rabbitLinkedFlag)
+			{
+				var channelToPost = _client.GetChannel(_destinationChannel) as IMessageChannel;
+
+				var guild = _client.Guilds.FirstOrDefault(x => x.Name.Equals(Configuration["tokens:destinationServerName"]));
+
+				if (guild != null)
+				{
+					var alias = guild.Users.FirstOrDefault(x => x.DiscordId().Equals(Configuration["configValues:streamOwner"]));
+
+					if (alias != null)
+					{
+						await channelToPost.SendMessageAsync(alias.Mention);
+					}
+				}
+
+				await channelToPost.SendMessageAsync(StringConsts.RabbitMissing);
+			}
+		}
+
+		public async Task RabbitReminderReset()
+		{
+			bool rabbitLinkedFlag = _serializer.LoadSingleFromFile<bool>("hasLonkLinkedRabbit.json");
+
+			rabbitLinkedFlag = false;
+
+			_serializer.SaveSingleToFile<bool>("hasLonkLinkedRabbit.json", rabbitLinkedFlag);
 		}
 
 		public async Task QuoteOfTheDay()

@@ -217,6 +217,9 @@
   <data name="quoteForToday" xml:space="preserve">
     <value>Cytat na dziś:</value>
   </data>
+  <data name="rabbitMissing" xml:space="preserve">
+    <value>Lonk grubasie, gdzie rabbit?!</value>
+  </data>
   <data name="runAway" xml:space="preserve">
     <value>Spierdalamyyyy!</value>
   </data>

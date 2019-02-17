@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MarekMotykaBot.DataTypes
 {
     public class TimedTask
-    {
+	{
+		public ICollection<int> Minutes { get; set; }
+
 		public ICollection<int> Hours { get; set; }
 
 		public ICollection<int> DaysOfMonth { get; set; }

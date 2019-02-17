@@ -5,9 +5,9 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <StartupObject />
-    <Version>2.7.8</Version>
-    <AssemblyVersion>2.7.0.8</AssemblyVersion>
-    <FileVersion>2.7.0.7</FileVersion>
+    <Version>2.7.9</Version>
+    <AssemblyVersion>2.7.0.9</AssemblyVersion>
+    <FileVersion>2.7.0.9</FileVersion>
     <Description>Simple mimicking Discord bot written with .Net Core and Discord.Net.</Description>
     <PackageLicenseUrl>https://github.com/Ervie/Homunculus/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Ervie/Homunculus</PackageProjectUrl>
@@ -76,6 +76,9 @@
     <None Update="Resources\TextFiles\declineCache.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\TextFiles\hasLonkLinkedRabbit.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\TextFiles\marekTrigger.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -120,5 +123,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\ImfFlipAPI.APISource.Core\ImfFlipAPI.APISource.Core.csproj" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties Resources_4TextFiles_4hasLonkLinkedRabbit_1json__JSONSchema="http://json.schemastore.org/avro-avsc" /></VisualStudio></ProjectExtensions>
 
 </Project>
