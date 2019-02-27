@@ -401,5 +401,13 @@
 				return StringResources.ResourceManager.GetString("rabbitMissing");
 			}
 		}
+
+		public static string PreemptiveAttack
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("preemptiveAttack");
+			}
+		}
 	}
 }

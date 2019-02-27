@@ -340,6 +340,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Atak bez ostrzeżenia!.
+        /// </summary>
+        internal static string preemptiveAttack {
+            get {
+                return ResourceManager.GetString("preemptiveAttack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cytat na dziś:.
         /// </summary>
         internal static string quoteForToday {

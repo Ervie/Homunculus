@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services
@@ -84,15 +85,22 @@ namespace MarekMotykaBot.Services
 
                 string meanResponse = string.Format(StringConsts.DeclineCommand, commandName);
                 
-                int randomInt = _rng.Next(1, 20);
+                int randomInt = _rng.Next(1, 100);
 
                 // bad luck, you suck
-                if (randomInt == 1)
+                if (randomInt < 6)
                 {
                     commandDeclined = true;
 					AddDeclineCache(context.User.DiscordId(), commandName);
                     await context.Channel.SendMessageAsync(meanResponse);
                 }
+				else if (randomInt == 6)
+				{
+					commandDeclined = true;
+					await context.Channel.SendMessageAsync(StringConsts.PreemptiveAttack);
+					Thread.Sleep(2000);
+					await context.Channel.SendMessageAsync(StringConsts.ShitString);
+				}
             }
             return commandDeclined;
         }

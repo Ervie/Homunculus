@@ -214,6 +214,9 @@
   <data name="parameters" xml:space="preserve">
     <value>Parametry: {0}</value>
   </data>
+  <data name="preemptiveAttack" xml:space="preserve">
+    <value>Atak bez ostrzeżenia!</value>
+  </data>
   <data name="quoteForToday" xml:space="preserve">
     <value>Cytat na dziś:</value>
   </data>

@@ -252,7 +252,7 @@ namespace MarekMotykaBot
 
 		private async Task DetectRabbitLink(SocketCommandContext context, SocketUserMessage message)
 		{
-			if (message.Content.Contains("https://www.rabb.it/Tarlfgar"))
+			if (message.Content.Contains("https://www.rabb.it"))
 			{
 				bool rabbitLinkedFlag = _serializer.LoadSingleFromFile<bool>("hasLonkLinkedRabbit.json");
 
