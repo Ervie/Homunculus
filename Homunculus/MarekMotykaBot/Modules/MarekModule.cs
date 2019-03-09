@@ -144,9 +144,19 @@ namespace MarekMotykaBot.Modules
 			await ReplyAsync(gifUrl);
 
 			_loggingService.CustomCommandLog(Context.Message, ServiceName);
-		}
+        }
 
-		[Command("MarekMeme"), Alias("meme"), Summary("Create your own Marek meme image, text split by semicolon - marekface version")]
+        [Command("LonkMeme"), Alias("lonk"), Summary("Post random Lonk meme image")]
+        public async Task LonkMemeAsync()
+        {
+            string picUrl = await _imgur.GetRandomImageFromAlbum("w5dzWtL");
+
+            await ReplyAsync(picUrl);
+
+            _loggingService.CustomCommandLog(Context.Message, ServiceName);
+        }
+
+        [Command("MarekMeme"), Alias("meme"), Summary("Create your own Marek meme image, text split by semicolon - marekface version")]
 		public async Task NewMemeAsync(params string[] text)
 		{
 			var captions = string.Join(" ", text).Split(';').ToList();
