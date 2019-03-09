@@ -74,6 +74,7 @@ namespace MarekMotykaBot
 				await DetectSwearWord(context, message);
 				await DetectStreamMonday(context, message);
 				await DetectRabbitLink(context, message);
+				await DetectMarekMessage(context, message);
 			}
 		}
 
@@ -259,6 +260,19 @@ namespace MarekMotykaBot
 				rabbitLinkedFlag = true;
 
 				_serializer.SaveSingleToFile<bool>("hasLonkLinkedRabbit.json", rabbitLinkedFlag);
+			}
+		}
+
+		private async Task DetectMarekMessage(SocketCommandContext context, SocketUserMessage message)
+		{
+			if (message.Author.DiscordId().Equals("MarekMotykaBot#2213"))
+			{
+				LastMarekMessage lastMessage = _serializer.LoadSingleFromFile<LastMarekMessage>("marekLastMessage.json");
+
+				lastMessage.MessageContent = message.Content;
+				lastMessage.DatePosted = message.Timestamp.DateTime;
+
+				_serializer.SaveSingleToFile("marekLastMessage.json", lastMessage);
 			}
 		}
 	}

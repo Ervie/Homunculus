@@ -135,6 +135,9 @@
   <data name="customReactionLog" xml:space="preserve">
     <value>Dodano reakcję {0} dla wiadomości użytkownika {1} o treści {2} w kanale {3}</value>
   </data>
+  <data name="daysAgo" xml:space="preserve">
+    <value>{0} dni temu.</value>
+  </data>
   <data name="declineCommand" xml:space="preserve">
     <value>Z {0} to se możesz... to wiesz co se możesz!</value>
     <comment>Sometimes he has enough</comment>
@@ -250,6 +253,9 @@
     <value>Sorry, ale muszę uczyć się na obronę.</value>
     <comment>Another cheeky excuse to not hangout with friends</comment>
   </data>
+  <data name="today" xml:space="preserve">
+    <value>dzisiaj.</value>
+  </data>
   <data name="toldYou" xml:space="preserve">
     <value>Ech {0}, przecież mówiłem Ci że z {1} to se możesz... To wiesz co se możesz!</value>
   </data>
@@ -273,6 +279,9 @@
   </data>
   <data name="wrongQuestion" xml:space="preserve">
     <value>Złe pytanie.</value>
+  </data>
+  <data name="yesterday" xml:space="preserve">
+    <value>wczoraj.</value>
   </data>
   <data name="ytNotFound" xml:space="preserve">
     <value>Nie znalazłem takiego filmu jak {0}.</value>

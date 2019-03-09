@@ -5,9 +5,9 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <StartupObject />
-    <Version>2.7.10</Version>
-    <AssemblyVersion>2.7.0.10</AssemblyVersion>
-    <FileVersion>2.7.0.10</FileVersion>
+    <Version>2.7.11</Version>
+    <AssemblyVersion>2.7.0.11</AssemblyVersion>
+    <FileVersion>2.7.0.11</FileVersion>
     <Description>Simple mimicking Discord bot written with .Net Core and Discord.Net.</Description>
     <PackageLicenseUrl>https://github.com/Ervie/Homunculus/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Ervie/Homunculus</PackageProjectUrl>
@@ -77,6 +77,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\TextFiles\hasLonkLinkedRabbit.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\TextFiles\marekLastMessage.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\TextFiles\marekTrigger.json">

@@ -410,5 +410,38 @@ namespace MarekMotykaBot.Modules
 
 			_loggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
+
+		[Command("lastContact"), Alias("lc"), Summary("Last message by Marek")]
+		public async Task LastContactAsync()
+		{
+			LastMarekMessage lastMessage = _serializer.LoadSingleFromFile<LastMarekMessage>("marekLastMessage.json");
+
+			if (lastMessage != null)
+			{
+				var builder = new EmbedBuilder();
+
+				string footerSuffix = string.Empty;
+
+				int daysDifference = (DateTime.Now.Date - lastMessage.DatePosted.Date).Days;
+
+				switch (daysDifference)
+				{
+					case (0):
+						footerSuffix = StringConsts.Today;
+						break;
+					case (1):
+						footerSuffix = StringConsts.Yesterday;
+						break;
+					default:
+						footerSuffix = string.Format(StringConsts.DaysAgo, daysDifference);
+						break;
+				}
+
+				builder.WithFooter(lastMessage.DatePosted.ToString("yyyy-MM-dd HH:mm") + ", " + footerSuffix);
+				builder.WithTitle(lastMessage.MessageContent);
+
+				await ReplyAsync("", false, builder.Build());
+			}
+		}
 	}
 }

@@ -115,6 +115,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} dni temu..
+        /// </summary>
+        internal static string daysAgo {
+            get {
+                return ResourceManager.GetString("daysAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Z {0} to se możesz... to wiesz co se możesz!.
         /// </summary>
         internal static string declineCommand {
@@ -439,6 +448,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to dzisiaj..
+        /// </summary>
+        internal static string today {
+            get {
+                return ResourceManager.GetString("today", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ech {0}, przecież mówiłem Ci że z {1} to se możesz... To wiesz co se możesz!.
         /// </summary>
         internal static string toldYou {
@@ -507,6 +525,15 @@ namespace MarekMotykaBot.Resources {
         internal static string wrongQuestion {
             get {
                 return ResourceManager.GetString("wrongQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to wczoraj..
+        /// </summary>
+        internal static string yesterday {
+            get {
+                return ResourceManager.GetString("yesterday", resourceCulture);
             }
         }
         

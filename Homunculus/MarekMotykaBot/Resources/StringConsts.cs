@@ -409,5 +409,29 @@
 				return StringResources.ResourceManager.GetString("preemptiveAttack");
 			}
 		}
+
+		public static string Today
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("today");
+			}
+		}
+
+		public static string Yesterday
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("yesterday");
+			}
+		}
+
+		public static string DaysAgo
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("daysAgo");
+			}
+		}
 	}
 }
