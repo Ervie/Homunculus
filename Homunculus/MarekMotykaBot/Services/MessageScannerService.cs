@@ -265,7 +265,7 @@ namespace MarekMotykaBot
 
 		private async Task DetectMarekMessage(SocketCommandContext context, SocketUserMessage message)
 		{
-			if (message.Author.DiscordId().Equals("MarekMotykaBot#2213"))
+			if (message.Author.DiscordId().Equals("Erina#5946"))
 			{
 				LastMarekMessage lastMessage = _serializer.LoadSingleFromFile<LastMarekMessage>("marekLastMessage.json");
 
