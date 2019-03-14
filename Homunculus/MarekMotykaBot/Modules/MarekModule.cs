@@ -443,5 +443,19 @@ namespace MarekMotykaBot.Modules
 				await ReplyAsync("", false, builder.Build());
 			}
 		}
-	}
+
+        [Command("suchar"), Alias("pun"), Summary("A derpish pun from a derpish member")]
+        public async Task DerpPunAsync()
+        {
+            var suchars = _serializer.LoadFromFile<OneLinerJoke>("derpSuchars.json");
+            var selectedSucharIndex = _rng.Next(0, suchars.Count);
+            var selectedSuchar = suchars[selectedSucharIndex];
+
+            await Context.Channel.SendMessageAsync($"{selectedSuchar.Question}");
+            await Task.Delay(3000);
+            await Context.Channel.SendMessageAsync($"{selectedSuchar.Punchline}");
+
+            _loggingService.CustomCommandLog(Context.Message, ServiceName);
+        }
+    }
 }
