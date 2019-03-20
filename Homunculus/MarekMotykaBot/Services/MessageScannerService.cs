@@ -270,7 +270,7 @@ namespace MarekMotykaBot
 				LastMarekMessage lastMessage = _serializer.LoadSingleFromFile<LastMarekMessage>("marekLastMessage.json");
 
 				lastMessage.MessageContent = message.Content;
-				lastMessage.DatePosted = message.Timestamp.DateTime;
+				lastMessage.DatePosted = message.Timestamp.DateTime.ToLocalTime();
 
 				_serializer.SaveSingleToFile("marekLastMessage.json", lastMessage);
 			}
