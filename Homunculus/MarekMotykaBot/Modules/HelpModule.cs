@@ -136,12 +136,15 @@ namespace MarekMotykaBot.Modules
 			int daysUntilMonday = ((int)DayOfWeek.Tuesday - (int)today.DayOfWeek + 7) % 7;
 			DateTime nextTueday = today.AddDays(daysUntilMonday);
 
-			builder.AddField(x =>
+			if (schedule != null && schedule.Count > 0)
 			{
-				x.Name = "Rozkładówka na " + nextTueday.ToString("dd.MM");
-				x.Value = string.Join(Environment.NewLine, schedule.ToArray());
-				x.IsInline = false;
-			});
+				builder.AddField(x =>
+				{
+					x.Name = "Rozkładówka na " + nextTueday.ToString("dd.MM");
+					x.Value = string.Join(Environment.NewLine, schedule.ToArray());
+					x.IsInline = false;
+				});
+			}
 
 			var role = Context.Guild.Roles.First(x => x.Name.Equals(_configuration["configValues:streamAlias"]));
 
