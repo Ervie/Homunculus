@@ -65,14 +65,14 @@ namespace MarekMotykaBot.Modules
 			switch (damageNumber)
 			{
 				case (1):
-				case (2):
 					await Context.Channel.SendMessageAsync($"**{StringConsts.EggString}**");
 					break;
 
+				case (2):
 				case (3):
-					await Context.Channel.SendMessageAsync($"**{StringConsts.EggString}**");
+					await Context.Channel.SendMessageAsync($"**{StringConsts.ShitString}**");
 					await Task.Delay(1500);
-					await Context.Channel.SendMessageAsync($"**{StringConsts.InTheJar}**");
+					await Context.Channel.SendMessageAsync($"**{StringConsts.InTheAss}**");
 					break;
 
 				case (4):

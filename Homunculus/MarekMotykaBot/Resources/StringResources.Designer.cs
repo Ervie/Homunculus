@@ -241,6 +241,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ...w dupie!.
+        /// </summary>
+        internal static string inTheAss {
+            get {
+                return ResourceManager.GetString("inTheAss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ...w słoiku!.
         /// </summary>
         internal static string inTheJar {
@@ -408,6 +417,15 @@ namespace MarekMotykaBot.Resources {
         internal static string snoring {
             get {
                 return ResourceManager.GetString("snoring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         

@@ -433,5 +433,13 @@
 				return StringResources.ResourceManager.GetString("daysAgo");
 			}
 		}
+
+		public static string InTheAss
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("inTheAss");
+			}
+		}
 	}
 }
