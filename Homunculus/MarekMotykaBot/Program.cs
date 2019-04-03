@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
+using Hangfire;
+using Hangfire.MemoryStorage;
 
 namespace MarekMotykaBot
 {
@@ -52,7 +54,16 @@ namespace MarekMotykaBot
             await provider.GetRequiredService<StartupService>().StartAsync();
             provider.GetRequiredService<CommandHandlingService>();
 
-            await Task.Delay(-1);
+			GlobalConfiguration.Configuration
+				.UseMemoryStorage();
+
+			provider.GetRequiredService<TimerService>().SetRecurringJobs();
+
+			using (var server = new BackgroundJobServer())
+			{
+				await Task.Delay(-1);
+			}
+
         }
     }
 }
