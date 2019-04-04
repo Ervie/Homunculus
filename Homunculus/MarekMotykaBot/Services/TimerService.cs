@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Timers;
 using Discord;
 using Discord.WebSocket;
-using Hangfire;
 using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.DataTypes.Enumerations;
 using MarekMotykaBot.ExtensionsMethods;
@@ -17,6 +16,7 @@ namespace MarekMotykaBot.Services
 {
 	public class TimerService : IDiscordService
 	{
+		private readonly Timer _timer;
 		private readonly JSONSerializerService _serializer;
 		private readonly DiscordSocketClient _client;
 		private readonly Random _rng;
@@ -36,13 +36,30 @@ namespace MarekMotykaBot.Services
 			_destinationChannel = (ulong)Int64.Parse(Configuration["tokens:destinationServerId"]);
 
 			TimedTasks = _serializer.LoadFromFile<TimedTask>("timedTasks.json");
+
+			_timer = new Timer(60 * 1000);
+
+			_timer.Elapsed += new ElapsedEventHandler(HourlyTimerTick);
 		}
 
-		public void SetRecurringJobs()
+		public void StartTimer()
 		{
+			if (!_timer.Enabled)
+				_timer.Start();
+		}
+
+		private void HourlyTimerTick(object src, ElapsedEventArgs e)
+		{
+			DateTime currentDateTime = DateTime.Now;
+
 			foreach (var task in TimedTasks)
 			{
-				RecurringJob.AddOrUpdate<System.Reflection.MethodBase>(x => x.GetType().GetMethod(task.Name).Invoke(null, null), task.CronExpression);
+				if (task.Hours.Contains(currentDateTime.Hour) &&
+					task.Minutes.Contains(currentDateTime.Minute) &&
+					(task.DaysOfWeek.Contains(currentDateTime.DayOfWeek) || task.DaysOfMonth.Contains(currentDateTime.Day)))
+				{
+					this.GetType().GetMethod(task.Name).Invoke(this, null);
+				}
 			}
 		}
 
