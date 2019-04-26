@@ -165,45 +165,47 @@ namespace MarekMotykaBot.Modules
             {
                 randomCharadeEntryIndex = _rng.Next(0, charadeCollection.Count);
 
-                if (charadeCache.Contains(charadeCollection[randomCharadeEntryIndex].Id))
+                if (charadeCache.Contains(charadeCollection[randomCharadeEntryIndex].Series.Id))
                     continue;
 
                 CharadeEntry selectedEntry = charadeCollection[randomCharadeEntryIndex];
 				
                 var builder = new EmbedBuilder();
 
-                builder.WithImageUrl(selectedEntry.PicUrl);
+                builder.WithImageUrl(selectedEntry.Series.ImageUrl);
 
                 builder.AddField(x =>
                 {
                     x.Name = "Tytuł";
-                    x.Value = selectedEntry.Title;
+                    x.Value = selectedEntry.Series.Title;
                     x.IsInline = true;
                 });
 
-                if (selectedEntry.Translations.Count() > 0)
+				string translations = selectedEntry.Series.Translation.ListTranslationsWithNewLine(selectedEntry.Series.Title);
+
+                if (!string.IsNullOrWhiteSpace(translations))
                 {
                     builder.AddField(x =>
                     {
                         x.Name = "Tłumaczenia";
-                        x.Value = string.Join(Environment.NewLine, selectedEntry.Translations);
+                        x.Value = translations;
                         x.IsInline = false;
                     });
                 }
 
-				if (selectedEntry.Users.Count() > 0)
+				if (selectedEntry.KnownBy.Count() > 0)
 				{
 					builder.AddField(x =>
 					{
 						x.Name = "Obejrzane/przeczytane przez:";
-						x.Value = string.Join(Environment.NewLine, selectedEntry.Users);
+						x.Value = string.Join(Environment.NewLine, selectedEntry.KnownBy);
 						x.IsInline = false;
 					});
 				}
 
 				await ReplyAsync("", false, builder.Build());
 
-                charadeCache.Add(selectedEntry.Id);
+                charadeCache.Add(selectedEntry.Series.Id);
 
                 _serializer.SaveToFile<int>("charadeCache.json", charadeCache);
 

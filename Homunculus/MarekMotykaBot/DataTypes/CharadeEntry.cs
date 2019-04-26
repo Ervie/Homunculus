@@ -1,31 +1,53 @@
-﻿using System.Threading;
+﻿using System.Text;
+using System.Threading;
 
 namespace MarekMotykaBot.DataTypes
 {
     internal class CharadeEntry
     {
-        public int Id { get; set; }
+		public Series Series { get; set; }
 
-        public int[] AnimeId { get; set; }
+		public string[] KnownBy { get; set; }
+	}
 
-        public int[] MangaId { get; set; }
+	internal class Series
+	{
+		public int Id { get; set; }
 
-        public string Title { get; set; }
+		public string Title { get; set; }
 
-        public string PicUrl { get; set; }
+		public string ImageUrl { get; set; }
 
-        public string[] Translations { get; set; }
+		public CharadeTranslations Translation { get; set; }
+	}
 
-		public string[] Users { get; set; }
+	internal class CharadeTranslations
+	{
+		public string Polish { get; set; }
 
-		public CharadeEntry(int id, string title, string[] translations, int[] animeId, int[] mangaId, string picUrl)
-        {
-            Title = title;
-            Translations = translations;
-            AnimeId = animeId;
-            MangaId = mangaId;
-            PicUrl = picUrl;
-            Id = id;
-        }
-    }
+		public string EnglishLiterial { get; set; }
+
+		public string EnglishOfficial { get; set; }
+
+		public string Japansese { get; set; }
+
+		public string ListTranslationsWithNewLine(string mainTitle)
+		{
+			StringBuilder stringBuilder = new StringBuilder();
+			
+			if (!string.IsNullOrWhiteSpace(Polish) && !Polish.Equals(mainTitle))
+				stringBuilder.AppendLine(Polish);
+
+			if (!string.IsNullOrWhiteSpace(EnglishLiterial) && !EnglishLiterial.Equals(mainTitle))
+				stringBuilder.AppendLine(EnglishLiterial);
+
+			if (!string.IsNullOrWhiteSpace(EnglishOfficial) && !EnglishOfficial.Equals(mainTitle))
+				stringBuilder.AppendLine(EnglishOfficial);
+
+			if (!string.IsNullOrWhiteSpace(Japansese) && !Japansese.Equals(mainTitle))
+				stringBuilder.AppendLine(Japansese);
+
+			return stringBuilder.ToString();
+		}
+	}
 }
