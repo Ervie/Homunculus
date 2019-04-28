@@ -25,7 +25,7 @@ namespace MarekMotykaBot.DataTypes
 	{
 		public string Polish { get; set; }
 
-		public string EnglishLiterial { get; set; }
+		public string EnglishLiteral { get; set; }
 
 		public string EnglishOfficial { get; set; }
 
@@ -38,8 +38,8 @@ namespace MarekMotykaBot.DataTypes
 			if (!string.IsNullOrWhiteSpace(Polish) && !Polish.Equals(mainTitle))
 				stringBuilder.AppendLine(Polish);
 
-			if (!string.IsNullOrWhiteSpace(EnglishLiterial) && !EnglishLiterial.Equals(mainTitle))
-				stringBuilder.AppendLine(EnglishLiterial);
+			if (!string.IsNullOrWhiteSpace(EnglishLiteral) && !EnglishLiteral.Equals(mainTitle))
+				stringBuilder.AppendLine(EnglishLiteral);
 
 			if (!string.IsNullOrWhiteSpace(EnglishOfficial) && !EnglishOfficial.Equals(mainTitle))
 				stringBuilder.AppendLine(EnglishOfficial);
