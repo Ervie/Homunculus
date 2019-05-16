@@ -411,7 +411,7 @@ namespace MarekMotykaBot.Modules
 			_loggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
-		[Command("lastContact"), Alias("lc"), Summary("Last message by Marek")]
+		[Command("lastContact"), Alias("lc", "lastMessage", "lm"), Summary("Last message by Marek")]
 		public async Task LastContactAsync()
 		{
 			LastMarekMessage lastMessage = _serializer.LoadSingleFromFile<LastMarekMessage>("marekLastMessage.json");
@@ -438,7 +438,7 @@ namespace MarekMotykaBot.Modules
 				}
 
 				builder.WithFooter(lastMessage.DatePosted.ToString("yyyy-MM-dd HH:mm") + ", " + footerSuffix);
-				builder.WithTitle(lastMessage.MessageContent);
+				builder.WithTitle(lastMessage.MessageContent.Truncate(250));
 
 				await ReplyAsync("", false, builder.Build());
 			}
