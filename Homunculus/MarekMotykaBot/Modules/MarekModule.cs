@@ -340,14 +340,25 @@ namespace MarekMotykaBot.Modules
 
 			if (filtercategory != QuoteCategory.OfTheDay)
 			{
-				List<Quote> quotes = _serializer.LoadFromFile<Quote>("quotes.json");
+				// secret quote...
+				var secretQuoteResult = _rng.Next(1, 50);
+				if (secretQuoteResult == 2)
+				{
+					var secretQuote = string.Format(StringConsts.DeclineCommand, "!q");
+					var author = "Sztuczny Murzyn";
+					selectedQuote = new Quote(secretQuote, author, null);
+				}
+				else
+				{
+					List<Quote> quotes = _serializer.LoadFromFile<Quote>("quotes.json");
 
-				if (filtercategory != QuoteCategory.None)
-					quotes = quotes.Where(x => x.Categories.Contains(filtercategory)).ToList();
+					if (filtercategory != QuoteCategory.None)
+						quotes = quotes.Where(x => x.Categories.Contains(filtercategory)).ToList();
 
-				int randomQuoteIndex = _rng.Next(0, quotes.Count);
+					int randomQuoteIndex = _rng.Next(0, quotes.Count);
 
-				selectedQuote = quotes[randomQuoteIndex];
+					selectedQuote = quotes[randomQuoteIndex];
+				}
 			}
 			else
 			{
