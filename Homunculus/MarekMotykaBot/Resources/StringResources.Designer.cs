@@ -349,6 +349,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Jak Nakiri to tylko Erina! Reszta to shit!.
+        /// </summary>
+        internal static string onlyErina {
+            get {
+                return ResourceManager.GetString("onlyErina", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parametry: {0}.
         /// </summary>
         internal static string parameters {

@@ -177,8 +177,13 @@ namespace MarekMotykaBot
 				if (message.Content.ToLowerInvariant().Contains(waifuName.ToLowerInvariant()) && !message.Author.IsBot)
 				{
 					await context.Channel.SendMessageAsync(string.Format(StringConsts.MarekWaifus, waifuName));
-					break;
+					return;
 				}
+			}
+			var containsNakiri = message.Content.ToLowerInvariant().Contains("nakiri") && !message.Author.IsBot;
+			if (containsNakiri)
+			{
+				await context.Channel.SendMessageAsync(StringConsts.OnlyErina);
 			}
 		}
 
