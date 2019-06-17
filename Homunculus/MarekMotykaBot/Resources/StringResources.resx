@@ -292,4 +292,8 @@
   <data name="ytNotFound" xml:space="preserve">
     <value>Nie znalazłem takiego filmu jak {0}.</value>
   </data>
+  <data name="onlyErina" xml:space="preserve">
+    <value>Jak Nakiri to tylko Erina! Reszta to shit!</value>
+    <comment>Because she's the best.</comment>
+  </data>
 </root>

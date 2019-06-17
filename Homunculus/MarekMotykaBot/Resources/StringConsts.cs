@@ -441,5 +441,13 @@
 				return StringResources.ResourceManager.GetString("inTheAss");
 			}
 		}
+
+		public static string OnlyErina
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("onlyErina");
+			}
+		}
 	}
 }
