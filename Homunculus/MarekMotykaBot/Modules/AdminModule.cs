@@ -111,5 +111,17 @@ namespace MarekMotykaBot.Modules
 
 			_loggingService.CustomCommandLog(Context.Message, ServiceName, entry);
 		}
+
+		[Command("switchStreamReminderOff"), Alias("ssro"), Summary("Switch 'has Lonk linked rabbit yet' off using command"), RequireUserPermission(GuildPermission.Administrator)]
+		public async Task SwitchStreamReminderOff()
+		{
+			bool rabbitLinkedFlag = false;
+
+			_serializer.SaveSingleToFile<bool>("hasLonkLinkedRabbit.json", rabbitLinkedFlag);
+
+			await ReplyAsync(StringConsts.FlagReset);
+
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+		}
 	}
 }

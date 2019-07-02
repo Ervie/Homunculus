@@ -296,4 +296,7 @@
     <value>Jak Nakiri to tylko Erina! Reszta to shit!</value>
     <comment>Because she's the best.</comment>
   </data>
+  <data name="flagReset" xml:space="preserve">
+    <value>Flaga zresetowana.</value>
+  </data>
 </root>

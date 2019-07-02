@@ -449,5 +449,13 @@
 				return StringResources.ResourceManager.GetString("onlyErina");
 			}
 		}
+
+		public static string FlagReset
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("flagReset");
+			}
+		}
 	}
 }
