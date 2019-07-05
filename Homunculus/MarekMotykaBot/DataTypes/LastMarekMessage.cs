@@ -6,6 +6,8 @@ namespace MarekMotykaBot.DataTypes
 	{
 		public DateTime DatePosted { get; set; }
 
+		public bool IsImage { get; set; }
+
 		public string MessageContent { get; set; }
 	}
 }

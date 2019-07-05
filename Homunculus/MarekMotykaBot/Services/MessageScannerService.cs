@@ -274,7 +274,13 @@ namespace MarekMotykaBot
 			{
 				LastMarekMessage lastMessage = _serializer.LoadSingleFromFile<LastMarekMessage>("marekLastMessage.json");
 
-				lastMessage.MessageContent = message.Content;
+				bool isImage = string.IsNullOrWhiteSpace(message.Content) && message.Attachments.Any();
+
+				lastMessage.MessageContent = isImage ?
+					message.Attachments.First().Url :
+					message.Content;
+				lastMessage.IsImage = isImage;
+
 				lastMessage.DatePosted = message.Timestamp.DateTime.ToLocalTime();
 
 				_serializer.SaveSingleToFile("marekLastMessage.json", lastMessage);

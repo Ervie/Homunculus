@@ -449,7 +449,11 @@ namespace MarekMotykaBot.Modules
 				}
 
 				builder.WithFooter(lastMessage.DatePosted.ToString("yyyy-MM-dd HH:mm") + ", " + footerSuffix);
-				builder.WithTitle(lastMessage.MessageContent.Truncate(250));
+
+				if (lastMessage.IsImage)
+					builder.WithImageUrl(lastMessage.MessageContent);
+				else
+					builder.WithTitle(lastMessage.MessageContent.Truncate(250));
 
 				await ReplyAsync("", false, builder.Build());
 			}

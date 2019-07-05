@@ -1,4 +1,7 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Globalization;
+using System.Net;
+using System.Text.RegularExpressions;
 
 namespace MarekMotykaBot.ExtensionsMethods
 {
