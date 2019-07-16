@@ -21,8 +21,6 @@ namespace MarekMotykaBot
 
 		private readonly JSONSerializerService _serializer;
 
-		private readonly DropboxService _dropbox;
-
 		private readonly ILoggingService _logger;
 
 		private readonly List<string> _swearWordList;
@@ -39,12 +37,11 @@ namespace MarekMotykaBot
 
         public IConfiguration Configuration { get; set; }
 		
-		public MessageScannerService(DiscordSocketClient client, JSONSerializerService serializer, DropboxService dropbox, IConfiguration configuration, LoggingService logger)
+		public MessageScannerService(DiscordSocketClient client, JSONSerializerService serializer, IConfiguration configuration, LoggingService logger)
 		{
 			_client = client;
 			_serializer = serializer;
 			Configuration = configuration;
-			_dropbox = dropbox;
 			_logger = logger;
 
 			_swearWordList = _serializer.LoadFromFile<string>("swearWords.json");
@@ -223,8 +220,6 @@ namespace MarekMotykaBot
 					}
 
 					_serializer.SaveToFile<WordCounterEntry>("wordCounter.json", counterList);
-
-					await _dropbox.UploadFileAsync("wordCounter.json", "wordCounter.json");
 				}
 			}
 		}
