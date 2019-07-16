@@ -50,17 +50,12 @@ namespace MarekMotykaBot.Modules
 		[Command("Skeletor"), Alias("skq"), Summary("Ancient wisdom... of Skeletor")]
 		public async Task QuoteAsync()
 		{
-			int randomImgNumber = _rng.Next(1, 16);
+			string gifUrl;
+			gifUrl = await _imgur.GetRandomImageFromAlbum("lfnXIbc");
 
-			await Context.Channel.SendFileAsync(skeletors + randomImgNumber + ".jpg");
+			await ReplyAsync(gifUrl);
 
-			//string gifUrl;
-			//gifUrl = await _imgur.GetRandomImageFromAlbum("lfnXIbc");
-
-			//await ReplyAsync(gifUrl);
-
-			//_loggingService.CustomCommandLog(Context.Message, ServiceName);
-
+			_loggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
 		[Command("MarekSkeletorMeme"), Alias("meme3"), Summary("Create your own Marek meme image, text split by semicolon - skeletor version")]
