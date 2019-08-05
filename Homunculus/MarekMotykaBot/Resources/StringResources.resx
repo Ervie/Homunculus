@@ -299,4 +299,7 @@
   <data name="flagReset" xml:space="preserve">
     <value>Flaga zresetowana.</value>
   </data>
+  <data name="whyWouldIDoThat" xml:space="preserve">
+    <value>Czemu ja się zawahałem żeby strzelić? Mam wyrzuty sumienia?</value>
+  </data>
 </root>
