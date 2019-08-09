@@ -297,44 +297,7 @@ namespace MarekMotykaBot.Modules
 		[Command("quote"), Alias("cytat", "q"), Summary("Ancient wisdom...")]
 		public async Task QuoteAsync(params string[] category)
 		{
-			QuoteCategory filtercategory = QuoteCategory.None;
-
-			if (category.Length != 0)
-			{
-				switch (category[0].ToLower())
-				{
-					case ("i"):
-					case ("p"):
-					case ("insult"):
-					case ("pocisk"):
-						filtercategory = QuoteCategory.Insult;
-						break;
-					case ("m"):
-					case ("w"):
-					case ("mądrość"):
-					case ("wisdom"):
-						filtercategory = QuoteCategory.Wisdom;
-						break;
-					case ("t"):
-					case ("thought"):
-						filtercategory = QuoteCategory.Thought;
-						break;
-					case ("f"):
-					case ("fiutt"):
-						filtercategory = QuoteCategory.Fiutt;
-						break;
-					case ("reaction"):
-					case ("reakcja"):
-					case ("r"):
-						filtercategory = QuoteCategory.Reaction;
-						break;
-					case ("d"):
-						filtercategory = QuoteCategory.OfTheDay;
-						break;
-					default:
-						break;
-				}
-			}
+			QuoteCategory filtercategory = DetectQuoteCategory(category);
 
 			Quote selectedQuote;
 
@@ -488,6 +451,50 @@ namespace MarekMotykaBot.Modules
 
 				return quotes[randomQuoteIndex];
 			}
+		}
+
+		private QuoteCategory DetectQuoteCategory(params string[] category)
+		{
+			QuoteCategory filtercategory = QuoteCategory.None;
+
+			if (category.Length != 0)
+			{
+				switch (category[0].ToLower())
+				{
+					case ("i"):
+					case ("p"):
+					case ("insult"):
+					case ("pocisk"):
+						filtercategory = QuoteCategory.Insult;
+						break;
+					case ("m"):
+					case ("w"):
+					case ("mądrość"):
+					case ("wisdom"):
+						filtercategory = QuoteCategory.Wisdom;
+						break;
+					case ("t"):
+					case ("thought"):
+						filtercategory = QuoteCategory.Thought;
+						break;
+					case ("f"):
+					case ("fiutt"):
+						filtercategory = QuoteCategory.Fiutt;
+						break;
+					case ("reaction"):
+					case ("reakcja"):
+					case ("r"):
+						filtercategory = QuoteCategory.Reaction;
+						break;
+					case ("d"):
+						filtercategory = QuoteCategory.OfTheDay;
+						break;
+					default:
+						break;
+				}
+			}
+
+			return filtercategory;
 		}
     }
 }
