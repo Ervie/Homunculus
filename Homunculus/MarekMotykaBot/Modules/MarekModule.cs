@@ -338,31 +338,25 @@ namespace MarekMotykaBot.Modules
 
 			Quote selectedQuote;
 
-			if (filtercategory != QuoteCategory.OfTheDay)
+			switch (filtercategory)
 			{
-				// secret quote...
-				var secretQuoteResult = _rng.Next(1, 50);
-				if (secretQuoteResult == 2)
-				{
-					var secretQuote = string.Format(StringConsts.DeclineCommand, "!q");
-					var author = "Sztuczny Murzyn";
-					selectedQuote = new Quote(secretQuote, author, null);
-				}
-				else
-				{
-					List<Quote> quotes = _serializer.LoadFromFile<Quote>("quotes.json");
-
-					if (filtercategory != QuoteCategory.None)
-						quotes = quotes.Where(x => x.Categories.Contains(filtercategory)).ToList();
-
-					int randomQuoteIndex = _rng.Next(0, quotes.Count);
-
-					selectedQuote = quotes[randomQuoteIndex];
-				}
-			}
-			else
-			{
-				selectedQuote = _serializer.LoadFromFile<Quote>("quoteOfTheDay.json").First();
+				case QuoteCategory.OfTheDay:
+					selectedQuote = _serializer.LoadFromFile<Quote>("quoteOfTheDay.json").First();
+					break;
+				case QuoteCategory.Insult:
+					var remorseChance = _rng.Next(0, 20);
+					if (remorseChance == 3)
+					{
+						await Context.Channel.SendMessageAsync("...");
+						await Task.Delay(3000);
+						await Context.Channel.SendMessageAsync(StringConsts.WhyWouldIDoThat);
+						return;
+					}
+					selectedQuote = GetRandomQuote(filtercategory);
+					break;
+				default:
+					selectedQuote = GetRandomQuote(filtercategory);
+					break;
 			}
 
 			var builder = new EmbedBuilder();
@@ -472,5 +466,28 @@ namespace MarekMotykaBot.Modules
 
             _loggingService.CustomCommandLog(Context.Message, ServiceName);
         }
+
+		private Quote GetRandomQuote(QuoteCategory filtercategory)
+		{
+			// secret quote...
+			var secretQuoteResult = _rng.Next(1, 50);
+			if (secretQuoteResult == 2)
+			{
+				var secretQuote = string.Format(StringConsts.DeclineCommand, "!q");
+				var author = "Sztuczny Murzyn";
+				return new Quote(secretQuote, author, null);
+			}
+			else
+			{
+				List<Quote> quotes = _serializer.LoadFromFile<Quote>("quotes.json");
+
+				if (filtercategory != QuoteCategory.None)
+					quotes = quotes.Where(x => x.Categories.Contains(filtercategory)).ToList();
+
+				int randomQuoteIndex = _rng.Next(0, quotes.Count);
+
+				return quotes[randomQuoteIndex];
+			}
+		}
     }
 }

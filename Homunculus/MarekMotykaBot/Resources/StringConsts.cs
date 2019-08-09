@@ -457,5 +457,13 @@
 				return StringResources.ResourceManager.GetString("flagReset");
 			}
 		}
+
+		public static string WhyWouldIDoThat
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("whyWouldIDoThat");
+			}
+		}
 	}
 }
