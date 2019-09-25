@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
-using Discord;
+﻿using Discord;
 using Discord.WebSocket;
 using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.DataTypes.Enumerations;
 using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Timers;
 
 namespace MarekMotykaBot.Services
 {
@@ -70,15 +70,18 @@ namespace MarekMotykaBot.Services
 			var builder = new EmbedBuilder();
 
 			DateTime today = DateTime.Today;
-			int daysUntilMonday = ((int)DayOfWeek.Tuesday - (int)today.DayOfWeek + 7) % 7;
-			DateTime nextTuesday = today.AddDays(daysUntilMonday);
+			int daysUntilWednesday = ((int)DayOfWeek.Wednesday - (int)today.DayOfWeek + 7) % 7;
+			DateTime nextWednesday = today.AddDays(daysUntilWednesday);
 
-			builder.AddField(x =>
+			if (schedule != null && schedule.Count > 0)
 			{
-				x.Name = "Rozkładówka (backlog) na " + nextTuesday.ToString("dd.MM");
-				x.Value = string.Join(Environment.NewLine, schedule.ToArray());
-				x.IsInline = false;
-			});
+				builder.AddField(x =>
+				{
+					x.Name = "Rozkładówka (backlog) na " + nextWednesday.ToString("dd.MM");
+					x.Value = string.Join(Environment.NewLine, schedule.ToArray());
+					x.IsInline = false;
+				});
+			}
 
 			var channelToPost = _client.GetChannel(_destinationChannel) as IMessageChannel;
 
@@ -140,7 +143,7 @@ namespace MarekMotykaBot.Services
 
 			Quote selectedQuote = quotes[randomQuoteIndex];
 
-			_serializer.SaveToFile<Quote>("quoteOfTheDay.json", new List<Quote> { selectedQuote }) ;
+			_serializer.SaveToFile<Quote>("quoteOfTheDay.json", new List<Quote> { selectedQuote });
 
 			var builder = new EmbedBuilder();
 

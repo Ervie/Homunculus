@@ -229,22 +229,25 @@ namespace MarekMotykaBot
 		/// </summary>
 		private async Task DetectStreamMonday(SocketCommandContext context, SocketUserMessage message)
 		{
-			if (message.MentionedRoles.Any(x => x.Name.Equals("Streamdziałek")))
+			if (message.MentionedRoles.Any(x => x.Name.Equals(Configuration["configValues:streamAlias"])))
 			{
 				List<string> schedule = _serializer.LoadFromFile<string>("streamMonday.json");
 
 				var builder = new EmbedBuilder();
 
 				DateTime today = DateTime.Today;
-				int daysUntilMonday = ((int)DayOfWeek.Monday - (int)today.DayOfWeek + 7) % 7;
-				DateTime nextMonday = today.AddDays(daysUntilMonday);
-				
-				builder.AddField(x =>
+				int daysUntilWednesday = ((int)DayOfWeek.Wednesday - (int)today.DayOfWeek + 7) % 7;
+				DateTime nextWednesday = today.AddDays(daysUntilWednesday);
+
+				if (schedule != null && schedule.Count > 0)
 				{
-					x.Name = "Rozkładówka na " + nextMonday.ToString("dd.MM");
-					x.Value = string.Join(Environment.NewLine, schedule.ToArray());
-					x.IsInline = false;
-				});
+					builder.AddField(x =>
+					{
+						x.Name = "Rozkładówka (backlog) na " + nextWednesday.ToString("dd.MM");
+						x.Value = string.Join(Environment.NewLine, schedule.ToArray());
+						x.IsInline = false;
+					});
+				}
 
 				await context.Channel.SendMessageAsync("", false, builder.Build());
 			}

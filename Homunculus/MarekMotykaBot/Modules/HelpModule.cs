@@ -133,20 +133,20 @@ namespace MarekMotykaBot.Modules
 			var builder = new EmbedBuilder();
 
 			DateTime today = DateTime.Today;
-			int daysUntilMonday = ((int)DayOfWeek.Tuesday - (int)today.DayOfWeek + 7) % 7;
-			DateTime nextTueday = today.AddDays(daysUntilMonday);
+			int daysUntilWednesday = ((int)DayOfWeek.Wednesday - (int)today.DayOfWeek + 7) % 7;
+			DateTime nextWednesday = today.AddDays(daysUntilWednesday);
 
 			if (schedule != null && schedule.Count > 0)
 			{
 				builder.AddField(x =>
 				{
-					x.Name = "Rozkładówka na " + nextTueday.ToString("dd.MM");
+					x.Name = "Rozkładówka (backlog) na " + nextWednesday.ToString("dd.MM");
 					x.Value = string.Join(Environment.NewLine, schedule.ToArray());
 					x.IsInline = false;
 				});
 			}
 
-			var role = Context.Guild.Roles.First(x => x.Name.Equals(_configuration["configValues:streamAlias"]));
+			var role = Context.Guild.Roles.First(x => x.Name.StartsWith(_configuration["configValues:streamAlias"]));
 
 			if (role != null)
 			{
