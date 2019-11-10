@@ -70,8 +70,8 @@ namespace MarekMotykaBot
 				await DetectMentions(context, message);
 				await DetectSwearWord(context, message);
 				await DetectStreamMonday(context, message);
-				await DetectRabbitLink(context, message);
-				await DetectMarekMessage(context, message);
+				await DetectRabbitLink(message);
+				await DetectMarekMessage(message);
 			}
 		}
 
@@ -254,19 +254,17 @@ namespace MarekMotykaBot
 			
 		}
 
-		private async Task DetectRabbitLink(SocketCommandContext context, SocketUserMessage message)
+		private async Task DetectRabbitLink(SocketUserMessage message)
 		{
 			if (message.Content.Contains("https://www.rabb.it"))
 			{
-				bool rabbitLinkedFlag = _serializer.LoadSingleFromFile<bool>("hasLonkLinkedRabbit.json");
-
-				rabbitLinkedFlag = true;
+				bool rabbitLinkedFlag = true;
 
 				_serializer.SaveSingleToFile<bool>("hasLonkLinkedRabbit.json", rabbitLinkedFlag);
 			}
 		}
 
-		private async Task DetectMarekMessage(SocketCommandContext context, SocketUserMessage message)
+		private async Task DetectMarekMessage(SocketUserMessage message)
 		{
 			if (message.Author.DiscordId().Equals("Erina#5946"))
 			{

@@ -126,9 +126,7 @@ namespace MarekMotykaBot.Services
 
 		public async Task RabbitReminderReset()
 		{
-			bool rabbitLinkedFlag = _serializer.LoadSingleFromFile<bool>("hasLonkLinkedRabbit.json");
-
-			rabbitLinkedFlag = false;
+			bool rabbitLinkedFlag = false;
 
 			_serializer.SaveSingleToFile<bool>("hasLonkLinkedRabbit.json", rabbitLinkedFlag);
 		}

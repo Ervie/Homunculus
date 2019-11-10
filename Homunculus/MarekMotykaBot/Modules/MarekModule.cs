@@ -388,23 +388,14 @@ namespace MarekMotykaBot.Modules
 			{
 				var builder = new EmbedBuilder();
 
-				string footerSuffix = string.Empty;
-
 				int daysDifference = (DateTime.Now.Date - lastMessage.DatePosted.Date).Days;
 
-				switch (daysDifference)
+				string footerSuffix = daysDifference switch
 				{
-					case (0):
-						footerSuffix = StringConsts.Today;
-						break;
-					case (1):
-						footerSuffix = StringConsts.Yesterday;
-						break;
-					default:
-						footerSuffix = string.Format(StringConsts.DaysAgo, daysDifference);
-						break;
-				}
-
+					(0) => StringConsts.Today,
+					(1) => StringConsts.Yesterday,
+					_ => string.Format(StringConsts.DaysAgo, daysDifference),
+				};
 				builder.WithFooter(lastMessage.DatePosted.ToString("yyyy-MM-dd HH:mm") + ", " + footerSuffix);
 
 				if (lastMessage.IsImage)
