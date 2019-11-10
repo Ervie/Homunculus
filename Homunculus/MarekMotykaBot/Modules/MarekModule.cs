@@ -43,7 +43,7 @@ namespace MarekMotykaBot.Modules
 			eightBallResponses = _serializer.LoadFromFile<string>("8ballResponses.json");
 		}
 
-		[Command("NoCoSeMoge"), Alias("no"), Summary("He will tell you what you can do")]
+		[Command("NoCoSeMoge"), Alias("no", "co"), Summary("He will tell you what you can do")]
 		public async Task CoSeMogeAsync()
 		{
 			await Context.Channel.SendMessageAsync($"*{StringConsts.WaitForIt}*");
