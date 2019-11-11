@@ -24,7 +24,7 @@ namespace MarekMotykaBot.Services
 
 		public IConfiguration Configuration { get; set; }
 
-		public ICollection<TimedTask> TimedTasks { get; set; }
+		private ICollection<TimedTask> TimedTasks { get; set; }
 
 		public TimerService(IConfiguration configuration, JSONSerializerService serializer, DiscordSocketClient client, Random rng)
 		{
