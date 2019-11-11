@@ -1,10 +1,9 @@
 ﻿using System.Text;
-using System.Threading;
 
 namespace MarekMotykaBot.DataTypes
 {
-    internal class CharadeEntry
-    {
+	internal class CharadeEntry
+	{
 		public Series Series { get; set; }
 
 		public string[] KnownBy { get; set; }
@@ -34,7 +33,7 @@ namespace MarekMotykaBot.DataTypes
 		public string ListTranslationsWithNewLine(string mainTitle)
 		{
 			StringBuilder stringBuilder = new StringBuilder();
-			
+
 			if (!string.IsNullOrWhiteSpace(Polish) && !Polish.Equals(mainTitle))
 				stringBuilder.AppendLine(Polish);
 

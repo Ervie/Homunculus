@@ -1,31 +1,36 @@
 ﻿using Discord.WebSocket;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace MarekMotykaBot.ExtensionsMethods
 {
-    public static class SocketGuildExtensions
-    {
+	public static class SocketGuildExtensions
+	{
+		private static string MarekDiscordId = "Erina#5946";
+		private static string MarekBotDiscordId = "MarekMotykaBot#2213";
+
 		public static string GetRandomUserName(this SocketGuild guild, Random rng)
 		{
-			var users = guild.Users.Where(x => !x.DiscordId().Equals("MarekMotykaBot#2213") &&
-				!x.DiscordId().Equals("Erina#5946")).ToList();
+			var guildUsers = guild.Users
+				.Where(x => !x.DiscordId().Equals(MarekBotDiscordId) &&
+				!x.DiscordId().Equals(MarekDiscordId))
+				.ToList();
 
-			int randomUserIndex = rng.Next(0, users.Count);
+			int randomUserIndex = rng.Next(0, guildUsers.Count);
 
-			return users.Count == 0 ? string.Empty : users.ElementAt(randomUserIndex).Username;
+			return guildUsers.Any() ? string.Empty : guildUsers.ElementAt(randomUserIndex).Username;
 		}
+
 		public static string GetRandomUserName(this SocketGuild guild, Random rng, string excludedUser)
 		{
-			var users = guild.Users.Where(x => !x.DiscordId().Equals("MarekMotykaBot#2213") &&
-				!x.DiscordId().Equals("Erina#5946") && 
-				!x.DiscordId().Equals(excludedUser)).ToList();
+			var uildUsers = guild.Users.Where(x => !x.DiscordId().Equals(MarekBotDiscordId) &&
+				!x.DiscordId().Equals(MarekDiscordId) &&
+				!x.DiscordId().Equals(excludedUser))
+				.ToList();
 
-			int randomUserIndex = rng.Next(0, users.Count);
+			int randomUserIndex = rng.Next(0, uildUsers.Count);
 
-			return users.Count == 0 ? string.Empty : users.ElementAt(randomUserIndex).Username;
+			return uildUsers.Count == 0 ? string.Empty : uildUsers.ElementAt(randomUserIndex).Username;
 		}
 	}
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Net;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace MarekMotykaBot.ExtensionsMethods
 {
@@ -35,7 +32,9 @@ namespace MarekMotykaBot.ExtensionsMethods
 
 		public static string RemoveEmojisAndEmotes(this string inputString)
 		{
-			return inputString.RemoveEmotes().RemoveEmojis();
+			return inputString
+				.RemoveEmotes()
+				.RemoveEmojis();
 		}
 
 		public static string Truncate(this string value, int maxChars)

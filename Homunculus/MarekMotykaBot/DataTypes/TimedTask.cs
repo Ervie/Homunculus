@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MarekMotykaBot.DataTypes
 {
-    public class TimedTask
+	internal class TimedTask
 	{
 		public ICollection<int> Minutes { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace MarekMotykaBot.DataTypes.Caches
 {
-    public class EightBallCache
+    internal class EightBallCache
     {
         public string DiscordUsername { get; set; }
 
