@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MarekMotykaBot.Services
+namespace MarekMotykaBot.Services.Core
 {
     public class LoggingService : IDiscordService, ILoggingService
     {

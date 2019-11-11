@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace MarekMotykaBot.Services
+namespace MarekMotykaBot.Services.Core
 {
     public class JSONSerializerService: IDiscordService
     {

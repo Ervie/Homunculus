@@ -13,7 +13,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace MarekMotykaBot
+namespace MarekMotykaBot.Services.Core
 {
 	public class MessageScannerService : IDiscordService
 	{

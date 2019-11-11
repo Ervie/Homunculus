@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
+using MarekMotykaBot.Services.Core;
+using MarekMotykaBot.Services.External;
 
 namespace MarekMotykaBot
 {

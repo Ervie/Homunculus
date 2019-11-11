@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Youtube = Google.Apis.YouTube.v3.Data;
 
-namespace MarekMotykaBot.Services
+namespace MarekMotykaBot.Services.External
 {
     public class YTService: IDiscordService
     {

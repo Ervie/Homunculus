@@ -1,6 +1,7 @@
 ﻿using Discord.Commands;
 using MarekMotykaBot.Modules.Interface;
 using MarekMotykaBot.Services;
+using MarekMotykaBot.Services.Core;
 using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Modules

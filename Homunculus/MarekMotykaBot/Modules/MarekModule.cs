@@ -7,6 +7,8 @@ using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Modules.Interface;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
+using MarekMotykaBot.Services.Core;
+using MarekMotykaBot.Services.External;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;

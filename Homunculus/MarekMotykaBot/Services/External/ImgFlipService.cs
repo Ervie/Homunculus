@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MarekMotykaBot.Services
+namespace MarekMotykaBot.Services.External
 {
     public class ImgFlipService: IDiscordService
     {

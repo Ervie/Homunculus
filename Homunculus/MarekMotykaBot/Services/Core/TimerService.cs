@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace MarekMotykaBot.Services
+namespace MarekMotykaBot.Services.Core
 {
 	public class TimerService : IDiscordService
 	{

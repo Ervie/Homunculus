@@ -130,6 +130,10 @@
     <ProjectReference Include="..\..\ImfFlipAPI.APISource.Core\ImfFlipAPI.APISource.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Shared\" />
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties Resources_4TextFiles_4hasLonkLinkedRabbit_1json__JSONSchema="http://json.schemastore.org/avro-avsc" /></VisualStudio></ProjectExtensions>
 
 </Project>

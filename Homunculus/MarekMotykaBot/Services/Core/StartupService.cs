@@ -6,7 +6,7 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace MarekMotykaBot.Services
+namespace MarekMotykaBot.Services.Core
 {
     public class StartupService: IDiscordService
     {

@@ -4,6 +4,8 @@ using MarekMotykaBot.Resources;
 using System;
 using System.Threading.Tasks;
 using MarekMotykaBot.Modules.Interface;
+using MarekMotykaBot.Services.External;
+using MarekMotykaBot.Services.Core;
 
 namespace MarekMotykaBot.Modules
 {
