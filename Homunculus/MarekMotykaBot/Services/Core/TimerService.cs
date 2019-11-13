@@ -100,37 +100,6 @@ namespace MarekMotykaBot.Services.Core
 			await channelToPost.SendMessageAsync("", false, builder.Build());
 		}
 
-		public async Task RabbitReminder()
-		{
-			bool rabbitLinkedFlag = _serializer.LoadSingleFromFile<bool>("hasLonkLinkedRabbit.json");
-
-			if (!rabbitLinkedFlag)
-			{
-				var channelToPost = _client.GetChannel(_destinationChannel) as IMessageChannel;
-
-				var guild = _client.Guilds.FirstOrDefault(x => x.Name.Equals(Configuration["tokens:destinationServerName"]));
-
-				if (guild != null)
-				{
-					var alias = guild.Users.FirstOrDefault(x => x.DiscordId().Equals(Configuration["configValues:streamOwner"]));
-
-					if (alias != null)
-					{
-						await channelToPost.SendMessageAsync(alias.Mention);
-					}
-				}
-
-				await channelToPost.SendMessageAsync(StringConsts.RabbitMissing);
-			}
-		}
-
-		public async Task RabbitReminderReset()
-		{
-			bool rabbitLinkedFlag = false;
-
-			_serializer.SaveSingleToFile<bool>("hasLonkLinkedRabbit.json", rabbitLinkedFlag);
-		}
-
 		public async Task QuoteOfTheDay()
 		{
 			List<Quote> quotes = _serializer.LoadFromFile<Quote>("quotes.json");
