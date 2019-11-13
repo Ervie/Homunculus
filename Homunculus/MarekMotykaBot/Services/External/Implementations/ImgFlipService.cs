@@ -1,13 +1,14 @@
 ﻿using ImgFlipAPI.APISource.Core;
 using ImgFlipAPI.APISource.Core.Models;
+using MarekMotykaBot.Services.External.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services.External
 {
-    public class ImgFlipService: IDiscordService
-    {
+    public class ImgFlipService: IDiscordService, IImgFlipService
+	{
         private const int MarekTemplateId = 114558777;
 		private const int LaughingMarekTemplateId = 152110002;
 		private const int SkeletorMarekTemplateId = 156362598;
@@ -29,7 +30,7 @@ namespace MarekMotykaBot.Services.External
             _imgFlipPassword = Configuration["credentials:imgFlipPassword"];
         }
 
-        public async Task<string> CreateMarekMeme(string topText, string bottomText)
+        public async Task<string> CreateMarekFace(string topText, string bottomText)
         {
             CaptionMemeRoot freshMeme = await ImgFlipAPISource.Instance.CaptionMemeAsync(MarekTemplateId, _imgFlipUsername, _imgFlipPassword, topText, bottomText);
 

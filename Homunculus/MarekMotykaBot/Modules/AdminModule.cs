@@ -5,6 +5,7 @@ using MarekMotykaBot.Modules.Interface;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
 using MarekMotykaBot.Services.Core;
+using MarekMotykaBot.Services.Core.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,8 +15,8 @@ namespace MarekMotykaBot.Modules
 {
 	public class AdminModule : ModuleBase<SocketCommandContext>, IDiscordModule
 	{
-		private readonly JSONSerializerService _serializer;
-		private readonly TimerService _timerService;
+		private readonly IJSONSerializerService _serializer;
+		private readonly ITimerService _timerService;
 
 		private readonly List<string> _swearWordList;
 
@@ -23,7 +24,11 @@ namespace MarekMotykaBot.Modules
 
 		public ILoggingService LoggingService { get; }
 
-		public AdminModule(JSONSerializerService serializer, TimerService timerService, LoggingService loggingService)
+		public AdminModule(
+			IJSONSerializerService serializer,
+			ITimerService timerService,
+			ILoggingService loggingService
+			)
 		{
 			_serializer = serializer;
 			_timerService = timerService;

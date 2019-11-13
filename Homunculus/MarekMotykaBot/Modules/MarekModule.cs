@@ -8,7 +8,9 @@ using MarekMotykaBot.Modules.Interface;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
 using MarekMotykaBot.Services.Core;
+using MarekMotykaBot.Services.Core.Interfaces;
 using MarekMotykaBot.Services.External;
+using MarekMotykaBot.Services.External.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -19,9 +21,9 @@ namespace MarekMotykaBot.Modules
 {
 	public class MarekModule : ModuleBase<SocketCommandContext>, IDiscordModule
 	{
-		private readonly ImgurService _imgur;
-		private readonly JSONSerializerService _serializer;
-		private readonly ImgFlipService _imgFlip;
+		private readonly IImgurService _imgur;
+		private readonly IJSONSerializerService _serializer;
+		private readonly IImgFlipService _imgFlip;
 		private readonly Random _rng;
 		private readonly IConfiguration _configuration;
 
@@ -33,7 +35,13 @@ namespace MarekMotykaBot.Modules
 
 		public ILoggingService LoggingService { get; }
 
-		public MarekModule(IConfiguration configuration, ImgurService imgur, JSONSerializerService serializer, ImgFlipService imgFlip, Random random, LoggingService loggingService)
+		public MarekModule(
+			IConfiguration configuration,
+			IImgurService imgur,
+			IJSONSerializerService serializer,
+			IImgFlipService imgFlip,
+			Random random,
+			ILoggingService loggingService)
 		{
 			_configuration = configuration;
 			_imgur = imgur;
@@ -177,7 +185,7 @@ namespace MarekMotykaBot.Modules
 			string toptext = captions[0].ToUpper();
 			string bottomtext = captions[1].ToUpper();
 
-			string resultUrl = await _imgFlip.CreateMarekMeme(toptext, bottomtext);
+			string resultUrl = await _imgFlip.CreateMarekFace(toptext, bottomtext);
 
 			await ReplyAsync(resultUrl);
 

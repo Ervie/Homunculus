@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using MarekMotykaBot.Services.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Reflection;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services.Core
 {
-    public class StartupService: IDiscordService
+    public class StartupService: IDiscordService, IStartupService
     {
         private readonly DiscordSocketClient _discord;
         private readonly CommandService _commands;

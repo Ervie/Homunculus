@@ -6,6 +6,7 @@ using MarekMotykaBot.Modules.Interface;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
 using MarekMotykaBot.Services.Core;
+using MarekMotykaBot.Services.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,13 +18,17 @@ namespace MarekMotykaBot.Modules
 	{
         private readonly Random _rng;
 
-        private readonly JSONSerializerService _serializer;
+        private readonly IJSONSerializerService _serializer;
 
 		public string ServiceName { get => "GamesModule"; }
 
 		public ILoggingService LoggingService { get; }
 
-		public GamesModule(Random random, JSONSerializerService serializer, LoggingService loggingService)
+		public GamesModule(
+			Random random,
+			IJSONSerializerService serializer,
+			ILoggingService loggingService
+			)
         {
             _rng = random;
             _serializer = serializer;

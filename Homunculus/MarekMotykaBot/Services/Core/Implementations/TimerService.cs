@@ -4,6 +4,7 @@ using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.DataTypes.Enumerations;
 using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
+using MarekMotykaBot.Services.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,10 @@ using System.Timers;
 
 namespace MarekMotykaBot.Services.Core
 {
-	public class TimerService : IDiscordService
+	public class TimerService : IDiscordService, ITimerService
 	{
 		private readonly Timer _timer;
-		private readonly JSONSerializerService _serializer;
+		private readonly IJSONSerializerService _serializer;
 		private readonly DiscordSocketClient _client;
 		private readonly Random _rng;
 		private readonly ulong _destinationChannel;
@@ -26,7 +27,12 @@ namespace MarekMotykaBot.Services.Core
 
 		private ICollection<TimedTask> TimedTasks { get; set; }
 
-		public TimerService(IConfiguration configuration, JSONSerializerService serializer, DiscordSocketClient client, Random rng)
+		public TimerService(
+			IConfiguration configuration,
+			IJSONSerializerService serializer,
+			DiscordSocketClient client,
+			Random rng
+			)
 		{
 			Configuration = configuration;
 			_serializer = serializer;
@@ -48,7 +54,7 @@ namespace MarekMotykaBot.Services.Core
 				_timer.Start();
 		}
 
-		private void HourlyTimerTick(object src, ElapsedEventArgs e)
+		public void HourlyTimerTick(object src, ElapsedEventArgs e)
 		{
 			DateTime currentDateTime = DateTime.Now;
 

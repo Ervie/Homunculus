@@ -3,6 +3,7 @@ using Discord.WebSocket;
 using MarekMotykaBot.DataTypes.Caches;
 using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
+using MarekMotykaBot.Services.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -11,18 +12,26 @@ using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services.Core
 {
-	public class CommandHandlingService : IDiscordService
+	public class CommandHandlingService : IDiscordService, ICommandHandlingService
 	{
 		private readonly DiscordSocketClient _discord;
 		private readonly CommandService _commands;
-		private readonly JSONSerializerService _jsonSerializer;
-		private readonly MessageScannerService _scanner;
+		private readonly IJSONSerializerService _jsonSerializer;
+		private readonly IMessageScannerService _scanner;
 		private readonly Random _rng;
 		private readonly IServiceProvider _provider;
 
 		public IConfiguration Configuration { get; set; }
 
-		public CommandHandlingService(IConfiguration configuration, DiscordSocketClient discord, CommandService commands, MessageScannerService scanner, Random random, IServiceProvider provider, JSONSerializerService jSONSerializer)
+		public CommandHandlingService(
+			IConfiguration configuration,
+			DiscordSocketClient discord, 
+			CommandService commands, 
+			IMessageScannerService scanner, 
+			Random random, 
+			IServiceProvider provider, 
+			IJSONSerializerService jSONSerializer
+			)
 		{
 			_discord = discord;
 			_commands = commands;
@@ -37,7 +46,7 @@ namespace MarekMotykaBot.Services.Core
 
 		public CommandService Commands => _commands;
 
-		private async Task OnMessageReceivedAsync(SocketMessage s)
+		public async Task OnMessageReceivedAsync(SocketMessage s)
 		{
 			if (!(s is SocketUserMessage msg)) return;
 			if (msg.Author == _discord.CurrentUser) return;
@@ -60,7 +69,7 @@ namespace MarekMotykaBot.Services.Core
 			}
 		}
 
-		private void SetStartingState()
+		public void SetStartingState()
 		{
 			_discord.MessageReceived += OnMessageReceivedAsync;
 			_discord.MessageReceived += _scanner.ScanMessage;
@@ -68,7 +77,7 @@ namespace MarekMotykaBot.Services.Core
 			_discord.MessageDeleted += _scanner.ScanDeletedMessage;
 		}
 
-		private async Task<bool> DeclineCommand(SocketCommandContext context, string messageContent)
+		public async Task<bool> DeclineCommand(SocketCommandContext context, string messageContent)
 		{
 			string commandName = messageContent.Split(' ').FirstOrDefault();
 			bool commandDeclined = false;
@@ -102,7 +111,7 @@ namespace MarekMotykaBot.Services.Core
 			return commandDeclined;
 		}
 
-		private void AddDeclineCache(string discordId, string commandName)
+		public void AddDeclineCache(string discordId, string commandName)
 		{
 			if (commandName != "!no" && commandName != "!nocosemoge")
 			{
@@ -114,7 +123,7 @@ namespace MarekMotykaBot.Services.Core
 			}
 		}
 
-		private async Task<bool> BlockCommand(SocketCommandContext context, string commandName)
+		public async Task<bool> BlockCommand(SocketCommandContext context, string commandName)
 		{
 			List<DeclineCache> declineCache = _jsonSerializer.LoadFromFile<DeclineCache>("declineCache.json");
 

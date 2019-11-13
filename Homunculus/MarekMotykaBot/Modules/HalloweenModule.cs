@@ -5,7 +5,9 @@ using MarekMotykaBot.Modules.Interface;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
 using MarekMotykaBot.Services.Core;
+using MarekMotykaBot.Services.Core.Interfaces;
 using MarekMotykaBot.Services.External;
+using MarekMotykaBot.Services.External.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,13 +24,20 @@ namespace MarekMotykaBot.Modules
 
 		private readonly string skeletors = AppContext.BaseDirectory + "/Resources/Images/Skeletor/";
 
-		private readonly JSONSerializerService _serializer;
-		private readonly ImgurService _imgur;
-		private readonly ImgFlipService _imgFlip;
+		private readonly IJSONSerializerService _serializer;
+		private readonly IImgurService _imgur;
+		private readonly IImgFlipService _imgFlip;
 		private readonly Random _rng;
-		private readonly YTService _youtube;
+		private readonly IYTService _youtube;
 
-		public HalloweenModule(LoggingService loggingService, JSONSerializerService serializerService, ImgurService imgurService, ImgFlipService imgFlip, Random random, YTService ytService)
+		public HalloweenModule(
+			ILoggingService loggingService, 
+			IJSONSerializerService serializerService,
+			IImgurService imgurService,
+			IImgFlipService imgFlip, 
+			Random random, 
+			IYTService ytService
+			)
 		{
 			LoggingService = loggingService;
 			_serializer = serializerService;

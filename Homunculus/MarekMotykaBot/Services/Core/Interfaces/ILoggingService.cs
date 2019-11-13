@@ -1,6 +1,6 @@
 ﻿using Discord;
 
-namespace MarekMotykaBot.Services
+namespace MarekMotykaBot.Services.Core.Interfaces
 {
 	public interface ILoggingService
 	{

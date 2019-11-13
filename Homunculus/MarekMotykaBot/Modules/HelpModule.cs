@@ -4,6 +4,7 @@ using MarekMotykaBot.Modules.Interface;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
 using MarekMotykaBot.Services.Core;
+using MarekMotykaBot.Services.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -18,11 +19,16 @@ namespace MarekMotykaBot.Modules
 	{
 		private readonly CommandService _service;
 		private readonly IConfiguration _configuration;
-		private readonly JSONSerializerService _serializer;
+		private readonly IJSONSerializerService _serializer;
 
 		public ILoggingService LoggingService { get; }
 
-		public HelpModule(CommandService service, IConfiguration configuration, JSONSerializerService serializer, LoggingService loggingService)
+		public HelpModule(
+			CommandService service,
+			IConfiguration configuration,
+			IJSONSerializerService serializer,
+			ILoggingService loggingService
+			)
 		{
 			_service = service;
 			_configuration = configuration;

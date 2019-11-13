@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MarekMotykaBot.Services.Core.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,9 @@ using System.Text;
 
 namespace MarekMotykaBot.Services.Core
 {
-    public class JSONSerializerService: IDiscordService
-    {
-        private readonly string resourcesPath;
+    public class JSONSerializerService: IDiscordService, IJSONSerializerService
+	{
+        private readonly string _resourcesPath;
 
         public IConfiguration Configuration { get; set; }
 
@@ -17,12 +18,12 @@ namespace MarekMotykaBot.Services.Core
         {
             Configuration = configuration;
 
-            resourcesPath = AppContext.BaseDirectory + configuration["configValues:resourcePath"];
+            _resourcesPath = AppContext.BaseDirectory + configuration["configValues:resourcePath"];
         }
 
 		public T LoadSingleFromFile<T>(string fileName)
 		{
-			var text = File.ReadAllText(resourcesPath + fileName, Encoding.UTF8);
+			var text = File.ReadAllText(_resourcesPath + fileName, Encoding.UTF8);
 
 			var deserialized = JsonConvert.DeserializeObject<T>(text);
 
@@ -31,7 +32,7 @@ namespace MarekMotykaBot.Services.Core
 
 		public List<T> LoadFromFile<T>(string fileName)
         {
-            var text = File.ReadAllText(resourcesPath + fileName, Encoding.UTF8);
+            var text = File.ReadAllText(_resourcesPath + fileName, Encoding.UTF8);
 
             var deserializedList = JsonConvert.DeserializeObject<List<T>>(text);
 
@@ -41,13 +42,13 @@ namespace MarekMotykaBot.Services.Core
 		public void SaveSingleToFile<T>(string fileName, T dataToSave)
 		{
 			var json = JsonConvert.SerializeObject(dataToSave);
-			File.WriteAllText(resourcesPath + fileName, json, Encoding.UTF8);
+			File.WriteAllText(_resourcesPath + fileName, json, Encoding.UTF8);
 		}
 
 		public void SaveToFile<T>(string fileName, List<T> dataToSave)
         {
             var json = JsonConvert.SerializeObject(dataToSave);
-            File.WriteAllText(resourcesPath + fileName, json, Encoding.UTF8);
+            File.WriteAllText(_resourcesPath + fileName, json, Encoding.UTF8);
         }
     }
 }

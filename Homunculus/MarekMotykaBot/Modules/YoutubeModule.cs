@@ -6,19 +6,25 @@ using System.Threading.Tasks;
 using MarekMotykaBot.Modules.Interface;
 using MarekMotykaBot.Services.External;
 using MarekMotykaBot.Services.Core;
+using MarekMotykaBot.Services.Core.Interfaces;
+using MarekMotykaBot.Services.External.Interfaces;
 
 namespace MarekMotykaBot.Modules
 {
     public class YoutubeModule : ModuleBase<SocketCommandContext>, IDiscordModule
     {
-        private readonly YTService _youtube;
+        private readonly IYTService _youtube;
         private readonly IServiceProvider _provider;
 
 		public string ServiceName { get => "YoutubeModule"; }
 
 		public ILoggingService LoggingService { get; }
 
-		public YoutubeModule(YTService youtube, IServiceProvider provider, LoggingService loggingService)
+		public YoutubeModule(
+			IYTService youtube,
+			IServiceProvider provider,
+			ILoggingService loggingService
+			)
 		{
 			_youtube = youtube;
 			_provider = provider;

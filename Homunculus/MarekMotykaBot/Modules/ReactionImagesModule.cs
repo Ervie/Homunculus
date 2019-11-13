@@ -2,6 +2,7 @@
 using MarekMotykaBot.Modules.Interface;
 using MarekMotykaBot.Services;
 using MarekMotykaBot.Services.Core;
+using MarekMotykaBot.Services.Core.Interfaces;
 using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Modules
@@ -14,7 +15,7 @@ namespace MarekMotykaBot.Modules
 
 		public ILoggingService LoggingService { get; }
 		
-		public ReactionImagesModule(LoggingService loggingService)
+		public ReactionImagesModule(ILoggingService loggingService)
 		{
 			LoggingService = loggingService;
 		}

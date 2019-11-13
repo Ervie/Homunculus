@@ -1,5 +1,7 @@
-﻿using Imgur.API.Authentication.Impl;
+﻿using Imgur.API.Authentication;
+using Imgur.API.Authentication.Impl;
 using Imgur.API.Endpoints.Impl;
+using MarekMotykaBot.Services.External.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
@@ -7,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services.External
 {
-    public class ImgurService: IDiscordService
-    {
+    public class ImgurService: IDiscordService, IImgurService
+	{
         private readonly Random _rng;
-        private readonly ImgurClient _client;
+        private readonly IImgurClient _client;
 
         public IConfiguration Configuration { get; set; }
 

@@ -2,6 +2,7 @@
 using Discord.Commands;
 using Discord.WebSocket;
 using MarekMotykaBot.Resources;
+using MarekMotykaBot.Services.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using NLog;
 using System;
@@ -11,56 +12,55 @@ using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services.Core
 {
-    public class LoggingService : IDiscordService, ILoggingService
-    {
-        private readonly DiscordSocketClient _discord;
-        private readonly CommandService _commands;
+	public class LoggingService : IDiscordService, ILoggingService
+	{
+		private readonly DiscordSocketClient _discord;
+		private readonly CommandService _commands;
 
-        public IConfiguration Configuration { get; set; }
+		public IConfiguration Configuration { get; set; }
 
 		public Logger Logger { get; set; }
 
-        private string _logDirectory;
-        
-        public LoggingService(IConfiguration _configuration, DiscordSocketClient discord, CommandService commands)
-        {
-            Configuration = _configuration;
+		private string _logDirectory;
 
-            _discord = discord;
-            _commands = commands;
+		public LoggingService(IConfiguration _configuration, DiscordSocketClient discord, CommandService commands)
+		{
+			Configuration = _configuration;
 
-            Initialize();
-        }
+			_discord = discord;
+			_commands = commands;
 
-        private void Initialize()
-        {
-            _logDirectory = Path.Combine(AppContext.BaseDirectory, "Logs");
+			Initialize();
+		}
 
-            if (!Directory.Exists(_logDirectory))
-                Directory.CreateDirectory(_logDirectory);
+		private void Initialize()
+		{
+			_logDirectory = Path.Combine(AppContext.BaseDirectory, "Logs");
 
-            Logger = LogManager.GetCurrentClassLogger();
+			if (!Directory.Exists(_logDirectory))
+				Directory.CreateDirectory(_logDirectory);
 
-            Logger.Info("Logger init");    
+			Logger = LogManager.GetCurrentClassLogger();
 
-            _discord.Log += OnLogAsync;
-            _commands.Log += OnLogAsync;
-        }
+			Logger.Info("Logger init");
 
-        private Task OnLogAsync(LogMessage msg)
-        {
-            if (msg.Exception != null)
-            {
-                Logger.Error(msg.Exception.ToString());
-            }
-            else
-            {
-                Logger.Info(msg.Message);
-            }
+			_discord.Log += OnLogAsync;
+			_commands.Log += OnLogAsync;
+		}
 
-            return Task.CompletedTask;
-        }
+		private Task OnLogAsync(LogMessage msg)
+		{
+			if (msg.Exception != null)
+			{
+				Logger.Error(msg.Exception.ToString());
+			}
+			else
+			{
+				Logger.Info(msg.Message);
+			}
 
+			return Task.CompletedTask;
+		}
 
 		public void CustomDeleteLog(IMessage message)
 		{
@@ -116,6 +116,5 @@ namespace MarekMotykaBot.Services.Core
 
 			Logger.Log(LogLevel.Trace, log);
 		}
-
 	}
 }

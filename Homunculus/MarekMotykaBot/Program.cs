@@ -8,6 +8,8 @@ using System;
 using System.Threading.Tasks;
 using MarekMotykaBot.Services.Core;
 using MarekMotykaBot.Services.External;
+using MarekMotykaBot.Services.Core.Interfaces;
+using MarekMotykaBot.Services.External.Interfaces;
 
 namespace MarekMotykaBot
 {
@@ -35,23 +37,23 @@ namespace MarekMotykaBot
 					DefaultRunMode = RunMode.Async,
 					LogLevel = LogSeverity.Verbose
 				}))
-				.AddSingleton<CommandHandlingService>()
-				.AddSingleton<LoggingService>()
-				.AddSingleton<StartupService>()
-				.AddSingleton<MessageScannerService>()
-				.AddSingleton<YTService>()
-				.AddSingleton<ImgurService>()
-                .AddSingleton<ImgFlipService>()
-				.AddSingleton<JSONSerializerService>()
-				.AddSingleton<TimerService>()
+				.AddSingleton<ICommandHandlingService, CommandHandlingService>()
+				.AddSingleton<ILoggingService, LoggingService>()
+				.AddSingleton<IStartupService, StartupService>()
+				.AddSingleton<IMessageScannerService, MessageScannerService>()
+				.AddSingleton<IYTService, YTService>()
+				.AddSingleton<IImgurService, ImgurService>()
+                .AddSingleton<IImgFlipService, ImgFlipService>()
+				.AddSingleton<IJSONSerializerService, JSONSerializerService>()
+				.AddSingleton<ITimerService, TimerService>()
                 .AddSingleton(_config)
                 .AddSingleton<Random>();
 
             var provider = services.BuildServiceProvider();
-
-            provider.GetRequiredService<LoggingService>();
-            await provider.GetRequiredService<StartupService>().StartAsync();
-            provider.GetRequiredService<CommandHandlingService>();
+			
+            provider.GetRequiredService<ILoggingService>();
+            await provider.GetRequiredService<IStartupService>().StartAsync();
+            provider.GetRequiredService<ICommandHandlingService>();
 
             await Task.Delay(-1);
         }

@@ -1,4 +1,5 @@
 ﻿using MarekMotykaBot.Services;
+using MarekMotykaBot.Services.Core.Interfaces;
 
 namespace MarekMotykaBot.Modules.Interface
 {

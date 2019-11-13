@@ -5,6 +5,7 @@ using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services;
+using MarekMotykaBot.Services.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,11 @@ using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services.Core
 {
-	public class MessageScannerService : IDiscordService
+	public class MessageScannerService : IDiscordService, IMessageScannerService
 	{
 		private readonly DiscordSocketClient _client;
 
-		private readonly JSONSerializerService _serializer;
+		private readonly IJSONSerializerService _serializer;
 
 		private readonly ILoggingService _logger;
 
@@ -37,7 +38,12 @@ namespace MarekMotykaBot.Services.Core
 
         public IConfiguration Configuration { get; set; }
 		
-		public MessageScannerService(DiscordSocketClient client, JSONSerializerService serializer, IConfiguration configuration, LoggingService logger)
+		public MessageScannerService(
+			DiscordSocketClient client,
+			IJSONSerializerService serializer,
+			IConfiguration configuration,
+			ILoggingService logger
+			)
 		{
 			_client = client;
 			_serializer = serializer;
@@ -47,9 +53,9 @@ namespace MarekMotykaBot.Services.Core
 			_swearWordList = _serializer.LoadFromFile<string>("swearWords.json");
 			_marekFaceWords = _serializer.LoadFromFile<string>("marekTrigger.json");
 			_skeletorWords = _serializer.LoadFromFile<string>("skeletorTrigger.json");
-			_waifuList = serializer.LoadFromFile<string>("marekWaifus.json");
-			_takeuchiWords = serializer.LoadFromFile<string>("takeuchiTrigger.json");
-            _ziewaczWords = serializer.LoadFromFile<string>("ziewaczTrigger.json");
+			_waifuList = _serializer.LoadFromFile<string>("marekWaifus.json");
+			_takeuchiWords = _serializer.LoadFromFile<string>("takeuchiTrigger.json");
+            _ziewaczWords = _serializer.LoadFromFile<string>("ziewaczTrigger.json");
         }
 
 		public async Task ScanMessage(SocketMessage s)
@@ -70,7 +76,6 @@ namespace MarekMotykaBot.Services.Core
 				await DetectMentions(context, message);
 				await DetectSwearWord(context, message);
 				await DetectStreamMonday(context, message);
-				await DetectRabbitLink(message);
 				await DetectMarekMessage(message);
 			}
 		}
@@ -138,7 +143,7 @@ namespace MarekMotykaBot.Services.Core
 			}
 		}
 
-		private async Task DetectMentions(SocketCommandContext context, SocketUserMessage message)
+		public async Task DetectMentions(SocketCommandContext context, SocketUserMessage message)
 		{
 			if (message.MentionedUsers.Where(x => x.DiscordId().Equals("MarekMotykaBot#2213") || x.DiscordId().Equals("Erina#5946")).FirstOrDefault() != null ||
 				message.Tags.Any(x => x.Type.Equals(TagType.EveryoneMention) || x.Type.Equals(TagType.HereMention)))
@@ -167,7 +172,7 @@ namespace MarekMotykaBot.Services.Core
 		/// <summary>
 		/// Detect waifus name in each message
 		/// </summary>
-		private async Task DetectWaifus(SocketCommandContext context, SocketUserMessage message)
+		public async Task DetectWaifus(SocketCommandContext context, SocketUserMessage message)
 		{
 			foreach (string waifuName in _waifuList)
 			{
@@ -187,7 +192,7 @@ namespace MarekMotykaBot.Services.Core
 		/// <summary>
 		/// Check for swearword and who posted it - increment counter;
 		/// </summary>
-		private async Task DetectSwearWord(SocketCommandContext context, SocketUserMessage message)
+		public async Task DetectSwearWord(SocketCommandContext context, SocketUserMessage message)
 		{
 			string compressedText = message.Content.RemoveRepeatingChars();
 			compressedText = new string(compressedText.Where(c => !char.IsWhiteSpace(c)).ToArray());
@@ -227,7 +232,7 @@ namespace MarekMotykaBot.Services.Core
 		/// <summary>
 		/// Check for @Streamdziałek mention, show schedule.
 		/// </summary>
-		private async Task DetectStreamMonday(SocketCommandContext context, SocketUserMessage message)
+		public async Task DetectStreamMonday(SocketCommandContext context, SocketUserMessage message)
 		{
 			if (message.MentionedRoles.Any(x => x.Name.Equals(Configuration["configValues:streamAlias"])))
 			{
@@ -254,17 +259,7 @@ namespace MarekMotykaBot.Services.Core
 			
 		}
 
-		private async Task DetectRabbitLink(SocketUserMessage message)
-		{
-			if (message.Content.Contains("https://www.rabb.it"))
-			{
-				bool rabbitLinkedFlag = true;
-
-				_serializer.SaveSingleToFile<bool>("hasLonkLinkedRabbit.json", rabbitLinkedFlag);
-			}
-		}
-
-		private async Task DetectMarekMessage(SocketUserMessage message)
+		public async Task DetectMarekMessage(SocketUserMessage message)
 		{
 			if (message.Author.DiscordId().Equals("Erina#5946"))
 			{
