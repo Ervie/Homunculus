@@ -12,11 +12,11 @@ namespace MarekMotykaBot.Modules
 
 		public string ServiceName { get => "ReactionImagesModule"; }
 
-		public ILoggingService _loggingService { get; }
+		public ILoggingService LoggingService { get; }
 		
 		public ReactionImagesModule(LoggingService loggingService)
 		{
-			_loggingService = loggingService;
+			LoggingService = loggingService;
 		}
 
 		[Command("Jameson"), Alias("jjj"), Summary("JJJ laughs at your foolishness")]

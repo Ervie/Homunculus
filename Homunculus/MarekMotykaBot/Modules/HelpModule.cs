@@ -20,14 +20,14 @@ namespace MarekMotykaBot.Modules
 		private readonly IConfiguration _configuration;
 		private readonly JSONSerializerService _serializer;
 
-		public ILoggingService _loggingService { get; }
+		public ILoggingService LoggingService { get; }
 
 		public HelpModule(CommandService service, IConfiguration configuration, JSONSerializerService serializer, LoggingService loggingService)
 		{
 			_service = service;
 			_configuration = configuration;
 			_serializer = serializer;
-			_loggingService = loggingService;
+			LoggingService = loggingService;
 		}
 
 		public string ServiceName { get => "HelpModule"; }
@@ -52,7 +52,7 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync("", false, builder.Build());
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
 		[Command("Help"), Alias("h"), Summary("List all the commands")]
@@ -123,7 +123,7 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync("", false, builder.Build());
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
 		[Command("StreamMonday"), Alias("sm", "Streamdziałek"), Summary("Prints schedule for next StreamMonday")]
@@ -155,7 +155,7 @@ namespace MarekMotykaBot.Modules
 			}
 			await ReplyAsync("", false, builder.Build());
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 	}
 }

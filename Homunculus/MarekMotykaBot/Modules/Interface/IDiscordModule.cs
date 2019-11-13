@@ -6,6 +6,6 @@ namespace MarekMotykaBot.Modules.Interface
 	{
 		string ServiceName { get; }
 
-		ILoggingService _loggingService { get; }
+		ILoggingService LoggingService { get; }
 	}
 }

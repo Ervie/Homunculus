@@ -21,13 +21,13 @@ namespace MarekMotykaBot.Modules
 
 		public string ServiceName { get => "GamesModule"; }
 
-		public ILoggingService _loggingService { get; }
+		public ILoggingService LoggingService { get; }
 
 		public GamesModule(Random random, JSONSerializerService serializer, LoggingService loggingService)
         {
             _rng = random;
             _serializer = serializer;
-			_loggingService = loggingService;
+			LoggingService = loggingService;
         }
 
 		[Command("Someone"), Alias("s"), Summary("Get random username from server")]
@@ -35,7 +35,7 @@ namespace MarekMotykaBot.Modules
 		{
 			await ReplyAsync(Context.Guild.GetRandomUserName(_rng));
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
         [Command("Roll_k6"), Alias("k6"), Summary("Roll the k6 dice.")]
@@ -45,7 +45,7 @@ namespace MarekMotykaBot.Modules
 
             await ReplyAsync(Context.User.Username + ": " + rolledNumber.ToString());
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
         [Command("Roll_k100"), Alias("k100"), Summary("Roll the k100 dice.")]
@@ -55,7 +55,7 @@ namespace MarekMotykaBot.Modules
 
             await ReplyAsync(Context.User.Username + ": " + rolledNumber.ToString());
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
         [Command("Roll"), Alias("k"), Summary("Roll customizable dice.")]
@@ -133,7 +133,7 @@ namespace MarekMotykaBot.Modules
             {
 			}
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', diceSize));
+			LoggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', diceSize));
 		}
 
         [Command("Flip_coin"), Alias("flip"), Summary("Flip the coin.")]
@@ -145,7 +145,7 @@ namespace MarekMotykaBot.Modules
 
             await ReplyAsync(Context.User.Username + ": " + resultString);
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
         [Command("Charade"), Alias("kalambury", "c"), Summary("Draw a random entry for charade game.")]
@@ -213,7 +213,7 @@ namespace MarekMotykaBot.Modules
                 break;
 			}
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
         [Command("ResetCharade"), Alias("reset", "r"), Summary("Reset charade cache")]
@@ -225,7 +225,7 @@ namespace MarekMotykaBot.Modules
 
             await ReplyAsync(StringConsts.CharadeReset);
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
     }
 }

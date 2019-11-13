@@ -16,26 +16,13 @@ namespace MarekMotykaBot.Modules
 
 		public string ServiceName { get => "YoutubeModule"; }
 
-		public ILoggingService _loggingService { get; }
+		public ILoggingService LoggingService { get; }
 
 		public YoutubeModule(YTService youtube, IServiceProvider provider, LoggingService loggingService)
 		{
 			_youtube = youtube;
 			_provider = provider;
-			_loggingService = loggingService;
-		}
-
-		[Command("BlokEkipa"), Alias("be"), Summary("Get newest episode of Blok Ekipa from YT.")]
-		public async Task BlokEkipaSync()
-        {
-            var video = await _youtube.SearchYoutubeAsync("Blok ekipa", "youtube#video");
-
-            if (video == null)
-                await ReplyAsync(string.Format(StringConsts.YtNotFound, "Blok Ekipa"));
-            else
-                await ReplyAsync($"http://youtube.com/watch?v={video.Id.VideoId}");
-
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService = loggingService;
 		}
 
 		[Command("Youtube"), Alias("yt"), Summary("Search for video with given query.")]
@@ -49,7 +36,7 @@ namespace MarekMotykaBot.Modules
 			else
 				await ReplyAsync($"http://youtube.com/watch?v={video.Id.VideoId}");
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 	}
 }

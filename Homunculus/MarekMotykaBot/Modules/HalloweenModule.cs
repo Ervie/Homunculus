@@ -18,7 +18,7 @@ namespace MarekMotykaBot.Modules
 	{
 		public string ServiceName { get => "HalloweenModule"; }
 
-		public ILoggingService _loggingService { get; }
+		public ILoggingService LoggingService { get; }
 
 		private readonly string skeletors = AppContext.BaseDirectory + "/Resources/Images/Skeletor/";
 
@@ -30,7 +30,7 @@ namespace MarekMotykaBot.Modules
 
 		public HalloweenModule(LoggingService loggingService, JSONSerializerService serializerService, ImgurService imgurService, ImgFlipService imgFlip, Random random, YTService ytService)
 		{
-			_loggingService = loggingService;
+			LoggingService = loggingService;
 			_serializer = serializerService;
 			_imgur = imgurService;
 			_imgFlip = imgFlip;
@@ -46,7 +46,7 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync(gifUrl);
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
 		[Command("Skeletor"), Alias("skq"), Summary("Ancient wisdom... of Skeletor")]
@@ -57,7 +57,7 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync(gifUrl);
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
 		[Command("MarekSkeletorMeme"), Alias("meme3"), Summary("Create your own Marek meme image, text split by semicolon - skeletor version")]
@@ -84,7 +84,7 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync(resultUrl);
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', captions));
+			LoggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', captions));
 		}
 	}
 }

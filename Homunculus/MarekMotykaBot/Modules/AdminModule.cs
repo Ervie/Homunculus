@@ -15,20 +15,19 @@ namespace MarekMotykaBot.Modules
 	public class AdminModule : ModuleBase<SocketCommandContext>, IDiscordModule
 	{
 		private readonly JSONSerializerService _serializer;
-
 		private readonly TimerService _timerService;
 
 		private readonly List<string> _swearWordList;
 
 		public string ServiceName { get => "AdminModule"; }
 
-		public ILoggingService _loggingService { get; }
+		public ILoggingService LoggingService { get; }
 
 		public AdminModule(JSONSerializerService serializer, TimerService timerService, LoggingService loggingService)
 		{
 			_serializer = serializer;
 			_timerService = timerService;
-			_loggingService = loggingService;
+			LoggingService = loggingService;
 
 			_swearWordList = _serializer.LoadFromFile<string>("swearWords.json");
 		}
@@ -68,7 +67,7 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync("", false, builder.Build());
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
 		[Command("timer"), Alias("t"), Summary("Timer for special tasks"), RequireUserPermission(GuildPermission.Administrator)]
@@ -76,7 +75,7 @@ namespace MarekMotykaBot.Modules
 		{
 			_timerService.StartTimer();
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
 		[Command("addSMEntry"), Alias("sma"), Summary("Add entry to StreamMonday schedule"), RequireUserPermission(GuildPermission.Administrator)]
@@ -93,7 +92,7 @@ namespace MarekMotykaBot.Modules
 
 			_serializer.SaveToFile<string>("streamMonday.json", schedule);
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName, entry);
+			LoggingService.CustomCommandLog(Context.Message, ServiceName, entry);
 		}
 
 		[Command("removeSMEntry"), Alias("smr"), Summary("Remove entry from StreamMonday schedule"), RequireUserPermission(GuildPermission.Administrator)]
@@ -110,19 +109,7 @@ namespace MarekMotykaBot.Modules
 
 			_serializer.SaveToFile<string>("streamMonday.json", schedule);
 
-			_loggingService.CustomCommandLog(Context.Message, ServiceName, entry);
-		}
-
-		[Command("switchStreamReminderOff"), Alias("ssro"), Summary("Switch 'has Lonk linked rabbit yet' off using command"), RequireUserPermission(GuildPermission.Administrator)]
-		public async Task SwitchStreamReminderOff()
-		{
-			bool rabbitLinkedFlag = false;
-
-			_serializer.SaveSingleToFile<bool>("hasLonkLinkedRabbit.json", rabbitLinkedFlag);
-
-			await ReplyAsync(StringConsts.FlagReset);
-
-			_loggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ServiceName, entry);
 		}
 	}
 }
