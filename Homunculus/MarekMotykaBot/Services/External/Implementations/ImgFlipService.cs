@@ -7,91 +7,80 @@ using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services.External
 {
-    public class ImgFlipService: IDiscordService, IImgFlipService
+	public class ImgFlipService : IDiscordService, IImgFlipService
 	{
-        private const int MarekTemplateId = 114558777;
+		private const int MarekTemplateId = 114558777;
 		private const int LaughingMarekTemplateId = 152110002;
 		private const int SkeletorMarekTemplateId = 156362598;
 		private const int DrakeMarekTemplateId = 160994886;
 
-		private readonly ImgFlipAPISource _source;
-        
-        private readonly string _imgFlipUsername;
-        private readonly string _imgFlipPassword;
+		private readonly ImgFlipAPISource _imgFlipClient;
 
-        public IConfiguration Configuration { get; set; }
+		private readonly string _imgFlipUsername;
+		private readonly string _imgFlipPassword;
 
-        public ImgFlipService(IConfiguration configuration)
-        {
-            Configuration = configuration;
-            _source = ImgFlipAPISource.Instance;
+		public IConfiguration Configuration { get; set; }
 
-            _imgFlipUsername = Configuration["credentials:imgFlipUser"];
-            _imgFlipPassword = Configuration["credentials:imgFlipPassword"];
-        }
+		public ImgFlipService(IConfiguration configuration)
+		{
+			Configuration = configuration;
+			_imgFlipClient = ImgFlipAPISource.Instance;
 
-        public async Task<string> CreateMarekFace(string topText, string bottomText)
-        {
-            CaptionMemeRoot freshMeme = await ImgFlipAPISource.Instance.CaptionMemeAsync(MarekTemplateId, _imgFlipUsername, _imgFlipPassword, topText, bottomText);
+			_imgFlipUsername = Configuration["credentials:imgFlipUser"];
+			_imgFlipPassword = Configuration["credentials:imgFlipPassword"];
+		}
 
-            if (freshMeme.success)
-                return freshMeme.data.url;
-            else
-                return string.Empty;
-        }
+		public async Task<string> CreateMarekFace(string topText, string bottomText)
+		{
+			CaptionMemeRoot freshMeme = await _imgFlipClient.CaptionMemeAsync(MarekTemplateId, _imgFlipUsername, _imgFlipPassword, topText, bottomText);
+
+			return freshMeme.success ? freshMeme.data.url : string.Empty;
+		}
 
 		public async Task<string> CreateLaughingMarekMeme(string topText, string bottomText)
 		{
-			CaptionMemeRoot freshMeme = await ImgFlipAPISource.Instance.CaptionMemeAsync(LaughingMarekTemplateId, _imgFlipUsername, _imgFlipPassword, topText, bottomText);
+			CaptionMemeRoot freshMeme = await _imgFlipClient.CaptionMemeAsync(LaughingMarekTemplateId, _imgFlipUsername, _imgFlipPassword, topText, bottomText);
 
-			if (freshMeme.success)
-				return freshMeme.data.url;
-			else
-				return string.Empty;
+			return freshMeme.success ? freshMeme.data.url : string.Empty;
 		}
 
 		public async Task<string> CreateSkeletorMarekMeme(string topText, string bottomText)
 		{
-			CaptionMemeRoot freshMeme = await ImgFlipAPISource.Instance.CaptionMemeAsync(SkeletorMarekTemplateId, _imgFlipUsername, _imgFlipPassword, topText, bottomText);
+			CaptionMemeRoot freshMeme = await _imgFlipClient.CaptionMemeAsync(SkeletorMarekTemplateId, _imgFlipUsername, _imgFlipPassword, topText, bottomText);
 
-			if (freshMeme.success)
-				return freshMeme.data.url;
-			else
-				return string.Empty;
+			return freshMeme.success ? freshMeme.data.url : string.Empty;
 		}
 
 		public async Task<string> CreateDrakeMarekMeme(string topText, string bottomText)
 		{
-			List<TextBox> textBoxes = new List<TextBox>();
-
-			textBoxes.Add(new TextBox()
+			List<TextBox> textBoxes = new List<TextBox>
 			{
-				text = topText,
-				x = 320,
-				y = 10,
-				height = 350,
-				width = 300,
-				color = "#ffffff",
-				outline_color = "#000000"
-			});
+				new TextBox()
+				{
+					text = topText,
+					x = 320,
+					y = 10,
+					height = 350,
+					width = 300,
+					color = "#ffffff",
+					outline_color = "#000000"
+				},
 
-			textBoxes.Add(new TextBox()
-			{
-				text = bottomText,
-				x = 320,
-				y = 220,
-				height = 300,
-				width = 300,
-				color = "#ffffff",
-				outline_color = "#000000"
-			});
-			
-			CaptionMemeRoot freshMeme = await ImgFlipAPISource.Instance.CaptionMemeAsync(DrakeMarekTemplateId, _imgFlipUsername, _imgFlipPassword, topText, bottomText, textBoxes.ToArray());
+				new TextBox()
+				{
+					text = bottomText,
+					x = 320,
+					y = 220,
+					height = 300,
+					width = 300,
+					color = "#ffffff",
+					outline_color = "#000000"
+				}
+			};
 
-			if (freshMeme.success)
-				return freshMeme.data.url;
-			else
-				return string.Empty;
+			CaptionMemeRoot freshMeme = await _imgFlipClient.CaptionMemeAsync(DrakeMarekTemplateId, _imgFlipUsername, _imgFlipPassword, topText, bottomText, textBoxes.ToArray());
+
+			return freshMeme.success ? freshMeme.data.url : string.Empty;
 		}
 	}
 }
