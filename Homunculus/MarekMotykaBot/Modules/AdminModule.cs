@@ -48,14 +48,6 @@ namespace MarekMotykaBot.Modules
 			LoggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
 
-		[Command("timer"), Alias("t"), Summary("Timer for special tasks"), RequireUserPermission(GuildPermission.Administrator)]
-		public async Task StartTimer()
-		{
-			_timerService.StartTimer();
-
-			LoggingService.CustomCommandLog(Context.Message, ServiceName);
-		}
-
 		[Command("addSMEntry"), Alias("sma"), Summary("Add entry to StreamMonday schedule"), RequireUserPermission(GuildPermission.Administrator)]
 		public async Task AddEntryToStreamMonday(params string[] text)
 		{

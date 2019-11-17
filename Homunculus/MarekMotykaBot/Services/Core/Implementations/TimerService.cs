@@ -49,6 +49,8 @@ namespace MarekMotykaBot.Services.Core
 			_timer = new Timer(60 * 1000);
 
 			_timer.Elapsed += new ElapsedEventHandler(HourlyTimerTick);
+
+			StartTimer();
 		}
 
 		public void StartTimer()

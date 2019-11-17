@@ -16,17 +16,34 @@ namespace MarekMotykaBot
     public class Program
     {
         public static void Main(string[] args)
-            => new Program().StartAsync().GetAwaiter().GetResult();
+            => new Program()
+			.StartAsync()
+			.GetAwaiter()
+			.GetResult();
         
         private IConfiguration _config;
 
         public async Task StartAsync()
         {
-            var builder = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory).AddJsonFile("configuration.json");
+            var builder = new ConfigurationBuilder().
+				SetBasePath(AppContext.BaseDirectory).
+				AddJsonFile("configuration.json");
 
             _config = builder.Build();
 
-			var services = new ServiceCollection()
+			var services = ConfigureServices();
+
+            var provider = services.BuildServiceProvider();
+			
+            await provider.GetRequiredService<IStartupService>().StartAsync();
+            provider.GetRequiredService<ICommandHandlingService>();
+
+            await Task.Delay(-1);
+        }
+
+		private IServiceCollection ConfigureServices()
+		{
+			return new ServiceCollection()
 				.AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
 				{
 					LogLevel = LogSeverity.Verbose,
@@ -44,19 +61,11 @@ namespace MarekMotykaBot
 				.AddSingleton<IEmbedBuilderService, EmbedBuilderService>()
 				.AddSingleton<IYTService, YTService>()
 				.AddSingleton<IImgurService, ImgurService>()
-                .AddSingleton<IImgFlipService, ImgFlipService>()
+				.AddSingleton<IImgFlipService, ImgFlipService>()
 				.AddSingleton<IJSONSerializerService, JSONSerializerService>()
 				.AddSingleton<ITimerService, TimerService>()
-                .AddSingleton(_config)
-                .AddSingleton<Random>();
-
-            var provider = services.BuildServiceProvider();
-			
-            provider.GetRequiredService<ILoggingService>();
-            await provider.GetRequiredService<IStartupService>().StartAsync();
-            provider.GetRequiredService<ICommandHandlingService>();
-
-            await Task.Delay(-1);
-        }
+				.AddSingleton(_config)
+				.AddSingleton<Random>();
+		}
     }
 }
