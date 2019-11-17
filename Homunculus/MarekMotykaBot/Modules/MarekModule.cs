@@ -24,6 +24,7 @@ namespace MarekMotykaBot.Modules
 		private readonly IImgurService _imgur;
 		private readonly IJSONSerializerService _serializer;
 		private readonly IImgFlipService _imgFlip;
+		private readonly IEmbedBuilderService _embedBuilderService;
 		private readonly Random _rng;
 		private readonly IConfiguration _configuration;
 
@@ -40,6 +41,7 @@ namespace MarekMotykaBot.Modules
 			IImgurService imgur,
 			IJSONSerializerService serializer,
 			IImgFlipService imgFlip,
+			IEmbedBuilderService embedBuilderService,
 			Random random,
 			ILoggingService loggingService)
 		{
@@ -48,6 +50,7 @@ namespace MarekMotykaBot.Modules
 			_serializer = serializer;
 			_rng = random;
 			_imgFlip = imgFlip;
+			_embedBuilderService = embedBuilderService;
 			LoggingService = loggingService;
 
 			eightBallResponses = _serializer.LoadFromFile<string>("8ballResponses.json");
@@ -331,11 +334,6 @@ namespace MarekMotykaBot.Modules
 					break;
 			}
 
-			var builder = new EmbedBuilder();
-
-			builder.WithFooter(selectedQuote.Author);
-			builder.WithTitle(selectedQuote.QuoteBody);
-
 			string intro = string.Empty;
 
 			switch (_rng.Next(1, 4))
@@ -367,7 +365,7 @@ namespace MarekMotykaBot.Modules
 
 			await Context.Channel.SendMessageAsync(intro);
 			await Task.Delay(3000);
-			await ReplyAsync("", false, builder.Build());
+			await ReplyAsync("", false, _embedBuilderService.BuildQuote(selectedQuote));
 
 			LoggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', category));
 		}

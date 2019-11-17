@@ -17,11 +17,11 @@ namespace MarekMotykaBot.Services.Core
 {
 	public class TimerService : IDiscordService, ITimerService
 	{
-		private readonly Timer _timer;
 		private readonly IJSONSerializerService _serializer;
 		private readonly IEmbedBuilderService _embedBuilderService;
 		private readonly DiscordSocketClient _client;
 		private readonly Random _rng;
+		private readonly Timer _timer;
 		private readonly ulong _destinationChannel;
 
 		public IConfiguration Configuration { get; set; }
@@ -34,7 +34,7 @@ namespace MarekMotykaBot.Services.Core
 			IEmbedBuilderService statisticsService,
 			DiscordSocketClient client,
 			Random rng
-			)
+		)
 		{
 			Configuration = configuration;
 			_serializer = serializer;
@@ -42,7 +42,7 @@ namespace MarekMotykaBot.Services.Core
 			_embedBuilderService = statisticsService;
 			_rng = rng;
 
-			_destinationChannel = (ulong)Int64.Parse(Configuration["tokens:destinationServerId"]);
+			_destinationChannel = (ulong)long.Parse(Configuration["tokens:destinationServerId"]);
 
 			TimedTasks = _serializer.LoadFromFile<TimedTask>("timedTasks.json");
 
@@ -63,13 +63,13 @@ namespace MarekMotykaBot.Services.Core
 		{
 			DateTime currentDateTime = DateTime.Now;
 
-			foreach (var task in TimedTasks)
+			foreach (TimedTask task in TimedTasks)
 			{
 				if (task.Hours.Contains(currentDateTime.Hour) &&
 					task.Minutes.Contains(currentDateTime.Minute) &&
 					(task.DaysOfWeek.Contains(currentDateTime.DayOfWeek) || task.DaysOfMonth.Contains(currentDateTime.Day)))
 				{
-					this.GetType().GetMethod(task.Name).Invoke(this, null);
+					GetType().GetMethod(task.Name).Invoke(this, null);
 				}
 			}
 		}
@@ -93,18 +93,13 @@ namespace MarekMotykaBot.Services.Core
 
 			Quote selectedQuote = quotes[randomQuoteIndex];
 
-			_serializer.SaveToFile<Quote>("quoteOfTheDay.json", new List<Quote> { selectedQuote });
-
-			var builder = new EmbedBuilder();
-
-			builder.WithFooter(selectedQuote.Author);
-			builder.WithTitle(selectedQuote.QuoteBody);
+			_serializer.SaveToFile("quoteOfTheDay.json", new List<Quote> { selectedQuote });
 
 			var channelToPost = _client.GetChannel(_destinationChannel) as IMessageChannel;
 
 			await channelToPost.SendMessageAsync(StringConsts.QuoteForToday);
 			await Task.Delay(1000);
-			await channelToPost.SendMessageAsync("", false, builder.Build());
+			await channelToPost.SendMessageAsync("", false, _embedBuilderService.BuildQuote(selectedQuote));
 		}
 
 		public async Task SwearWordCount()

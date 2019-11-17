@@ -30,20 +30,21 @@ namespace MarekMotykaBot.Services.Core.Implementations
 		{
 			List<string> schedule = _serializer.LoadFromFile<string>("streamMonday.json");
 
-			var builder = new EmbedBuilder()
-			{
-				Color = blueSidebarColor
-			};
-
 			DateTime today = DateTime.Today;
 			int daysUntilWednesday = ((int)DayOfWeek.Wednesday - (int)today.DayOfWeek + 7) % 7;
 			DateTime nextWednesday = today.AddDays(daysUntilWednesday);
+
+			var builder = new EmbedBuilder()
+			{
+				Color = blueSidebarColor,
+				Description = StringConsts.Backlog
+			};
 
 			if (schedule != null && schedule.Any())
 			{
 				builder.AddField(x =>
 				{
-					x.Name = string.Format(StringConsts.Backlog, nextWednesday.ToString("dd.MM"));
+					x.Name = nextWednesday.ToString("dd.MM");
 					x.Value = string.Join(Environment.NewLine, schedule.ToArray());
 					x.IsInline = false;
 				});
@@ -83,6 +84,19 @@ namespace MarekMotykaBot.Services.Core.Implementations
 
 				sb.Clear();
 			}
+
+			return builder.Build();
+		}
+
+		public Embed BuildQuote(Quote quote)
+		{
+			var builder = new EmbedBuilder()
+			{
+				Color = blueSidebarColor,
+			};
+
+			builder.WithFooter(quote.Author);
+			builder.WithTitle(quote.QuoteBody);
 
 			return builder.Build();
 		}

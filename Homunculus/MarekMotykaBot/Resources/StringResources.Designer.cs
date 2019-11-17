@@ -61,7 +61,7 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rozkładówka (backlog) na {0}.
+        ///   Looks up a localized string similar to Rozkładówka (backlog).
         /// </summary>
         internal static string backlog {
             get {

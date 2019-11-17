@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MarekMotykaBot.DataTypes
 {
-	internal class Quote
+	public class Quote
 	{
 		public string QuoteBody { get; set; }
 
@@ -13,9 +13,9 @@ namespace MarekMotykaBot.DataTypes
 
 		public Quote(string quoteBody, string author, ICollection<QuoteCategory> categories)
 		{
-			this.QuoteBody = quoteBody;
-			this.Author = author;
-			this.Categories = categories;
+			QuoteBody = quoteBody;
+			Author = author;
+			Categories = categories;
 		}
 	}
 }

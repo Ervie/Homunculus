@@ -1,4 +1,5 @@
 ﻿using Discord;
+using MarekMotykaBot.DataTypes;
 
 namespace MarekMotykaBot.Services.Core.Interfaces
 {
@@ -7,5 +8,7 @@ namespace MarekMotykaBot.Services.Core.Interfaces
 		Embed BuildStreamMondaySchedule();
 
 		Embed BuildSwearWordCountRanking();
+
+		Embed BuildQuote(Quote quote);
 	}
 }
