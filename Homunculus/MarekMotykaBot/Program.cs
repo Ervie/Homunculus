@@ -1,7 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using MarekMotykaBot.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -10,6 +9,7 @@ using MarekMotykaBot.Services.Core;
 using MarekMotykaBot.Services.External;
 using MarekMotykaBot.Services.Core.Interfaces;
 using MarekMotykaBot.Services.External.Interfaces;
+using MarekMotykaBot.Services.Core.Implementations;
 
 namespace MarekMotykaBot
 {
@@ -41,6 +41,7 @@ namespace MarekMotykaBot
 				.AddSingleton<ILoggingService, LoggingService>()
 				.AddSingleton<IStartupService, StartupService>()
 				.AddSingleton<IMessageScannerService, MessageScannerService>()
+				.AddSingleton<IEmbedBuilderService, EmbedBuilderService>()
 				.AddSingleton<IYTService, YTService>()
 				.AddSingleton<IImgurService, ImgurService>()
                 .AddSingleton<IImgFlipService, ImgFlipService>()

@@ -17,6 +17,7 @@ namespace MarekMotykaBot.Modules
 	{
 		private readonly IJSONSerializerService _serializer;
 		private readonly ITimerService _timerService;
+		private readonly IEmbedBuilderService _embedBuilderService;
 
 		private readonly List<string> _swearWordList;
 
@@ -27,11 +28,13 @@ namespace MarekMotykaBot.Modules
 		public AdminModule(
 			IJSONSerializerService serializer,
 			ITimerService timerService,
-			ILoggingService loggingService
+			ILoggingService loggingService,
+			IEmbedBuilderService embedBuilderService
 			)
 		{
 			_serializer = serializer;
 			_timerService = timerService;
+			_embedBuilderService = embedBuilderService;
 			LoggingService = loggingService;
 
 			_swearWordList = _serializer.LoadFromFile<string>("swearWords.json");
@@ -40,37 +43,7 @@ namespace MarekMotykaBot.Modules
 		[Command("Penis"), Summary("This is a Christian server!"), RequireUserPermission(GuildPermission.Administrator)]
 		public async Task SwearWordCounterAsync()
 		{
-			StringBuilder sb = new StringBuilder();
-
-			var counterList = _serializer.LoadFromFile<WordCounterEntry>("wordCounter.json");
-
-			var builder = new EmbedBuilder()
-			{
-				Color = new Color(114, 137, 218),
-				Description = StringConsts.SwearWordCounterHeader
-			};
-
-			foreach (string swearWord in _swearWordList)
-			{
-				var specificSwearWordEntries = counterList.Where(x => x.Word.Equals(swearWord)).OrderByDescending(x => x.CounterValue);
-
-				foreach (var entry in specificSwearWordEntries)
-				{
-					sb.AppendLine(string.Format(StringConsts.SwearWordCounterEntry, entry.DiscordNickname, entry.Word, entry.CounterValue));
-				}
-
-				if (!string.IsNullOrEmpty(sb.ToString()))
-					builder.AddField(x =>
-					{
-						x.Name = swearWord;
-						x.Value = sb.ToString();
-						x.IsInline = true;
-					});
-
-				sb.Clear();
-			}
-
-			await ReplyAsync("", false, builder.Build());
+			await ReplyAsync("", false, _embedBuilderService.BuildSwearWordCountRanking());
 
 			LoggingService.CustomCommandLog(Context.Message, ServiceName);
 		}

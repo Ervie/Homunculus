@@ -20,6 +20,8 @@ namespace MarekMotykaBot.Modules
 		private readonly CommandService _service;
 		private readonly IConfiguration _configuration;
 		private readonly IJSONSerializerService _serializer;
+		private readonly IEmbedBuilderService _embedBuilderService;
+
 
 		public ILoggingService LoggingService { get; }
 
@@ -27,12 +29,14 @@ namespace MarekMotykaBot.Modules
 			CommandService service,
 			IConfiguration configuration,
 			IJSONSerializerService serializer,
-			ILoggingService loggingService
+			ILoggingService loggingService,
+			IEmbedBuilderService embedBuilderService
 			)
 		{
 			_service = service;
 			_configuration = configuration;
 			_serializer = serializer;
+			_embedBuilderService = embedBuilderService;
 			LoggingService = loggingService;
 		}
 
@@ -135,31 +139,7 @@ namespace MarekMotykaBot.Modules
 		[Command("StreamMonday"), Alias("sm", "Streamdziałek"), Summary("Prints schedule for next StreamMonday")]
 		public async Task StreamMondayAsync()
 		{
-			List<string> schedule = _serializer.LoadFromFile<string>("streamMonday.json");
-
-			var builder = new EmbedBuilder();
-
-			DateTime today = DateTime.Today;
-			int daysUntilWednesday = ((int)DayOfWeek.Wednesday - (int)today.DayOfWeek + 7) % 7;
-			DateTime nextWednesday = today.AddDays(daysUntilWednesday);
-
-			if (schedule != null && schedule.Count > 0)
-			{
-				builder.AddField(x =>
-				{
-					x.Name = "Rozkładówka (backlog) na " + nextWednesday.ToString("dd.MM");
-					x.Value = string.Join(Environment.NewLine, schedule.ToArray());
-					x.IsInline = false;
-				});
-			}
-
-			var role = Context.Guild.Roles.First(x => x.Name.StartsWith(_configuration["configValues:streamAlias"]));
-
-			if (role != null)
-			{
-				await ReplyAsync(role.Mention);
-			}
-			await ReplyAsync("", false, builder.Build());
+			await ReplyAsync("", false, _embedBuilderService.BuildStreamMondaySchedule());
 
 			LoggingService.CustomCommandLog(Context.Message, ServiceName);
 		}
