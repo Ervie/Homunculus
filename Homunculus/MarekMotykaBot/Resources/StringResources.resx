@@ -243,8 +243,8 @@
   <data name="snoring" xml:space="preserve">
     <value>Chrrr... chrrr... chrrr...</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
+  <data name="backlog" xml:space="preserve">
+    <value>Rozkładówka (backlog) na {0}</value>
   </data>
   <data name="swearWordCounterEntry" xml:space="preserve">
     <value>{0} do tej pory użył słowa  "{1}" {2} razy.</value>

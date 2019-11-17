@@ -32,6 +32,7 @@ namespace MarekMotykaBot.Services.External
 			request.MaxResults = 10;
 
 			var result = await request.ExecuteAsync();
+
 			return result.Items.FirstOrDefault(x => x.Id.Kind == dataType);
 		}
 	}

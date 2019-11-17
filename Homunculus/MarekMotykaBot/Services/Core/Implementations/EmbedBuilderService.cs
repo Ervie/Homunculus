@@ -7,13 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services.Core.Implementations
 {
-	class EmbedBuilderService : IDiscordService, IEmbedBuilderService
+	internal class EmbedBuilderService : IDiscordService, IEmbedBuilderService
 	{
-
+		private static readonly Color blueSidebarColor = new Color(114, 137, 218);
 		private readonly IJSONSerializerService _serializer;
 
 		public IConfiguration Configuration { get; set; }
@@ -21,7 +20,7 @@ namespace MarekMotykaBot.Services.Core.Implementations
 		public EmbedBuilderService(
 			IConfiguration configuration,
 			IJSONSerializerService serializer
-			)
+		)
 		{
 			Configuration = configuration;
 			_serializer = serializer;
@@ -31,7 +30,10 @@ namespace MarekMotykaBot.Services.Core.Implementations
 		{
 			List<string> schedule = _serializer.LoadFromFile<string>("streamMonday.json");
 
-			var builder = new EmbedBuilder();
+			var builder = new EmbedBuilder()
+			{
+				Color = blueSidebarColor
+			};
 
 			DateTime today = DateTime.Today;
 			int daysUntilWednesday = ((int)DayOfWeek.Wednesday - (int)today.DayOfWeek + 7) % 7;
@@ -41,7 +43,7 @@ namespace MarekMotykaBot.Services.Core.Implementations
 			{
 				builder.AddField(x =>
 				{
-					x.Name = "Rozkładówka (backlog) na " + nextWednesday.ToString("dd.MM");
+					x.Name = string.Format(StringConsts.Backlog, nextWednesday.ToString("dd.MM"));
 					x.Value = string.Join(Environment.NewLine, schedule.ToArray());
 					x.IsInline = false;
 				});
@@ -58,7 +60,7 @@ namespace MarekMotykaBot.Services.Core.Implementations
 
 			var builder = new EmbedBuilder()
 			{
-				Color = new Color(114, 137, 218),
+				Color = blueSidebarColor,
 				Description = StringConsts.SwearWordCounterHeader
 			};
 

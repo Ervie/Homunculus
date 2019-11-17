@@ -376,23 +376,23 @@
 			{
 				return StringResources.ResourceManager.GetString("eggString");
 			}
-        }
+		}
 
-        public static string SorryForLateArrivalMessage1
-        {
-            get
-            {
-                return StringResources.ResourceManager.GetString("lateArrivalMessage1");
-            }
-        }
+		public static string SorryForLateArrivalMessage1
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("lateArrivalMessage1");
+			}
+		}
 
-        public static string SorryForLateArrivalMessage2
-        {
-            get
-            {
-                return StringResources.ResourceManager.GetString("lateArrivalMessage2");
-            }
-        }
+		public static string SorryForLateArrivalMessage2
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("lateArrivalMessage2");
+			}
+		}
 
 		public static string RabbitMissing
 		{
@@ -463,6 +463,14 @@
 			get
 			{
 				return StringResources.ResourceManager.GetString("whyWouldIDoThat");
+			}
+		}
+
+		public static string Backlog
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("backlog");
 			}
 		}
 	}

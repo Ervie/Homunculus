@@ -14,69 +14,77 @@ namespace MarekMotykaBot.Services.Core
 {
 	public class CommandHandlingService : IDiscordService, ICommandHandlingService
 	{
+
+
 		private readonly DiscordSocketClient _discord;
-		private readonly CommandService _commands;
-		private readonly IJSONSerializerService _jsonSerializer;
-		private readonly IMessageScannerService _scanner;
+		private readonly CommandService _commandService;
 		private readonly Random _rng;
+		private readonly IMessageScannerService _messageScanner;
+		private readonly IJSONSerializerService _jsonSerializer;
 		private readonly IServiceProvider _provider;
 
 		public IConfiguration Configuration { get; set; }
 
 		public CommandHandlingService(
-			IConfiguration configuration,
 			DiscordSocketClient discord, 
-			CommandService commands, 
-			IMessageScannerService scanner, 
+			CommandService commandService, 
 			Random random, 
+			IConfiguration configuration,
+			IMessageScannerService messageScanner, 
 			IServiceProvider provider, 
 			IJSONSerializerService jSONSerializer
-			)
+		)
 		{
 			_discord = discord;
-			_commands = commands;
-			_scanner = scanner;
+			_commandService = commandService;
+			_rng = random;
+			Configuration = configuration;
+			_messageScanner = messageScanner;
 			_provider = provider;
 			_jsonSerializer = jSONSerializer;
-			Configuration = configuration;
-			_rng = random;
 
 			SetStartingState();
 		}
 
-		public CommandService Commands => _commands;
+		public void SetStartingState()
+		{
+			_discord.MessageReceived += OnMessageReceivedAsync;
+			_discord.MessageReceived += _messageScanner.ScanMessage;
+			_discord.MessageUpdated += _messageScanner.ScanUpdateMessage;
+			_discord.MessageDeleted += _messageScanner.ScanDeletedMessage;
+		}
 
 		public async Task OnMessageReceivedAsync(SocketMessage s)
 		{
-			if (!(s is SocketUserMessage msg)) return;
-			if (msg.Author == _discord.CurrentUser) return;
+			if (!(s is SocketUserMessage msg))
+			{
+				return;
+			}
+
+			if (msg.Author == _discord.CurrentUser)
+			{
+				return;
+			}
 
 			var context = new SocketCommandContext(_discord, msg);
 
 			int argPos = 0;
 			if (msg.HasStringPrefix(Configuration["prefix"], ref argPos) || msg.HasMentionPrefix(_discord.CurrentUser, ref argPos))
 			{
-				if (!DeclineCommand(context, msg.Content).Result)
+				if (! await DeclineCommand(context, msg.Content))
 				{
-					var result = await Commands.ExecuteAsync(context, argPos, _provider);
+					IResult result = await _commandService.ExecuteAsync(context, argPos, _provider);
 
 					if (!result.IsSuccess &&
 						result.Error != CommandError.UnknownCommand &&
 						result.Error != CommandError.BadArgCount &&
 						result.Error != CommandError.ParseFailed)
+					{
 						await context.Channel.SendMessageAsync(result.ToString());
+					}
 				}
 			}
 		}
-
-		public void SetStartingState()
-		{
-			_discord.MessageReceived += OnMessageReceivedAsync;
-			_discord.MessageReceived += _scanner.ScanMessage;
-			_discord.MessageUpdated += _scanner.ScanUpdateMessage;
-			_discord.MessageDeleted += _scanner.ScanDeletedMessage;
-		}
-
 		public async Task<bool> DeclineCommand(SocketCommandContext context, string messageContent)
 		{
 			string commandName = messageContent.Split(' ').FirstOrDefault();
@@ -84,7 +92,7 @@ namespace MarekMotykaBot.Services.Core
 
 			if (!string.IsNullOrWhiteSpace(commandName))
 			{
-				if (BlockCommand(context, commandName).Result)
+				if (await BlockCommand(context, commandName))
 				{
 					return true;
 				}
@@ -113,13 +121,13 @@ namespace MarekMotykaBot.Services.Core
 
 		public void AddDeclineCache(string discordId, string commandName)
 		{
-			if (commandName != "!no" && commandName != "!nocosemoge")
+			if (commandName != "!no" && commandName != "!nocosemoge" && commandName != "!co")
 			{
 				List<DeclineCache> declineCache = _jsonSerializer.LoadFromFile<DeclineCache>("declineCache.json");
 
 				declineCache.Add(new DeclineCache(discordId, commandName));
 
-				_jsonSerializer.SaveToFile<DeclineCache>("declineCache.json", declineCache);
+				_jsonSerializer.SaveToFile("declineCache.json", declineCache);
 			}
 		}
 
@@ -127,16 +135,14 @@ namespace MarekMotykaBot.Services.Core
 		{
 			List<DeclineCache> declineCache = _jsonSerializer.LoadFromFile<DeclineCache>("declineCache.json");
 
-			if (declineCache.Count > 0 && declineCache.FirstOrDefault(x => x.DiscordUsername == context.User.DiscordId() && x.CommandName == commandName) != null)
+			if (declineCache.Any() && declineCache.FirstOrDefault(x => x.DiscordUsername == context.User.DiscordId() && x.CommandName == commandName) != null)
 			{
 				string meanerResponse = string.Format(StringConsts.ToldYou, context.User.Username, commandName);
 				await context.Channel.SendMessageAsync(meanerResponse);
 				return true;
 			}
-			else
-			{
-				return false;
-			}
+
+			return false;
 		}
 	}
 }
