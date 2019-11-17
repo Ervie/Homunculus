@@ -40,7 +40,7 @@ namespace MarekMotykaBot.Modules
 			LoggingService = loggingService;
 		}
 
-		public string ServiceName { get => "HelpModule"; }
+		public string ModuleName { get => "HelpModule"; }
 		[Command("Version"), Alias("v"), Summary("Prints version information")]
 		public async Task AboutAsync()
 		{
@@ -62,7 +62,7 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync("", false, builder.Build());
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 
 		[Command("Help"), Alias("h"), Summary("List all the commands")]
@@ -133,7 +133,7 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync("", false, builder.Build());
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 
 		[Command("StreamMonday"), Alias("sm", "Streamdziałek"), Summary("Prints schedule for next StreamMonday")]
@@ -141,7 +141,7 @@ namespace MarekMotykaBot.Modules
 		{
 			await ReplyAsync("", false, _embedBuilderService.BuildStreamMondaySchedule());
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 	}
 }

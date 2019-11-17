@@ -18,7 +18,7 @@ namespace MarekMotykaBot.Modules
 {
 	public class HalloweenModule : ModuleBase<SocketCommandContext>, IDiscordModule
 	{
-		public string ServiceName { get => "HalloweenModule"; }
+		public string ModuleName { get => "HalloweenModule"; }
 
 		public ILoggingService LoggingService { get; }
 
@@ -55,7 +55,7 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync(gifUrl);
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 
 		[Command("Skeletor"), Alias("skq"), Summary("Ancient wisdom... of Skeletor")]
@@ -66,7 +66,7 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync(gifUrl);
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 
 		[Command("MarekSkeletorMeme"), Alias("meme3"), Summary("Create your own Marek meme image, text split by semicolon - skeletor version")]
@@ -93,7 +93,7 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync(resultUrl);
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', captions));
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', captions));
 		}
 	}
 }

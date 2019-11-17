@@ -20,7 +20,7 @@ namespace MarekMotykaBot.Modules
 
         private readonly IJSONSerializerService _serializer;
 
-		public string ServiceName { get => "GamesModule"; }
+		public string ModuleName { get => "GamesModule"; }
 
 		public ILoggingService LoggingService { get; }
 
@@ -40,7 +40,7 @@ namespace MarekMotykaBot.Modules
 		{
 			await ReplyAsync(Context.Guild.GetRandomUserName(_rng));
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 
         [Command("Roll_k6"), Alias("k6"), Summary("Roll the k6 dice.")]
@@ -50,7 +50,7 @@ namespace MarekMotykaBot.Modules
 
             await ReplyAsync(Context.User.Username + ": " + rolledNumber.ToString());
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 
         [Command("Roll_k100"), Alias("k100"), Summary("Roll the k100 dice.")]
@@ -60,7 +60,7 @@ namespace MarekMotykaBot.Modules
 
             await ReplyAsync(Context.User.Username + ": " + rolledNumber.ToString());
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 
         [Command("Roll"), Alias("k"), Summary("Roll customizable dice.")]
@@ -138,7 +138,7 @@ namespace MarekMotykaBot.Modules
             {
 			}
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', diceSize));
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', diceSize));
 		}
 
         [Command("Flip_coin"), Alias("flip"), Summary("Flip the coin.")]
@@ -150,7 +150,7 @@ namespace MarekMotykaBot.Modules
 
             await ReplyAsync(Context.User.Username + ": " + resultString);
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 
         [Command("Charade"), Alias("kalambury", "c"), Summary("Draw a random entry for charade game.")]
@@ -218,7 +218,7 @@ namespace MarekMotykaBot.Modules
                 break;
 			}
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 
         [Command("ResetCharade"), Alias("reset", "r"), Summary("Reset charade cache")]
@@ -230,7 +230,7 @@ namespace MarekMotykaBot.Modules
 
             await ReplyAsync(StringConsts.CharadeReset);
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
     }
 }

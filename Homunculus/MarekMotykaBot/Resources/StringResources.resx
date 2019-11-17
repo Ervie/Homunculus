@@ -302,4 +302,10 @@
   <data name="whyWouldIDoThat" xml:space="preserve">
     <value>Czemu ja się zawahałem żeby strzelić? Mam wyrzuty sumienia?</value>
   </data>
+  <data name="added" xml:space="preserve">
+    <value>Dodano {0}</value>
+  </data>
+  <data name="removed" xml:space="preserve">
+    <value>Usunięto {0}</value>
+  </data>
 </root>

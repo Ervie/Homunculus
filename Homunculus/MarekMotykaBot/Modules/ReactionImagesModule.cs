@@ -11,7 +11,7 @@ namespace MarekMotykaBot.Modules
     {
 		private readonly string resources = System.AppContext.BaseDirectory + "/Resources/Images/Reactions/";
 
-		public string ServiceName { get => "ReactionImagesModule"; }
+		public string ModuleName { get => "ReactionImagesModule"; }
 
 		public ILoggingService LoggingService { get; }
 		

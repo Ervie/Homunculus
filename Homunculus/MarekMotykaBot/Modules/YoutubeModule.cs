@@ -16,7 +16,7 @@ namespace MarekMotykaBot.Modules
         private readonly IYTService _youtube;
         private readonly IServiceProvider _provider;
 
-		public string ServiceName { get => "YoutubeModule"; }
+		public string ModuleName { get => "YoutubeModule"; }
 
 		public ILoggingService LoggingService { get; }
 
@@ -42,7 +42,7 @@ namespace MarekMotykaBot.Modules
 			else
 				await ReplyAsync($"http://youtube.com/watch?v={video.Id.VideoId}");
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 	}
 }

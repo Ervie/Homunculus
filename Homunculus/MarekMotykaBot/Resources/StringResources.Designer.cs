@@ -61,6 +61,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dodano {0}.
+        /// </summary>
+        internal static string added {
+            get {
+                return ResourceManager.GetString("added", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rozkładówka (backlog).
         /// </summary>
         internal static string backlog {
@@ -408,6 +417,15 @@ namespace MarekMotykaBot.Resources {
         internal static string rabbitMissing {
             get {
                 return ResourceManager.GetString("rabbitMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Usunięto {0}.
+        /// </summary>
+        internal static string removed {
+            get {
+                return ResourceManager.GetString("removed", resourceCulture);
             }
         }
         

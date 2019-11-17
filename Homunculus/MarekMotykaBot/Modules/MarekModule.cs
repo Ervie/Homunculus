@@ -32,7 +32,7 @@ namespace MarekMotykaBot.Modules
 
 		private const byte cacheSize = 10;
 		
-		public string ServiceName { get => "MarekModule"; }
+		public string ModuleName { get => "MarekModule"; }
 
 		public ILoggingService LoggingService { get; }
 
@@ -134,7 +134,7 @@ namespace MarekMotykaBot.Modules
 
 			_serializer.SaveToFile("declineCache.json", declineCache);
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 
 		[Command("Sowa"), Alias("owl"), Summary("Post random owl image")]
@@ -145,7 +145,7 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync(gifUrl);
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
         [Command("LonkMeme"), Alias("lonk"), Summary("Post random Lonk meme image")]
         public async Task LonkMemeAsync()
@@ -154,7 +154,7 @@ namespace MarekMotykaBot.Modules
 
             await ReplyAsync(picUrl);
 
-            LoggingService.CustomCommandLog(Context.Message, ServiceName);
+            LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 
 		[Command("MarekMeme"), Alias("meme"), Summary("Post random old Marek meme image")]
@@ -165,7 +165,7 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync(gifUrl);
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
         }
 
         [Command("MarekMeme"), Alias("meme"), Summary("Create your own Marek meme image, text split by semicolon - marekface version")]
@@ -192,7 +192,7 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync(resultUrl);
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', captions));
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', captions));
 		}
 
 		[Command("DrakeMeme"), Alias("drake"), Summary("Create your own Marek meme image, text split by semicolon - Marek Drake version")]
@@ -219,7 +219,7 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync(resultUrl);
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', captions));
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', captions));
 		}
 
 		[Command("MarekMeme2"), Alias("meme2"), Summary("Create your own Marek meme image, text split by semicolon - laughing version")]
@@ -246,7 +246,7 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync(resultUrl);
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', captions));
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', captions));
 		}
 
 		[Command("Joke"), Summary("Marek's joke - you know the drill")]
@@ -262,7 +262,7 @@ namespace MarekMotykaBot.Modules
 			await Task.Delay(3000);
 			await Context.Channel.SendMessageAsync($"{selectedJoke.Punchline}");
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 
 		[Command("8ball"), Summary("Binary answer for all your questions")]
@@ -303,7 +303,7 @@ namespace MarekMotykaBot.Modules
 				}
 			}
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', messageKey));
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', messageKey));
 		}
 
 		[Command("quote"), Alias("cytat", "q"), Summary("Ancient wisdom...")]
@@ -367,7 +367,7 @@ namespace MarekMotykaBot.Modules
 			await Task.Delay(3000);
 			await ReplyAsync("", false, _embedBuilderService.BuildQuote(selectedQuote));
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', category));
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', category));
 		}
 
 		[Command("blueribbon"), Summary("Passes for hidden gift")]
@@ -383,7 +383,7 @@ namespace MarekMotykaBot.Modules
 				await Context.Channel.SendMessageAsync("Helion password: " + _configuration["credentials:helionPassword"]);
 			}
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName);
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 
 		[Command("lastContact"), Alias("lc", "lastMessage", "lm"), Summary("Last message by Marek")]
@@ -425,7 +425,7 @@ namespace MarekMotykaBot.Modules
             await Task.Delay(3000);
             await Context.Channel.SendMessageAsync($"{selectedSuchar.Punchline}");
 
-            LoggingService.CustomCommandLog(Context.Message, ServiceName);
+            LoggingService.CustomCommandLog(Context.Message, ModuleName);
         }
 
 		private Quote GetRandomQuote(QuoteCategory filtercategory)

@@ -20,7 +20,7 @@ namespace MarekMotykaBot.Modules
 
         private readonly List<string> _marekWaifuList;
 
-		public string ServiceName { get => "WaifuModule"; }
+		public string ModuleName { get => "WaifuModule"; }
 
 		public ILoggingService LoggingService { get; }
 
@@ -71,7 +71,7 @@ namespace MarekMotykaBot.Modules
 
             await Context.Channel.SendMessageAsync(string.Format(StringConsts.WaifuBetter, waifus[selectedWaifuIndex]));
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', firstWaifu, secondWaifu));
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', firstWaifu, secondWaifu));
 		}
 
         [Command("BetterWaifu"), Alias("bw"), Summary("Waifu selector, multiple waifus separated with spaces")]
@@ -111,7 +111,7 @@ namespace MarekMotykaBot.Modules
                     break;
 			}
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', waifus));
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', waifus));
 		}
 
         [Command("BetterHusbando"), Alias("bh"), Summary("Husbando selector, 2 husbandos")]
@@ -127,7 +127,7 @@ namespace MarekMotykaBot.Modules
 
             await Context.Channel.SendMessageAsync(string.Format(StringConsts.HusbandoBetter, husbandos[selectedHusbandoIndex]));
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', firstHusbando, secondHusbando));
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', firstHusbando, secondHusbando));
 		}
 
         [Command("BetterHusbando"), Alias("bh"), Summary("Husbando selector, multiple husbandos separated with spaces")]
@@ -152,7 +152,7 @@ namespace MarekMotykaBot.Modules
                     break;
 			}
 
-			LoggingService.CustomCommandLog(Context.Message, ServiceName, string.Join(' ', husbandos));
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', husbandos));
 		}
     }
 }

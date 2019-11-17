@@ -473,5 +473,21 @@
 				return StringResources.ResourceManager.GetString("backlog");
 			}
 		}
+
+		public static string Added
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("added");
+			}
+		}
+
+		public static string Removed
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("removed");
+			}
+		}
 	}
 }
