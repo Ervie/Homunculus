@@ -308,4 +308,10 @@
   <data name="removed" xml:space="preserve">
     <value>Usunięto {0}</value>
   </data>
+  <data name="versionHeader" xml:space="preserve">
+    <value>Wersja</value>
+  </data>
+  <data name="about" xml:space="preserve">
+    <value>O bocie</value>
+  </data>
 </root>

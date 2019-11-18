@@ -1,5 +1,8 @@
 ﻿using Discord;
+using Discord.Commands;
 using MarekMotykaBot.DataTypes;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services.Core.Interfaces
 {
@@ -10,5 +13,9 @@ namespace MarekMotykaBot.Services.Core.Interfaces
 		Embed BuildSwearWordCountRanking();
 
 		Embed BuildQuote(Quote quote);
+
+		Embed BuildAbout();
+
+		Task<Embed> BuildCommandListAsync(IEnumerable<ModuleInfo> moduleInfos, SocketCommandContext commandContext);
 	}
 }

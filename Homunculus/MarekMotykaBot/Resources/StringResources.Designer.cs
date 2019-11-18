@@ -61,6 +61,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to O bocie.
+        /// </summary>
+        internal static string about {
+            get {
+                return ResourceManager.GetString("about", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dodano {0}.
         /// </summary>
         internal static string added {
@@ -525,6 +534,15 @@ namespace MarekMotykaBot.Resources {
         internal static string tooMuch {
             get {
                 return ResourceManager.GetString("tooMuch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wersja.
+        /// </summary>
+        internal static string versionHeader {
+            get {
+                return ResourceManager.GetString("versionHeader", resourceCulture);
             }
         }
         

@@ -489,5 +489,21 @@
 				return StringResources.ResourceManager.GetString("removed");
 			}
 		}
+
+		public static string VersionHeader
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("versionHeader");
+			}
+		}
+
+		public static string About
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("about");
+			}
+		}
 	}
 }
