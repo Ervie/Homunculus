@@ -194,5 +194,46 @@ namespace MarekMotykaBot.Services.Core.Implementations
 
 			return builder.Build();
 		}
+
+		public Embed BuildCharadeEntry(CharadeEntry charadeEntry)
+		{
+			var builder = new EmbedBuilder()
+			{
+				Color = blueSidebarColor
+			};
+
+			builder.WithImageUrl(charadeEntry.Series.ImageUrl);
+
+			builder.AddField(x =>
+			{
+				x.Name = StringConsts.Title;
+				x.Value = charadeEntry.Series.Title;
+				x.IsInline = true;
+			});
+
+			string translations = charadeEntry.Series.Translation.ListTranslationsWithNewLine(charadeEntry.Series.Title);
+
+			if (!string.IsNullOrWhiteSpace(translations))
+			{
+				builder.AddField(x =>
+				{
+					x.Name = StringConsts.Translations;
+					x.Value = translations;
+					x.IsInline = false;
+				});
+			}
+
+			if (charadeEntry.KnownBy.Any())
+			{
+				builder.AddField(x =>
+				{
+					x.Name = StringConsts.WatchedRead;
+					x.Value = string.Join(Environment.NewLine, charadeEntry.KnownBy);
+					x.IsInline = false;
+				});
+			}
+
+			return builder.Build();
+		}
 	}
 }

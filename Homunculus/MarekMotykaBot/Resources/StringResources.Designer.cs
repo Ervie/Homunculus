@@ -511,6 +511,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tytuł.
+        /// </summary>
+        internal static string title {
+            get {
+                return ResourceManager.GetString("title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to dzisiaj..
         /// </summary>
         internal static string today {
@@ -534,6 +543,15 @@ namespace MarekMotykaBot.Resources {
         internal static string tooMuch {
             get {
                 return ResourceManager.GetString("tooMuch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tłumaczenia.
+        /// </summary>
+        internal static string translations {
+            get {
+                return ResourceManager.GetString("translations", resourceCulture);
             }
         }
         
@@ -588,6 +606,15 @@ namespace MarekMotykaBot.Resources {
         internal static string waitForIt {
             get {
                 return ResourceManager.GetString("waitForIt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obejrzane/przeczytane przez:.
+        /// </summary>
+        internal static string watchedRead {
+            get {
+                return ResourceManager.GetString("watchedRead", resourceCulture);
             }
         }
         

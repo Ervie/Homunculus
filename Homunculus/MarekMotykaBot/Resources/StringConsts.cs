@@ -505,5 +505,29 @@
 				return StringResources.ResourceManager.GetString("about");
 			}
 		}
+
+		public static string Title
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("title");
+			}
+		}
+
+		public static string Translations
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("translations");
+			}
+		}
+
+		public static string WatchedRead
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("watchedRead");
+			}
+		}
 	}
 }

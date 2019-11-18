@@ -2,14 +2,14 @@
 
 namespace MarekMotykaBot.DataTypes
 {
-	internal class CharadeEntry
+	public class CharadeEntry
 	{
 		public Series Series { get; set; }
 
 		public string[] KnownBy { get; set; }
 	}
 
-	internal class Series
+	public class Series
 	{
 		public int Id { get; set; }
 
@@ -20,7 +20,7 @@ namespace MarekMotykaBot.DataTypes
 		public CharadeTranslations Translation { get; set; }
 	}
 
-	internal class CharadeTranslations
+	public class CharadeTranslations
 	{
 		public string Polish { get; set; }
 

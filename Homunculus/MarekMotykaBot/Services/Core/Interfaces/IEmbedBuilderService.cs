@@ -14,6 +14,8 @@ namespace MarekMotykaBot.Services.Core.Interfaces
 
 		Embed BuildQuote(Quote quote);
 
+		Embed BuildCharadeEntry(CharadeEntry charadeEntry);
+
 		Embed BuildAbout();
 
 		Task<Embed> BuildCommandListAsync(IEnumerable<ModuleInfo> moduleInfos, SocketCommandContext commandContext);
