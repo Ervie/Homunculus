@@ -1,5 +1,5 @@
 ﻿language: csharp
-solution: ./Homunculus/Homunculus.sln
+solution: Homunculus/Homunculus.sln
 mono: none
 dotnet: 3.0.100
 script:
