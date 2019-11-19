@@ -63,31 +63,29 @@ namespace MarekMotykaBot.Modules
 		}
 
 		[Command("Roll"), Alias("k"), Summary("Roll customizable dice.")]
-		public async Task RollDiceAsync(params string[] diceSize)
+		public async Task RollDiceAsync(params string[] diceSizes)
 		{
+			const int defaultMaxNumber = 6;
+
 			try
 			{
-				var diceSizes = diceSize.ToList();
-				int i = 0;
-				int maxNumber = -1;
+				string diceSize = diceSizes?.FirstOrDefault();
 
-				if (diceSizes.Count > 0)
+				if (diceSize is { })
 				{
-					while (i < diceSizes.Count && !Int32.TryParse(diceSizes[i], out maxNumber))
-					{
-						i++;
-					}
-					if (maxNumber == -1 || maxNumber == 0)
+					int.TryParse(diceSize, out int parsedNumber);
+
+					if (parsedNumber > 0)
 					{
 						await ReplyAsync(StringConsts.NoNumber);
 
-						int rolledNumber = _rng.Next(0, 6) + 1;
+						int rolledNumber = _rng.Next(0, defaultMaxNumber) + 1;
 
-						await ReplyAsync(Context.User.Username + ": " + rolledNumber.ToString());
+						await ReplyAsync($"{Context.User.Username}: {rolledNumber.ToString()}");
 					}
 					else
 					{
-						int rolledNumber = _rng.Next(0, maxNumber) + 1;
+						int rolledNumber = _rng.Next(0, parsedNumber) + 1;
 
 						await ReplyAsync(Context.User.Username + ": " + rolledNumber.ToString());
 					}
@@ -96,48 +94,15 @@ namespace MarekMotykaBot.Modules
 				{
 					await ReplyAsync(StringConsts.NoNumber);
 
-					int rolledNumber = _rng.Next(0, 6) + 1;
+					int rolledNumber = _rng.Next(0, defaultMaxNumber) + 1;
 
 					await ReplyAsync(Context.User.Username + ": " + rolledNumber.ToString());
 				}
-			}
-			catch (NullReferenceException)
-			{
-				await ReplyAsync(StringConsts.NoNumber);
-
-				int rolledNumber = _rng.Next(0, 6) + 1;
-
-				await ReplyAsync(Context.User.Username + ": " + rolledNumber.ToString());
-			}
-			catch (IndexOutOfRangeException)
-			{
-				await ReplyAsync(StringConsts.NoNumber);
-
-				int rolledNumber = _rng.Next(0, 6) + 1;
-
-				await ReplyAsync(Context.User.Username + ": " + rolledNumber.ToString());
-			}
-			catch (FormatException)
-			{
-				await ReplyAsync(StringConsts.NoNumber);
-
-				int rolledNumber = _rng.Next(0, 6) + 1;
-
-				await ReplyAsync(Context.User.Username + ": " + rolledNumber.ToString());
-			}
-			catch (ArgumentOutOfRangeException)
-			{
-				await ReplyAsync(StringConsts.Impossible);
-			}
-			catch (OverflowException)
-			{
-				await ReplyAsync(StringConsts.TooMuch);
+				LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', diceSize.ToString() ?? defaultMaxNumber.ToString()));
 			}
 			catch (Exception)
 			{
 			}
-
-			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', diceSize));
 		}
 
 		[Command("Flip_coin"), Alias("flip"), Summary("Flip the coin.")]

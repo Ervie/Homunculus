@@ -6,10 +6,7 @@ using MarekMotykaBot.DataTypes.Enumerations;
 using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Modules.Interface;
 using MarekMotykaBot.Resources;
-using MarekMotykaBot.Services;
-using MarekMotykaBot.Services.Core;
 using MarekMotykaBot.Services.Core.Interfaces;
-using MarekMotykaBot.Services.External;
 using MarekMotykaBot.Services.External.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -21,9 +18,9 @@ namespace MarekMotykaBot.Modules
 {
 	public class MarekModule : ModuleBase<SocketCommandContext>, IDiscordModule
 	{
-		private readonly IImgurService _imgur;
-		private readonly IJSONSerializerService _serializer;
-		private readonly IImgFlipService _imgFlip;
+		private readonly IImgurService _imgurService;
+		private readonly IJSONSerializerService _jsonSerializer;
+		private readonly IImgFlipService _imgFlipService;
 		private readonly IEmbedBuilderService _embedBuilderService;
 		private readonly Random _rng;
 		private readonly IConfiguration _configuration;
@@ -31,7 +28,7 @@ namespace MarekMotykaBot.Modules
 		private readonly List<string> eightBallResponses;
 
 		private const byte cacheSize = 10;
-		
+
 		public string ModuleName { get => "MarekModule"; }
 
 		public ILoggingService LoggingService { get; }
@@ -46,14 +43,14 @@ namespace MarekMotykaBot.Modules
 			ILoggingService loggingService)
 		{
 			_configuration = configuration;
-			_imgur = imgur;
-			_serializer = serializer;
+			_imgurService = imgur;
+			_jsonSerializer = serializer;
 			_rng = random;
-			_imgFlip = imgFlip;
+			_imgFlipService = imgFlip;
 			_embedBuilderService = embedBuilderService;
 			LoggingService = loggingService;
 
-			eightBallResponses = _serializer.LoadFromFile<string>("8ballResponses.json");
+			eightBallResponses = _jsonSerializer.LoadFromFile<string>("8ballResponses.json");
 		}
 
 		[Command("NoCoSeMoge"), Alias("no", "co"), Summary("He will tell you what you can do")]
@@ -127,12 +124,11 @@ namespace MarekMotykaBot.Modules
 					break;
 			}
 
-
-			List<DeclineCache> declineCache = _serializer.LoadFromFile<DeclineCache>("declineCache.json");
+			List<DeclineCache> declineCache = _jsonSerializer.LoadFromFile<DeclineCache>("declineCache.json");
 
 			declineCache.RemoveAll(x => x.DiscordUsername.Equals(Context.User.DiscordId()));
 
-			_serializer.SaveToFile("declineCache.json", declineCache);
+			_jsonSerializer.SaveToFile("declineCache.json", declineCache);
 
 			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
@@ -140,119 +136,67 @@ namespace MarekMotykaBot.Modules
 		[Command("Sowa"), Alias("owl"), Summary("Post random owl image")]
 		public async Task SowaAsync()
 		{
-			string gifUrl;
-			gifUrl = await _imgur.GetRandomImageFromGallery("CbtU3");
+			string gifUrl = await _imgurService.GetRandomImageFromGallery("CbtU3");
 
 			await ReplyAsync(gifUrl);
 
 			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
-        [Command("LonkMeme"), Alias("lonk"), Summary("Post random Lonk meme image")]
-        public async Task LonkMemeAsync()
-        {
-            string picUrl = await _imgur.GetRandomImageFromAlbum("w5dzWtL");
 
-            await ReplyAsync(picUrl);
+		[Command("LonkMeme"), Alias("lonk"), Summary("Post random Lonk meme image")]
+		public async Task LonkMemeAsync()
+		{
+			string picUrl = await _imgurService.GetRandomImageFromAlbum("w5dzWtL");
 
-            LoggingService.CustomCommandLog(Context.Message, ModuleName);
+			await ReplyAsync(picUrl);
+
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 
 		[Command("MarekMeme"), Alias("meme"), Summary("Post random old Marek meme image")]
 		public async Task OldMemeAsync()
 		{
-			string gifUrl;
-			gifUrl = await _imgur.GetRandomImageFromAlbum("V5CPd");
+			string gifUrl = await _imgurService.GetRandomImageFromAlbum("V5CPd");
 
 			await ReplyAsync(gifUrl);
 
 			LoggingService.CustomCommandLog(Context.Message, ModuleName);
-        }
+		}
 
-        [Command("MarekMeme"), Alias("meme"), Summary("Create your own Marek meme image, text split by semicolon - marekface version")]
+		[Command("MarekMeme"), Alias("meme"), Summary("Create your own Marek meme image, text split by semicolon - marekface version")]
 		public async Task NewMemeAsync(params string[] text)
 		{
-			var captions = string.Join(" ", text).Split(';').ToList();
-
-			if (captions.Count < 2)
-				return;
-
-			for (int i = 0; i < captions.Count; i++)
-			{
-				captions[i] = captions[i].RemoveEmojisAndEmotes();
-			}
-
-
-			if (string.IsNullOrWhiteSpace(captions[0]) || string.IsNullOrWhiteSpace(captions[1]))
-				return;
-
-			string toptext = captions[0].ToUpper();
-			string bottomtext = captions[1].ToUpper();
-
-			string resultUrl = await _imgFlip.CreateMarekFace(toptext, bottomtext);
+			string resultUrl = await _imgFlipService.CreateMarekFace(text);
 
 			await ReplyAsync(resultUrl);
 
-			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', captions));
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', string.Join(" ", text)));
 		}
 
 		[Command("DrakeMeme"), Alias("drake"), Summary("Create your own Marek meme image, text split by semicolon - Marek Drake version")]
 		public async Task DrakeMemeAsync(params string[] text)
 		{
-			var captions = string.Join(" ", text).Split(';').ToList();
-
-			if (captions.Count < 2)
-				return;
-
-			for (int i = 0; i < captions.Count; i++)
-			{
-				captions[i] = captions[i].RemoveEmojisAndEmotes();
-			}
-
-
-			if (string.IsNullOrWhiteSpace(captions[0]) || string.IsNullOrWhiteSpace(captions[1]))
-				return;
-
-			string toptext = captions[0].ToUpper();
-			string bottomtext = captions[1].ToUpper();
-
-			string resultUrl = await _imgFlip.CreateDrakeMarekMeme(toptext, bottomtext);
+			string resultUrl = await _imgFlipService.CreateDrakeMarekMeme(text);
 
 			await ReplyAsync(resultUrl);
 
-			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', captions));
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', string.Join(" ", text)));
 		}
 
 		[Command("MarekMeme2"), Alias("meme2"), Summary("Create your own Marek meme image, text split by semicolon - laughing version")]
 		public async Task NewMeme2Async(params string[] text)
 		{
-			var captions = string.Join(" ", text).Split(';').ToList();
-
-			if (captions.Count < 2)
-				return;
-
-			for (int i = 0; i < captions.Count; i++)
-			{
-				captions[i] = captions[i].RemoveEmojisAndEmotes();
-			}
-
-
-			if (string.IsNullOrWhiteSpace(captions[0]) || string.IsNullOrWhiteSpace(captions[1]))
-				return;
-
-			string toptext = captions[0].ToUpper();
-			string bottomtext = captions[1].ToUpper();
-
-			string resultUrl = await _imgFlip.CreateLaughingMarekMeme(toptext, bottomtext);
+			string resultUrl = await _imgFlipService.CreateLaughingMarekMeme(text);
 
 			await ReplyAsync(resultUrl);
 
-			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', captions));
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', string.Join(" ", text)));
 		}
 
 		[Command("Joke"), Summary("Marek's joke - you know the drill")]
 		public async Task JokeAsync()
 		{
-			List<OneLinerJoke> jokes = _serializer.LoadFromFile<OneLinerJoke>("oneLiners.json");
+			List<OneLinerJoke> jokes = _jsonSerializer.LoadFromFile<OneLinerJoke>("oneLiners.json");
 
 			int randomJokeIndex = _rng.Next(1, jokes.Count);
 
@@ -277,8 +221,8 @@ namespace MarekMotykaBot.Modules
 			}
 			else
 			{
-				List<EightBallCache> cache = _serializer.LoadFromFile<EightBallCache>("cache8ball.json");
-				
+				List<EightBallCache> cache = _jsonSerializer.LoadFromFile<EightBallCache>("cache8ball.json");
+
 				// Check if message was not received earlier; If yes, send same answer
 				if (cache.Exists(x => x.Question == messageKey && x.DiscordUsername == userKey))
 				{
@@ -297,7 +241,7 @@ namespace MarekMotykaBot.Modules
 
 					cache.Add(new EightBallCache(userKey, messageKey, string.Format(selectedResponse, selectedUser)));
 
-					_serializer.SaveToFile<EightBallCache>("cache8ball.json", cache);
+					_jsonSerializer.SaveToFile<EightBallCache>("cache8ball.json", cache);
 
 					await Context.Channel.SendMessageAsync($"{string.Format(selectedResponse, selectedUser)}");
 				}
@@ -316,8 +260,9 @@ namespace MarekMotykaBot.Modules
 			switch (filtercategory)
 			{
 				case QuoteCategory.OfTheDay:
-					selectedQuote = _serializer.LoadFromFile<Quote>("quoteOfTheDay.json").First();
+					selectedQuote = _jsonSerializer.LoadFromFile<Quote>("quoteOfTheDay.json").First();
 					break;
+
 				case QuoteCategory.Insult:
 					var remorseChance = _rng.Next(0, 20);
 					if (remorseChance == 3)
@@ -329,6 +274,7 @@ namespace MarekMotykaBot.Modules
 					}
 					selectedQuote = GetRandomQuote(filtercategory);
 					break;
+
 				default:
 					selectedQuote = GetRandomQuote(filtercategory);
 					break;
@@ -351,17 +297,17 @@ namespace MarekMotykaBot.Modules
 					break;
 			}
 
-            int lateArrivalProbability = _rng.Next(0, 10);
-            if (lateArrivalProbability == 1)
-            {
-                await Task.Delay(5000);
-                int lateMessageId = _rng.Next(0, 2);
-                string lateArrivalMessage = lateMessageId == 0 
-                    ? StringConsts.SorryForLateArrivalMessage1 
-                    : StringConsts.SorryForLateArrivalMessage2;
-                await Context.Channel.SendMessageAsync(lateArrivalMessage);
-                await Task.Delay(3000);
-            }
+			int lateArrivalProbability = _rng.Next(0, 10);
+			if (lateArrivalProbability == 1)
+			{
+				await Task.Delay(5000);
+				int lateMessageId = _rng.Next(0, 2);
+				string lateArrivalMessage = lateMessageId == 0
+					? StringConsts.SorryForLateArrivalMessage1
+					: StringConsts.SorryForLateArrivalMessage2;
+				await Context.Channel.SendMessageAsync(lateArrivalMessage);
+				await Task.Delay(3000);
+			}
 
 			await Context.Channel.SendMessageAsync(intro);
 			await Task.Delay(3000);
@@ -389,7 +335,7 @@ namespace MarekMotykaBot.Modules
 		[Command("lastContact"), Alias("lc", "lastMessage", "lm"), Summary("Last message by Marek")]
 		public async Task LastContactAsync()
 		{
-			LastMarekMessage lastMessage = _serializer.LoadSingleFromFile<LastMarekMessage>("marekLastMessage.json");
+			LastMarekMessage lastMessage = _jsonSerializer.LoadSingleFromFile<LastMarekMessage>("marekLastMessage.json");
 
 			if (lastMessage != null)
 			{
@@ -414,19 +360,19 @@ namespace MarekMotykaBot.Modules
 			}
 		}
 
-        [Command("suchar"), Alias("pun"), Summary("A derpish pun from a derpish member")]
-        public async Task DerpPunAsync()
-        {
-            var suchars = _serializer.LoadFromFile<OneLinerJoke>("derpSuchars.json");
-            var selectedSucharIndex = _rng.Next(0, suchars.Count);
-            var selectedSuchar = suchars[selectedSucharIndex];
+		[Command("suchar"), Alias("pun"), Summary("A derpish pun from a derpish member")]
+		public async Task DerpPunAsync()
+		{
+			var suchars = _jsonSerializer.LoadFromFile<OneLinerJoke>("derpSuchars.json");
+			var selectedSucharIndex = _rng.Next(0, suchars.Count);
+			var selectedSuchar = suchars[selectedSucharIndex];
 
-            await Context.Channel.SendMessageAsync($"{selectedSuchar.Question}");
-            await Task.Delay(3000);
-            await Context.Channel.SendMessageAsync($"{selectedSuchar.Punchline}");
+			await Context.Channel.SendMessageAsync($"{selectedSuchar.Question}");
+			await Task.Delay(3000);
+			await Context.Channel.SendMessageAsync($"{selectedSuchar.Punchline}");
 
-            LoggingService.CustomCommandLog(Context.Message, ModuleName);
-        }
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
+		}
 
 		private Quote GetRandomQuote(QuoteCategory filtercategory)
 		{
@@ -440,7 +386,7 @@ namespace MarekMotykaBot.Modules
 			}
 			else
 			{
-				List<Quote> quotes = _serializer.LoadFromFile<Quote>("quotes.json");
+				List<Quote> quotes = _jsonSerializer.LoadFromFile<Quote>("quotes.json");
 
 				if (filtercategory != QuoteCategory.None)
 					quotes = quotes.Where(x => x.Categories.Contains(filtercategory)).ToList();
@@ -465,28 +411,34 @@ namespace MarekMotykaBot.Modules
 					case ("pocisk"):
 						filtercategory = QuoteCategory.Insult;
 						break;
+
 					case ("m"):
 					case ("w"):
 					case ("mądrość"):
 					case ("wisdom"):
 						filtercategory = QuoteCategory.Wisdom;
 						break;
+
 					case ("t"):
 					case ("thought"):
 						filtercategory = QuoteCategory.Thought;
 						break;
+
 					case ("f"):
 					case ("fiutt"):
 						filtercategory = QuoteCategory.Fiutt;
 						break;
+
 					case ("reaction"):
 					case ("reakcja"):
 					case ("r"):
 						filtercategory = QuoteCategory.Reaction;
 						break;
+
 					case ("d"):
 						filtercategory = QuoteCategory.OfTheDay;
 						break;
+
 					default:
 						break;
 				}
@@ -494,5 +446,5 @@ namespace MarekMotykaBot.Modules
 
 			return filtercategory;
 		}
-    }
+	}
 }

@@ -1,8 +1,10 @@
 ﻿using ImgFlipAPI.APISource.Core;
 using ImgFlipAPI.APISource.Core.Models;
+using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Services.External.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services.External
@@ -30,29 +32,45 @@ namespace MarekMotykaBot.Services.External
 			_imgFlipPassword = Configuration["credentials:imgFlipPassword"];
 		}
 
-		public async Task<string> CreateMarekFace(string topText, string bottomText)
+		public async Task<string> CreateMarekFace(params string[] text)
 		{
+			string topText, bottomText;
+
+			(topText, bottomText) = FormatMemeText(text);
+
 			CaptionMemeRoot freshMeme = await _imgFlipClient.CaptionMemeAsync(MarekTemplateId, _imgFlipUsername, _imgFlipPassword, topText, bottomText);
 
 			return freshMeme.success ? freshMeme.data.url : string.Empty;
 		}
 
-		public async Task<string> CreateLaughingMarekMeme(string topText, string bottomText)
+		public async Task<string> CreateLaughingMarekMeme(params string[] text)
 		{
+			string topText, bottomText;
+
+			(topText, bottomText) = FormatMemeText(text);
+
 			CaptionMemeRoot freshMeme = await _imgFlipClient.CaptionMemeAsync(LaughingMarekTemplateId, _imgFlipUsername, _imgFlipPassword, topText, bottomText);
 
 			return freshMeme.success ? freshMeme.data.url : string.Empty;
 		}
 
-		public async Task<string> CreateSkeletorMarekMeme(string topText, string bottomText)
+		public async Task<string> CreateSkeletorMarekMeme(params string[] text)
 		{
+			string topText, bottomText;
+
+			(topText, bottomText) = FormatMemeText(text);
+
 			CaptionMemeRoot freshMeme = await _imgFlipClient.CaptionMemeAsync(SkeletorMarekTemplateId, _imgFlipUsername, _imgFlipPassword, topText, bottomText);
 
 			return freshMeme.success ? freshMeme.data.url : string.Empty;
 		}
 
-		public async Task<string> CreateDrakeMarekMeme(string topText, string bottomText)
+		public async Task<string> CreateDrakeMarekMeme(params string[] text)
 		{
+			string topText, bottomText;
+
+			(topText, bottomText) = FormatMemeText(text);
+
 			List<TextBox> textBoxes = new List<TextBox>
 			{
 				new TextBox()
@@ -81,6 +99,25 @@ namespace MarekMotykaBot.Services.External
 			CaptionMemeRoot freshMeme = await _imgFlipClient.CaptionMemeAsync(DrakeMarekTemplateId, _imgFlipUsername, _imgFlipPassword, topText, bottomText, textBoxes.ToArray());
 
 			return freshMeme.success ? freshMeme.data.url : string.Empty;
+		}
+
+		private (string topText, string bottomText) FormatMemeText(params string[] text)
+		{
+			var captions = string.Join(" ", text).Split(';').ToList();
+
+			if (captions.Count < 2)
+				return ("", "");
+
+			for (int i = 0; i < captions.Count; i++)
+			{
+				captions[i] = captions[i].RemoveEmojisAndEmotes();
+			}
+
+
+			if (string.IsNullOrWhiteSpace(captions[0]) || string.IsNullOrWhiteSpace(captions[1]))
+				return ("", "");
+
+			return (captions[0].ToUpper(), captions[1].ToUpper()); ;
 		}
 	}
 }
