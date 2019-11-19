@@ -529,5 +529,21 @@
 				return StringResources.ResourceManager.GetString("watchedRead");
 			}
 		}
+
+		public static string HelionUser
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("helionUser");
+			}
+		}
+
+		public static string HelionPassword
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("helionPassword");
+			}
+		}
 	}
 }

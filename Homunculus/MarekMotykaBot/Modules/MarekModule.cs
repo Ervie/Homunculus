@@ -1,5 +1,4 @@
-﻿using Discord;
-using Discord.Commands;
+﻿using Discord.Commands;
 using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.DataTypes.Caches;
 using MarekMotykaBot.DataTypes.Enumerations;
@@ -28,6 +27,7 @@ namespace MarekMotykaBot.Modules
 		private readonly List<string> eightBallResponses;
 
 		private const byte cacheSize = 10;
+		private const string lonkDiscordId = "LonkDeveloper#9358";
 
 		public string ModuleName { get => "MarekModule"; }
 
@@ -74,7 +74,7 @@ namespace MarekMotykaBot.Modules
 			int damageNumber = _rng.Next(0, 15);
 			switch (damageNumber)
 			{
-				case (1):
+				case int n when (n == 1):
 					await Context.Channel.SendMessageAsync($"**{StringConsts.EggString}**");
 					break;
 
@@ -223,7 +223,6 @@ namespace MarekMotykaBot.Modules
 			{
 				List<EightBallCache> cache = _jsonSerializer.LoadFromFile<EightBallCache>("cache8ball.json");
 
-				// Check if message was not received earlier; If yes, send same answer
 				if (cache.Exists(x => x.Question == messageKey && x.DiscordUsername == userKey))
 				{
 					await Context.Channel.SendMessageAsync(cache.Find(x => x.Question == messageKey).Answer);
@@ -241,7 +240,7 @@ namespace MarekMotykaBot.Modules
 
 					cache.Add(new EightBallCache(userKey, messageKey, string.Format(selectedResponse, selectedUser)));
 
-					_jsonSerializer.SaveToFile<EightBallCache>("cache8ball.json", cache);
+					_jsonSerializer.SaveToFile("cache8ball.json", cache);
 
 					await Context.Channel.SendMessageAsync($"{string.Format(selectedResponse, selectedUser)}");
 				}
@@ -280,22 +279,13 @@ namespace MarekMotykaBot.Modules
 					break;
 			}
 
-			string intro = string.Empty;
-
-			switch (_rng.Next(1, 4))
+			string intro = _rng.Next(1, 4) switch
 			{
-				case 1:
-					intro = StringConsts.DerpQuote;
-					break;
-
-				case 2:
-					intro = StringConsts.DerpQuote2;
-					break;
-
-				case 3:
-					intro = StringConsts.DerpQuote3;
-					break;
-			}
+				1 => StringConsts.DerpQuote,
+				2 => StringConsts.DerpQuote2,
+				3 => StringConsts.DerpQuote3,
+				_ => StringConsts.DerpQuote
+			};
 
 			int lateArrivalProbability = _rng.Next(0, 10);
 			if (lateArrivalProbability == 1)
@@ -319,14 +309,14 @@ namespace MarekMotykaBot.Modules
 		[Command("blueribbon"), Summary("Passes for hidden gift")]
 		public async Task UnityAsync()
 		{
-			if (!Context.User.DiscordId().Equals("Tarlfgar#9358"))
+			if (!Context.User.DiscordId().Equals(lonkDiscordId))
 			{
-				await Context.Channel.SendMessageAsync(String.Format(StringConsts.SecretGiftDeny, "Lonka!"));
+				await Context.Channel.SendMessageAsync(string.Format(StringConsts.SecretGiftDeny, "Lonka!"));
 			}
 			else
 			{
-				await Context.Channel.SendMessageAsync("Helion user e-mail: " + _configuration["credentials:helionUser"]);
-				await Context.Channel.SendMessageAsync("Helion password: " + _configuration["credentials:helionPassword"]);
+				await Context.Channel.SendMessageAsync($"{StringConsts.HelionUser} {_configuration["credentials:helionUser"]}");
+				await Context.Channel.SendMessageAsync($"{StringConsts.HelionPassword} {_configuration["credentials:helionPassword"]}");
 			}
 
 			LoggingService.CustomCommandLog(Context.Message, ModuleName);
@@ -339,24 +329,7 @@ namespace MarekMotykaBot.Modules
 
 			if (lastMessage != null)
 			{
-				var builder = new EmbedBuilder();
-
-				int daysDifference = (DateTime.Now.Date - lastMessage.DatePosted.Date).Days;
-
-				string footerSuffix = daysDifference switch
-				{
-					(0) => StringConsts.Today,
-					(1) => StringConsts.Yesterday,
-					_ => string.Format(StringConsts.DaysAgo, daysDifference),
-				};
-				builder.WithFooter(lastMessage.DatePosted.ToString("yyyy-MM-dd HH:mm") + ", " + footerSuffix);
-
-				if (lastMessage.IsImage)
-					builder.WithImageUrl(lastMessage.MessageContent);
-				else
-					builder.WithTitle(lastMessage.MessageContent.Truncate(250));
-
-				await ReplyAsync("", false, builder.Build());
+				await ReplyAsync("", false, _embedBuilderService.BuildLastContact(lastMessage));
 			}
 		}
 
@@ -389,7 +362,9 @@ namespace MarekMotykaBot.Modules
 				List<Quote> quotes = _jsonSerializer.LoadFromFile<Quote>("quotes.json");
 
 				if (filtercategory != QuoteCategory.None)
-					quotes = quotes.Where(x => x.Categories.Contains(filtercategory)).ToList();
+					quotes = quotes
+						.Where(x => x.Categories.Contains(filtercategory))
+						.ToList();
 
 				int randomQuoteIndex = _rng.Next(0, quotes.Count);
 
@@ -401,47 +376,33 @@ namespace MarekMotykaBot.Modules
 		{
 			QuoteCategory filtercategory = QuoteCategory.None;
 
-			if (category.Length != 0)
+			if (category.Any())
 			{
-				switch (category[0].ToLower())
+				filtercategory = category[0].ToLower() switch
 				{
-					case ("i"):
-					case ("p"):
-					case ("insult"):
-					case ("pocisk"):
-						filtercategory = QuoteCategory.Insult;
-						break;
+					("i") => QuoteCategory.Insult,
+					("p") => QuoteCategory.Insult,
+					("insult") => QuoteCategory.Insult,
+					("pocisk") => QuoteCategory.Insult,
 
-					case ("m"):
-					case ("w"):
-					case ("mądrość"):
-					case ("wisdom"):
-						filtercategory = QuoteCategory.Wisdom;
-						break;
+					("m") => QuoteCategory.Wisdom,
+					("w") => QuoteCategory.Wisdom,
+					("mądrość") => QuoteCategory.Wisdom,
+					("wisdom") => QuoteCategory.Wisdom,
 
-					case ("t"):
-					case ("thought"):
-						filtercategory = QuoteCategory.Thought;
-						break;
+					("t") => QuoteCategory.Thought,
+					("thought") => QuoteCategory.Thought,
 
-					case ("f"):
-					case ("fiutt"):
-						filtercategory = QuoteCategory.Fiutt;
-						break;
+					("f") => QuoteCategory.Fiutt,
+					("fiutt") => QuoteCategory.Fiutt,
 
-					case ("reaction"):
-					case ("reakcja"):
-					case ("r"):
-						filtercategory = QuoteCategory.Reaction;
-						break;
+					("reaction") => QuoteCategory.Reaction,
+					("reakcja") => QuoteCategory.Reaction,
+					("r") => QuoteCategory.Reaction,
 
-					case ("d"):
-						filtercategory = QuoteCategory.OfTheDay;
-						break;
-
-					default:
-						break;
-				}
+					("d") => QuoteCategory.OfTheDay,
+					_ => QuoteCategory.None
+				};
 			}
 
 			return filtercategory;

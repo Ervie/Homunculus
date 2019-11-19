@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using MarekMotykaBot.DataTypes;
+using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
@@ -232,6 +233,28 @@ namespace MarekMotykaBot.Services.Core.Implementations
 					x.IsInline = false;
 				});
 			}
+
+			return builder.Build();
+		}
+
+		public Embed BuildLastContact(LastMarekMessage lastMessage)
+		{
+			var builder = new EmbedBuilder();
+
+			int daysDifference = (DateTime.Now.Date - lastMessage.DatePosted.Date).Days;
+
+			string footerSuffix = daysDifference switch
+			{
+				(0) => StringConsts.Today,
+				(1) => StringConsts.Yesterday,
+				_ => string.Format(StringConsts.DaysAgo, daysDifference),
+			};
+			builder.WithFooter(lastMessage.DatePosted.ToString("yyyy-MM-dd HH:mm") + ", " + footerSuffix);
+
+			if (lastMessage.IsImage)
+				builder.WithImageUrl(lastMessage.MessageContent);
+			else
+				builder.WithTitle(lastMessage.MessageContent.Truncate(250));
 
 			return builder.Build();
 		}

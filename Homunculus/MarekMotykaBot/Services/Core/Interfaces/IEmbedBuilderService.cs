@@ -18,6 +18,8 @@ namespace MarekMotykaBot.Services.Core.Interfaces
 
 		Embed BuildAbout();
 
+		Embed BuildLastContact(LastMarekMessage lastMessage);
+
 		Task<Embed> BuildCommandListAsync(IEnumerable<ModuleInfo> moduleInfos, SocketCommandContext commandContext);
 	}
 }

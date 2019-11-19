@@ -250,6 +250,24 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Helion password:.
+        /// </summary>
+        internal static string helionPassword {
+            get {
+                return ResourceManager.GetString("helionPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Helion user e-mail:.
+        /// </summary>
+        internal static string helionUser {
+            get {
+                return ResourceManager.GetString("helionUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} najlepszy..
         /// </summary>
         internal static string husbandoBest {

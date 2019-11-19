@@ -323,4 +323,10 @@
   <data name="watchedRead" xml:space="preserve">
     <value>Obejrzane/przeczytane przez:</value>
   </data>
+  <data name="helionPassword" xml:space="preserve">
+    <value>Helion password:</value>
+  </data>
+  <data name="helionUser" xml:space="preserve">
+    <value>Helion user e-mail:</value>
+  </data>
 </root>
