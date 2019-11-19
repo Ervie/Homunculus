@@ -1,0 +1,7 @@
+﻿language: csharp
+solution: ./homunculus.sln
+mono: none
+dotnet: 3.0.0
+script:
+  - dotnet restore
+  - dotnet build -c Release
