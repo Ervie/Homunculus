@@ -2,14 +2,12 @@
 using Discord.WebSocket;
 using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.DataTypes.Enumerations;
-using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -76,7 +74,7 @@ namespace MarekMotykaBot.Services.Core
 		{
 			var channelToPost = _client.GetChannel(_destinationChannel) as IMessageChannel;
 
-			Embed streamBacklog = _embedBuilderService.BuildStreamMondaySchedule(); 
+			Embed streamBacklog = _embedBuilderService.BuildStreamMondaySchedule();
 
 			await channelToPost.SendMessageAsync("", false, streamBacklog);
 		}
