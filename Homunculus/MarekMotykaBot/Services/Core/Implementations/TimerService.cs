@@ -48,9 +48,7 @@ namespace MarekMotykaBot.Services.Core
 
 			_timer = new Timer(60 * 1000);
 
-			_timer.Elapsed += new ElapsedEventHandler(HourlyTimerTick);
-
-			StartTimer();
+			_timer.Elapsed += new ElapsedEventHandler(TimerTick);
 		}
 
 		public void StartTimer()
@@ -59,7 +57,7 @@ namespace MarekMotykaBot.Services.Core
 				_timer.Start();
 		}
 
-		public void HourlyTimerTick(object src, ElapsedEventArgs e)
+		public void TimerTick(object src, ElapsedEventArgs e)
 		{
 			DateTime currentDateTime = DateTime.Now;
 

@@ -37,6 +37,7 @@ namespace MarekMotykaBot
 			
             await provider.GetRequiredService<IStartupService>().StartAsync();
             provider.GetRequiredService<ICommandHandlingService>();
+			provider.GetRequiredService<ITimerService>().StartTimer();
 
             await Task.Delay(-1);
         }

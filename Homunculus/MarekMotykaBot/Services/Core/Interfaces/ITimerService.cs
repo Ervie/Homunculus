@@ -6,6 +6,6 @@ namespace MarekMotykaBot.Services.Core.Interfaces
 	{
 		void StartTimer();
 
-		void HourlyTimerTick(object src, ElapsedEventArgs e);
+		void TimerTick(object src, ElapsedEventArgs e);
 	}
 }
