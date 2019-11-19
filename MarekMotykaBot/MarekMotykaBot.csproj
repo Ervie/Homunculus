@@ -40,6 +40,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ImfFlipAPI.APISource.Core\ImfFlipAPI.APISource.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Resources\StringResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -124,10 +128,6 @@
     <None Update="Resources\TextFiles\ziewaczTrigger.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\ImfFlipAPI.APISource.Core\ImfFlipAPI.APISource.Core.csproj" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties Resources_4TextFiles_4hasLonkLinkedRabbit_1json__JSONSchema="http://json.schemastore.org/avro-avsc" /></VisualStudio></ProjectExtensions>
