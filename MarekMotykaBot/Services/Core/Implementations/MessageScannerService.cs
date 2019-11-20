@@ -99,7 +99,7 @@ namespace MarekMotykaBot.Services.Core
 			_logger.CustomEditLog(message, oldMessage.Value);
 		}
 
-		public void ScanDeletedMessage(Cacheable<IMessage, ulong> deletedMessage, ISocketMessageChannel channel)
+		public async Task ScanDeletedMessage(Cacheable<IMessage, ulong> deletedMessage, ISocketMessageChannel channel)
 		{
 			_logger.CustomDeleteLog(deletedMessage.Value);
 		}

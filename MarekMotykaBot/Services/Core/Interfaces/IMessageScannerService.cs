@@ -11,7 +11,7 @@ namespace MarekMotykaBot.Services.Core.Interfaces
 
 		Task ScanUpdateMessage(Cacheable<IMessage, ulong> oldMessage, SocketMessage s, ISocketMessageChannel channel);
 
-		void ScanDeletedMessage(Cacheable<IMessage, ulong> deletedMessage, ISocketMessageChannel channel);
+		Task ScanDeletedMessage(Cacheable<IMessage, ulong> deletedMessage, ISocketMessageChannel channel);
 
 		Task DetectMentions(SocketCommandContext context, SocketUserMessage message);
 
