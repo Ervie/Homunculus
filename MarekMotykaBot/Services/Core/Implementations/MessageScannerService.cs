@@ -74,9 +74,9 @@ namespace MarekMotykaBot.Services.Core
 				await AddReactionAfterTriggerWord(context, message, _takeuchiWords, "takeuchi");
                 await AddReactionAfterTriggerWord(context, message, _ziewaczWords, "ziewface");
 				await DetectMentions(context, message);
-				await DetectSwearWord(context, message);
+				 DetectSwearWord(context, message);
 				await DetectStreamMonday(context, message);
-				await DetectMarekMessage(message);
+				 DetectMarekMessage(message);
 			}
 		}
 
@@ -99,7 +99,7 @@ namespace MarekMotykaBot.Services.Core
 			_logger.CustomEditLog(message, oldMessage.Value);
 		}
 
-		public async Task ScanDeletedMessage(Cacheable<IMessage, ulong> deletedMessage, ISocketMessageChannel channel)
+		public void ScanDeletedMessage(Cacheable<IMessage, ulong> deletedMessage, ISocketMessageChannel channel)
 		{
 			_logger.CustomDeleteLog(deletedMessage.Value);
 		}
@@ -192,7 +192,7 @@ namespace MarekMotykaBot.Services.Core
 		/// <summary>
 		/// Check for swearword and who posted it - increment counter;
 		/// </summary>
-		public async Task DetectSwearWord(SocketCommandContext context, SocketUserMessage message)
+		public void DetectSwearWord(SocketCommandContext context, SocketUserMessage message)
 		{
 			string compressedText = message.Content.RemoveRepeatingChars();
 			compressedText = new string(compressedText.Where(c => !char.IsWhiteSpace(c)).ToArray());
@@ -259,7 +259,7 @@ namespace MarekMotykaBot.Services.Core
 			
 		}
 
-		public async Task DetectMarekMessage(SocketUserMessage message)
+		public void DetectMarekMessage(SocketUserMessage message)
 		{
 			if (message.Author.DiscordId().Equals("Erina#5946"))
 			{

@@ -11,16 +11,16 @@ namespace MarekMotykaBot.Services.Core.Interfaces
 
 		Task ScanUpdateMessage(Cacheable<IMessage, ulong> oldMessage, SocketMessage s, ISocketMessageChannel channel);
 
-		Task ScanDeletedMessage(Cacheable<IMessage, ulong> deletedMessage, ISocketMessageChannel channel);
+		void ScanDeletedMessage(Cacheable<IMessage, ulong> deletedMessage, ISocketMessageChannel channel);
 
 		Task DetectMentions(SocketCommandContext context, SocketUserMessage message);
 
 		Task DetectWaifus(SocketCommandContext context, SocketUserMessage message);
 
-		Task DetectSwearWord(SocketCommandContext context, SocketUserMessage message);
+		void  DetectSwearWord(SocketCommandContext context, SocketUserMessage message);
 
 		Task DetectStreamMonday(SocketCommandContext context, SocketUserMessage message);
 
-		Task DetectMarekMessage(SocketUserMessage message);
+		void  DetectMarekMessage(SocketUserMessage message);
 	}
 }
