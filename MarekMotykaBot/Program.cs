@@ -10,6 +10,7 @@ using MarekMotykaBot.Services.External;
 using MarekMotykaBot.Services.Core.Interfaces;
 using MarekMotykaBot.Services.External.Interfaces;
 using MarekMotykaBot.Services.Core.Implementations;
+using MarekMotykaBot.Services.External.Implementations;
 
 namespace MarekMotykaBot
 {
@@ -65,6 +66,7 @@ namespace MarekMotykaBot
 				.AddSingleton<IImgFlipService, ImgFlipService>()
 				.AddSingleton<IJSONSerializerService, JSONSerializerService>()
 				.AddSingleton<ITimerService, TimerService>()
+				.AddSingleton<IUnrealTournamentService, UnrealTournamentService>()
 				.AddSingleton(_config)
 				.AddSingleton<Random>();
 		}
