@@ -4,6 +4,7 @@ using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.DataTypes.Enumerations;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services.Core.Interfaces;
+using MarekMotykaBot.Services.External.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace MarekMotykaBot.Services.Core
 	{
 		private readonly IJSONSerializerService _serializer;
 		private readonly IEmbedBuilderService _embedBuilderService;
+		private readonly IUnrealTournamentService _unrealTournamentService;
 		private readonly DiscordSocketClient _client;
 		private readonly Random _rng;
 		private readonly Timer _timer;
@@ -30,6 +32,7 @@ namespace MarekMotykaBot.Services.Core
 			IConfiguration configuration,
 			IJSONSerializerService serializer,
 			IEmbedBuilderService statisticsService,
+			IUnrealTournamentService unrealTournamentService,
 			DiscordSocketClient client,
 			Random rng
 		)
@@ -38,6 +41,7 @@ namespace MarekMotykaBot.Services.Core
 			_serializer = serializer;
 			_client = client;
 			_embedBuilderService = statisticsService;
+			_unrealTournamentService = unrealTournamentService;
 			_rng = rng;
 
 			_destinationChannel = (ulong)long.Parse(Configuration["tokens:destinationServerId"]);
@@ -105,6 +109,15 @@ namespace MarekMotykaBot.Services.Core
 			Embed swearWordCountRanking = _embedBuilderService.BuildSwearWordCountRanking();
 
 			await channelToPost.SendMessageAsync("", false, swearWordCountRanking);
+		}
+
+		public void ResetUTMapRotation()
+		{
+			_unrealTournamentService.ChangeRotation(new DataTypes.UTRotationConfiguration()
+			{
+				Repeat = false,
+				ExcludeMaps = true
+			});
 		}
 	}
 }
