@@ -329,4 +329,7 @@
   <data name="helionUser" xml:space="preserve">
     <value>Helion user e-mail:</value>
   </data>
+  <data name="utRotationChange" xml:space="preserve">
+    <value>Zmieniono rotację map.</value>
+  </data>
 </root>

@@ -3,6 +3,7 @@ using Discord.Commands;
 using MarekMotykaBot.Modules.Interface;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services.Core.Interfaces;
+using MarekMotykaBot.Services.External.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace MarekMotykaBot.Modules
 	{
 		private readonly IJSONSerializerService _serializer;
 		private readonly IEmbedBuilderService _embedBuilderService;
+		private readonly IUnrealTournamentService _unrealTournamentService;
 
 		public string ModuleName { get => "AdminModule"; }
 
@@ -20,11 +22,13 @@ namespace MarekMotykaBot.Modules
 		public AdminModule(
 			IJSONSerializerService serializer,
 			ILoggingService loggingService,
-			IEmbedBuilderService embedBuilderService
+			IEmbedBuilderService embedBuilderService,
+			IUnrealTournamentService unrealTournamentService
 			)
 		{
 			_serializer = serializer;
 			_embedBuilderService = embedBuilderService;
+			_unrealTournamentService = unrealTournamentService;
 			LoggingService = loggingService;
 		}
 
@@ -72,6 +76,20 @@ namespace MarekMotykaBot.Modules
 			await ReplyAsync(string.Format(StringConsts.Removed, entry));
 
 			LoggingService.CustomCommandLog(Context.Message, ModuleName, entry);
+		}
+
+		[Command("ut"), Summary("Change map rotation of UT 1999 server."), RequireUserPermission(GuildPermission.Administrator)]
+		public async Task UTRotationReset()
+		{
+			_unrealTournamentService.ChangeRotation(new DataTypes.UTRotationConfiguration()
+			{
+				Repeat = false,
+				ExcludeMaps = true
+			});
+
+			await ReplyAsync(StringConsts.UTRotationChange);
+
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 	}
 }

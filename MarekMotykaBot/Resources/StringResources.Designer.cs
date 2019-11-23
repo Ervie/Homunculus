@@ -574,6 +574,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Zmieniono rotację map..
+        /// </summary>
+        internal static string utRotationChange {
+            get {
+                return ResourceManager.GetString("utRotationChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Wersja.
         /// </summary>
         internal static string versionHeader {

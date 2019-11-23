@@ -65,8 +65,8 @@ namespace MarekMotykaBot.Services.External.Implementations
 
 		private ICollection<string> LoadExcludedMapsList()
 			=> RotationConfiguration.ExcludeMaps ?
-				new List<string>() :
-				_jsonSerializer.LoadFromFile<string>("excludedMaps.json");
+				_jsonSerializer.LoadFromFile<string>("excludedMaps.json") :
+				new List<string>();
 
 		private ICollection<string> SelectNewRotation(ICollection<string> availableMaps, ICollection<string> oldRotation, ICollection<string> mapsToExclude)
 		{

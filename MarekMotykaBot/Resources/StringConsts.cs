@@ -545,5 +545,13 @@
 				return StringResources.ResourceManager.GetString("helionPassword");
 			}
 		}
+
+		public static string UTRotationChange
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("utRotationChange");
+			}
+		}
 	}
 }

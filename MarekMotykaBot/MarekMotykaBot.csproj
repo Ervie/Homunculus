@@ -83,6 +83,9 @@
     <None Update="Resources\TextFiles\derpSuchars.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\TextFiles\excludedMaps.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\TextFiles\hasLonkLinkedRabbit.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
