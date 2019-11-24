@@ -258,5 +258,25 @@ namespace MarekMotykaBot.Services.Core.Implementations
 
 			return builder.Build();
 		}
+
+		public Embed BuildMapList(ICollection<string> maps)
+		{
+			var builder = new EmbedBuilder()
+			{
+				Color = blueSidebarColor
+			};
+
+			if (maps is { } && maps.Any())
+			{
+				builder.AddField(x =>
+				{
+					x.Name = StringConsts.CurrentMapRotationHeader;
+					x.Value = string.Join(Environment.NewLine, maps.ToArray());
+					x.IsInline = false;
+				});
+			}
+
+			return builder.Build();
+		}
 	}
 }

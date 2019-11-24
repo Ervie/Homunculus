@@ -47,8 +47,13 @@ namespace MarekMotykaBot.Services.External.Implementations
 			RestartUTServer();
 		}
 
+		public ICollection<string> GetCurrentRotationMapList()
+		{
+			return LoadMapsFromCurrentRotation();
+		}
+
 		private ICollection<string> LoadMapsNamesFromMapFolder()
-			=> Directory
+					=> Directory
 				.GetFiles(string.Concat(Configuration["configValues:UTfolderPath"], _mapsCatalogSubPath), "*.unr", SearchOption.AllDirectories)
 				.Select(map => Path.GetFileName(map))
 				.Where(mapName => mapName.StartsWith("DM"))

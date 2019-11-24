@@ -4,6 +4,7 @@ using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Modules.Interface;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services.Core.Interfaces;
+using MarekMotykaBot.Services.External.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace MarekMotykaBot.Modules
 	{
 		private readonly Random _rng;
 		private readonly IEmbedBuilderService _embedBuilderService;
+		private readonly IUnrealTournamentService _unrealTournamentService;
 		private readonly IJSONSerializerService _jsonSerializer;
 
 		public string ModuleName { get => "GamesModule"; }
@@ -25,12 +27,14 @@ namespace MarekMotykaBot.Modules
 			Random random,
 			IJSONSerializerService serializer,
 			IEmbedBuilderService embedBuilderService,
+			IUnrealTournamentService unrealTournamentService,
 			ILoggingService loggingService
 		)
 		{
 			_rng = random;
 			_jsonSerializer = serializer;
 			_embedBuilderService = embedBuilderService;
+			_unrealTournamentService = unrealTournamentService;
 			LoggingService = loggingService;
 		}
 
@@ -156,6 +160,16 @@ namespace MarekMotykaBot.Modules
 			_jsonSerializer.SaveToFile("charadeCache.json", new List<int>());
 
 			await ReplyAsync(StringConsts.CharadeReset);
+
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
+		}
+
+		[Command("CurrentRotation"), Alias("utr"), Summary("List current map rotation")]
+		public async Task PrintMapRotationAsync()
+		{
+			var mapList = _unrealTournamentService.GetCurrentRotationMapList();
+
+			await ReplyAsync("", false, _embedBuilderService.BuildMapList(mapList));
 
 			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}

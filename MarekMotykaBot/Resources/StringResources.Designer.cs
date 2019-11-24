@@ -106,6 +106,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aktualna rotacja:.
+        /// </summary>
+        internal static string currentMapRotationHeader {
+            get {
+                return ResourceManager.GetString("currentMapRotationHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Wywołano komendę {0} modułu {1} dla użytkownika {2} w kanale {3}.
         /// </summary>
         internal static string customCommandLog {

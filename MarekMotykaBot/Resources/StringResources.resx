@@ -332,4 +332,7 @@
   <data name="utRotationChange" xml:space="preserve">
     <value>Zmieniono rotację map.</value>
   </data>
+  <data name="currentMapRotationHeader" xml:space="preserve">
+    <value>Aktualna rotacja:</value>
+  </data>
 </root>
