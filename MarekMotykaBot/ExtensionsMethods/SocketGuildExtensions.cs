@@ -18,7 +18,7 @@ namespace MarekMotykaBot.ExtensionsMethods
 
 			int randomUserIndex = rng.Next(0, guildUsers.Count);
 
-			return guildUsers.Any() ? string.Empty : guildUsers.ElementAt(randomUserIndex).Username;
+			return guildUsers.Any() ? guildUsers.ElementAt(randomUserIndex).Username : string.Empty;
 		}
 
 		public static string GetRandomUserName(this SocketGuild guild, Random rng, string excludedUser)
