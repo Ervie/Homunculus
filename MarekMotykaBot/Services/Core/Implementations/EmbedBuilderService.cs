@@ -268,10 +268,12 @@ namespace MarekMotykaBot.Services.Core.Implementations
 
 			if (maps is { } && maps.Any())
 			{
+				maps = maps.Select(x => x.Remove(x.Length - 4)).ToArray();
+
 				builder.AddField(x =>
 				{
 					x.Name = StringConsts.CurrentMapRotationHeader;
-					x.Value = string.Join(Environment.NewLine, maps.ToArray());
+					x.Value = string.Join(Environment.NewLine, maps);
 					x.IsInline = false;
 				});
 			}
