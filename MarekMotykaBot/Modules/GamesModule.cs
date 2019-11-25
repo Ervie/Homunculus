@@ -167,7 +167,7 @@ namespace MarekMotykaBot.Modules
 		[Command("CurrentRotation"), Alias("utr"), Summary("List current map rotation")]
 		public async Task PrintMapRotationAsync()
 		{
-			var mapList = _unrealTournamentService.GetCurrentRotationMapList();
+			var mapList = await _unrealTournamentService.GetCurrentRotationMapList();
 
 			await ReplyAsync("", false, _embedBuilderService.BuildMapList(mapList));
 

@@ -81,7 +81,7 @@ namespace MarekMotykaBot.Modules
 		[Command("ut"), Summary("Change map rotation of UT 1999 server."), RequireUserPermission(GuildPermission.Administrator)]
 		public async Task UTRotationReset()
 		{
-			_unrealTournamentService.ChangeRotation(new DataTypes.UTRotationConfiguration()
+			await _unrealTournamentService.ChangeRotation(new DataTypes.UTRotationConfiguration()
 			{
 				Repeat = false,
 				ExcludeMaps = true

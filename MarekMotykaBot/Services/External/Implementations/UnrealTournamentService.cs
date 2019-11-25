@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services.External.Implementations
 {
@@ -31,47 +32,47 @@ namespace MarekMotykaBot.Services.External.Implementations
 			_jsonSerializer = jSONSerializerService;
 		}
 
-		public void ChangeRotation(UTRotationConfiguration rotationConfiguration)
+		public async Task ChangeRotation(UTRotationConfiguration rotationConfiguration)
 		{
 			RotationConfiguration = rotationConfiguration;
 
 			var availableMaps = LoadMapsNamesFromMapFolder();
 
-			var mapsFromCurrentRotation = LoadMapsFromCurrentRotation();
+			var mapsFromCurrentRotation = await LoadMapsFromCurrentRotation();
 
 			var mapsToExclude = LoadExcludedMapsList();
 
 			var newRotation = SelectNewRotation(availableMaps, mapsFromCurrentRotation, mapsToExclude);
 
-			SaveNewRotationToIniFile(newRotation);
+			await SaveNewRotationToIniFile(newRotation);
 
 			RestartUTServer();
 		}
 
-		public ICollection<string> GetCurrentRotationMapList()
+		public async Task<ICollection<string>> GetCurrentRotationMapList()
 		{
-			return LoadMapsFromCurrentRotation();
+			return await LoadMapsFromCurrentRotation();
 		}
 
 		private ICollection<string> LoadMapsNamesFromMapFolder()
-					=> Directory
+			=> Directory
 				.GetFiles(string.Concat(Configuration["configValues:UTfolderPath"], _mapsCatalogSubPath), "*.unr", SearchOption.AllDirectories)
 				.Select(map => Path.GetFileName(map))
 				.Where(mapName => mapName.StartsWith("DM"))
 				.ToList();
 
 
-		private ICollection<string> LoadMapsFromCurrentRotation()
-			=> File
-				.ReadAllLines(string.Concat(Configuration["configValues:UTfolderPath"], _iniFileSubPath))
+		private async Task<ICollection<string>> LoadMapsFromCurrentRotation()
+			=> (await File
+				.ReadAllLinesAsync(string.Concat(Configuration["configValues:UTfolderPath"], _iniFileSubPath)))
 				.Where(line => line.StartsWith(_mapsLinePrefix))
 				.Select(line => line.Split('=')?[1])
 				.Where(mapName => mapName is { })
 				.ToList();
 
-		private string LoadCurrentMapIndex()
-			=> File
-				.ReadAllLines(string.Concat(Configuration["configValues:UTfolderPath"], _iniFileSubPath))
+		private async Task<string> LoadCurrentMapIndex()
+			=> (await File
+				.ReadAllLinesAsync(string.Concat(Configuration["configValues:UTfolderPath"], _iniFileSubPath)))
 				.Where(line => line.StartsWith(_currenMapPrefix))
 				.Select(line => line.Split('=')?[1])
 				.First(mapName => mapName is { });
@@ -110,12 +111,12 @@ namespace MarekMotykaBot.Services.External.Implementations
 			return newRotation;
 		}
 
-		private void SaveNewRotationToIniFile(ICollection<string> newRotation)
+		private async Task SaveNewRotationToIniFile(ICollection<string> newRotation)
 		{
 			if (!(newRotation is { }) || !newRotation.Any())
 				return;
 
-			string[] configFileLines = File.ReadAllLines(string.Concat(Configuration["configValues:UTfolderPath"], _iniFileSubPath));
+			string[] configFileLines = await File.ReadAllLinesAsync(string.Concat(Configuration["configValues:UTfolderPath"], _iniFileSubPath));
 
 			for (int i = 0; i < configFileLines.Length; i++)
 			{
@@ -125,7 +126,7 @@ namespace MarekMotykaBot.Services.External.Implementations
 				}
 			}
 
-			File.WriteAllLines(string.Concat(Configuration["configValues:UTfolderPath"], _iniFileSubPath), configFileLines);
+			await File.WriteAllLinesAsync(string.Concat(Configuration["configValues:UTfolderPath"], _iniFileSubPath), configFileLines);
 		}
 
 		private void RestartUTServer()

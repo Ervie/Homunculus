@@ -1,12 +1,13 @@
 ﻿using MarekMotykaBot.DataTypes;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services.External.Interfaces
 {
 	public interface IUnrealTournamentService
 	{
-		void ChangeRotation(UTRotationConfiguration rotationConfiguration);
+		Task ChangeRotation(UTRotationConfiguration rotationConfiguration);
 
-		ICollection<string> GetCurrentRotationMapList();
+		Task<ICollection<string>> GetCurrentRotationMapList();
 	}
 }
