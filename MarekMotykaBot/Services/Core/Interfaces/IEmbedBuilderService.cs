@@ -20,7 +20,7 @@ namespace MarekMotykaBot.Services.Core.Interfaces
 
 		Embed BuildLastContact(LastMarekMessage lastMessage);
 
-		Embed BuildMapList(ICollection<string> maps);
+		Embed BuildMapList(ICollection<string> maps, string currentMapIndex);
 
 		Task<Embed> BuildCommandListAsync(IEnumerable<ModuleInfo> moduleInfos, SocketCommandContext commandContext);
 	}

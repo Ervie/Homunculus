@@ -49,9 +49,9 @@ namespace MarekMotykaBot.Services.External.Implementations
 			RestartUTServer();
 		}
 
-		public async Task<ICollection<string>> GetCurrentRotationMapList()
+		public async Task<(ICollection<string>, string)> GetCurrentRotationMapList()
 		{
-			return await LoadMapsFromCurrentRotation();
+			return (await LoadMapsFromCurrentRotation(), await LoadCurrentMapIndex());
 		}
 
 		private ICollection<string> LoadMapsNamesFromMapFolder()

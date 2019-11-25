@@ -561,5 +561,13 @@
 				return StringResources.ResourceManager.GetString("currentMapRotationHeader");
 			}
 		}
+
+		public static string CurrentMapHeader
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("currentMapHeader");
+			}
+		}
 	}
 }

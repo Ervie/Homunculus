@@ -335,4 +335,7 @@
   <data name="currentMapRotationHeader" xml:space="preserve">
     <value>Aktualna rotacja:</value>
   </data>
+  <data name="currentMapHeader" xml:space="preserve">
+    <value>Obecna mapa:</value>
+  </data>
 </root>

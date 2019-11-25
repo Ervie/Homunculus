@@ -259,7 +259,7 @@ namespace MarekMotykaBot.Services.Core.Implementations
 			return builder.Build();
 		}
 
-		public Embed BuildMapList(ICollection<string> maps)
+		public Embed BuildMapList(ICollection<string> maps, string currentMapIndex)
 		{
 			var builder = new EmbedBuilder()
 			{
@@ -269,6 +269,13 @@ namespace MarekMotykaBot.Services.Core.Implementations
 			if (maps is { } && maps.Any())
 			{
 				maps = maps.Select(x => x.Remove(x.Length - 4)).ToArray();
+
+				builder.AddField(x =>
+				{
+					x.Name = StringConsts.CurrentMapHeader;
+					x.Value = maps.ElementAt(int.Parse(currentMapIndex));
+					x.IsInline = false;
+				});
 
 				builder.AddField(x =>
 				{
