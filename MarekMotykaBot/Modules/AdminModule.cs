@@ -50,11 +50,11 @@ namespace MarekMotykaBot.Modules
 			if (!schedule.Contains(entry))
 			{
 				schedule.Add(entry);
+
+				_serializer.SaveToFile("streamMonday.json", schedule);
+
+				await ReplyAsync(string.Format(StringConsts.Added, entry));
 			}
-
-			_serializer.SaveToFile("streamMonday.json", schedule);
-
-			await ReplyAsync(string.Format(StringConsts.Added, entry));
 
 			LoggingService.CustomCommandLog(Context.Message, ModuleName, entry);
 		}
@@ -69,11 +69,11 @@ namespace MarekMotykaBot.Modules
 			if (schedule.Contains(entry))
 			{
 				schedule.Remove(entry);
+
+				_serializer.SaveToFile("streamMonday.json", schedule);
+
+				await ReplyAsync(string.Format(StringConsts.Removed, entry));
 			}
-
-			_serializer.SaveToFile("streamMonday.json", schedule);
-
-			await ReplyAsync(string.Format(StringConsts.Removed, entry));
 
 			LoggingService.CustomCommandLog(Context.Message, ModuleName, entry);
 		}
