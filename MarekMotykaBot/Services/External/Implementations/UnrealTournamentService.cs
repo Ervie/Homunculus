@@ -87,6 +87,13 @@ namespace MarekMotykaBot.Services.External.Implementations
 			Random rng = new Random();
 			List<string> newRotation = new List<string>();
 
+			availableMaps = availableMaps.Except(mapsToExclude).ToList();
+
+			if (!RotationConfiguration.Repeat)
+			{
+				availableMaps = availableMaps.Except(oldRotation).ToList();
+			}
+
 			int maxPossibleMapCount = RotationConfiguration.Repeat ?
 				Math.Min(_maxMapRotationSize, availableMaps.Count) :
 				Math.Min(_maxMapRotationSize, availableMaps.Count - oldRotation.Count);
@@ -94,15 +101,6 @@ namespace MarekMotykaBot.Services.External.Implementations
 			while (newRotation.Count < maxPossibleMapCount && availableMaps.Any())
 			{
 				string selectedMap = availableMaps.ElementAt(rng.Next(0, availableMaps.Count));
-
-				if (newRotation.Contains(selectedMap))
-					continue;
-
-				if (!RotationConfiguration.Repeat && oldRotation.Contains(selectedMap))
-					continue;
-
-				if (mapsToExclude.Contains(selectedMap))
-					continue;
 
 				newRotation.Add(selectedMap);
 				availableMaps.Remove(selectedMap);
