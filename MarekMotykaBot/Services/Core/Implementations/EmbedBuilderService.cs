@@ -35,7 +35,7 @@ namespace MarekMotykaBot.Services.Core.Implementations
 			List<string> schedule = _serializer.LoadFromFile<string>("streamMonday.json");
 
 			DateTime today = DateTime.Today;
-			int daysUntilWednesday = ((int)DayOfWeek.Wednesday - (int)today.DayOfWeek + 7) % 7;
+			int daysUntilWednesday = ((int)DayOfWeek.Thursday - (int)today.DayOfWeek + 7) % 7;
 			DateTime nextWednesday = today.AddDays(daysUntilWednesday);
 
 			var builder = new EmbedBuilder()
