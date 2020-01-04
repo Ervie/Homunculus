@@ -120,7 +120,7 @@ namespace MarekMotykaBot.Services.External.Implementations
 			{
 				if (configFileLines[i].StartsWith(_mapsLinePrefix))
 				{
-					configFileLines[i] = string.Concat(configFileLines[i].Split('=')[0], "=", newRotation.ElementAt(i % _maxMapRotationSize) ?? string.Empty);
+					configFileLines[i] = string.Concat(configFileLines[i].Split('=')[0], "=", newRotation.ElementAt(i % newRotation.Count) ?? string.Empty);
 				}
 			}
 
