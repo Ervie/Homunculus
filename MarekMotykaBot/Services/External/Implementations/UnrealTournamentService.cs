@@ -20,7 +20,6 @@ namespace MarekMotykaBot.Services.External.Implementations
 		private readonly IJSONSerializerService _jsonSerializer;
 
 		private const string _mapsLinePrefix = "Maps[";
-		private const string _currenMapPrefix = "MapNum";
 		private const string _iniFileSubPath = "/System/UnrealTournament.ini";
 		private const string _mapsCatalogSubPath = "/Maps";
 		private const string _utServerRestartCommand = "/./ucc.init restart";
@@ -49,9 +48,9 @@ namespace MarekMotykaBot.Services.External.Implementations
 			RestartUTServer();
 		}
 
-		public async Task<(ICollection<string>, string)> GetCurrentRotationMapList()
+		public async Task<ICollection<string>> GetCurrentRotationMapList()
 		{
-			return (await LoadMapsFromCurrentRotation(), await LoadCurrentMapIndex());
+			return await LoadMapsFromCurrentRotation();
 		}
 
 		private ICollection<string> LoadMapsNamesFromMapFolder()
@@ -69,13 +68,6 @@ namespace MarekMotykaBot.Services.External.Implementations
 				.Select(line => line.Split('=')?[1])
 				.Where(mapName => mapName is { })
 				.ToList();
-
-		private async Task<string> LoadCurrentMapIndex()
-			=> (await File
-				.ReadAllLinesAsync(string.Concat(Configuration["configValues:UTfolderPath"], _iniFileSubPath)))
-				.Where(line => line.StartsWith(_currenMapPrefix))
-				.Select(line => line.Split('=')?[1])
-				.First(mapName => mapName is { });
 
 		private ICollection<string> LoadExcludedMapsList()
 			=> RotationConfiguration.ExcludeMaps ?

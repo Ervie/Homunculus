@@ -259,7 +259,7 @@ namespace MarekMotykaBot.Services.Core.Implementations
 			return builder.Build();
 		}
 
-		public Embed BuildMapList(ICollection<string> maps, string currentMapIndex)
+		public Embed BuildMapList(ICollection<string> maps)
 		{
 			var builder = new EmbedBuilder()
 			{
@@ -268,19 +268,12 @@ namespace MarekMotykaBot.Services.Core.Implementations
 
 			if (maps is { } && maps.Any())
 			{
-				maps = maps.Select(x => x.Remove(x.Length - 4)).ToArray();
-
-				builder.AddField(x =>
-				{
-					x.Name = StringConsts.CurrentMapHeader;
-					x.Value = maps.ElementAt(int.Parse(currentMapIndex));
-					x.IsInline = false;
-				});
+				var mapsWithoutFileExtension = maps.Select(x => x.Remove(x.Length - 4)).ToArray();
 
 				builder.AddField(x =>
 				{
 					x.Name = StringConsts.CurrentMapRotationHeader;
-					x.Value = string.Join(Environment.NewLine, maps);
+					x.Value = string.Join(Environment.NewLine, mapsWithoutFileExtension);
 					x.IsInline = false;
 				});
 			}

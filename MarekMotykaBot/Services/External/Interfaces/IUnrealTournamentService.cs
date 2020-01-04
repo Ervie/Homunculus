@@ -8,6 +8,6 @@ namespace MarekMotykaBot.Services.External.Interfaces
 	{
 		Task ChangeRotation(UTRotationConfiguration rotationConfiguration);
 
-		Task<(ICollection<string>, string)> GetCurrentRotationMapList();
+		Task<ICollection<string>> GetCurrentRotationMapList();
 	}
 }
