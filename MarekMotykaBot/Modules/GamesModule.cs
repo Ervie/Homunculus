@@ -79,7 +79,7 @@ namespace MarekMotykaBot.Modules
 				{
 					int.TryParse(diceSize, out int parsedNumber);
 
-					if (parsedNumber > 0)
+					if (parsedNumber < 0)
 					{
 						await ReplyAsync(StringConsts.NoNumber);
 

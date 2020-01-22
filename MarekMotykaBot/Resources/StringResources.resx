@@ -215,7 +215,7 @@
     <value>Tsk... Nie trafiłem.</value>
   </data>
   <data name="noNumber" xml:space="preserve">
-    <value>Ni ma liczby, rzucam zwykłą.</value>
+    <value>Ni ma liczby naturalnej, rzucam zwykłą.</value>
   </data>
   <data name="parameters" xml:space="preserve">
     <value>Parametry: {0}</value>

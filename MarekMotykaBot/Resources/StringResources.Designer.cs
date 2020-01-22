@@ -412,7 +412,7 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ni ma liczby, rzucam zwykłą..
+        ///   Looks up a localized string similar to Ni ma liczby naturalnej, rzucam zwykłą..
         /// </summary>
         internal static string noNumber {
             get {
