@@ -193,6 +193,16 @@ namespace MarekMotykaBot.Modules
 			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', string.Join(" ", text)));
 		}
 
+		[Command("NosaczMeme"), Alias("nosacz"), Summary("Create your own nosacz meme image, text split by semicolon")]
+		public async Task NosaczMemeAsync(params string[] text)
+		{
+			string resultUrl = await _imgFlipService.CreateNosaczMeme(text);
+
+			await ReplyAsync(resultUrl);
+
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', string.Join(" ", text)));
+		}
+
 		[Command("Joke"), Summary("Marek's joke - you know the drill")]
 		public async Task JokeAsync()
 		{

@@ -15,6 +15,7 @@ namespace MarekMotykaBot.Services.External
 		private const int LaughingMarekTemplateId = 152110002;
 		private const int SkeletorMarekTemplateId = 156362598;
 		private const int DrakeMarekTemplateId = 160994886;
+		private const int NosaczTemplateId = 119511407;
 
 		private readonly ImgFlipAPISource _imgFlipClient;
 
@@ -97,6 +98,17 @@ namespace MarekMotykaBot.Services.External
 			};
 
 			CaptionMemeRoot freshMeme = await _imgFlipClient.CaptionMemeAsync(DrakeMarekTemplateId, _imgFlipUsername, _imgFlipPassword, topText, bottomText, textBoxes.ToArray());
+
+			return freshMeme.success ? freshMeme.data.url : string.Empty;
+		}
+
+		public async Task<string> CreateNosaczMeme(params string[] text)
+		{
+			string topText, bottomText;
+
+			(topText, bottomText) = FormatMemeText(text);
+
+			CaptionMemeRoot freshMeme = await _imgFlipClient.CaptionMemeAsync(NosaczTemplateId, _imgFlipUsername, _imgFlipPassword, topText, bottomText);
 
 			return freshMeme.success ? freshMeme.data.url : string.Empty;
 		}

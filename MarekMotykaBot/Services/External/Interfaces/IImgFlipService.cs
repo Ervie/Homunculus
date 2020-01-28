@@ -11,5 +11,7 @@ namespace MarekMotykaBot.Services.External.Interfaces
 		Task<string> CreateSkeletorMarekMeme(params string[] text);
 
 		Task<string> CreateDrakeMarekMeme(params string[] text);
+
+		Task<string> CreateNosaczMeme(params string[] text);
 	}
 }
