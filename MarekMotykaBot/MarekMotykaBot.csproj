@@ -5,9 +5,9 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <StartupObject />
-    <Version>3.1.5</Version>
-    <AssemblyVersion>3.1.0.5</AssemblyVersion>
-    <FileVersion>3.1.0.4</FileVersion>
+    <Version>3.1.6</Version>
+    <AssemblyVersion>3.1.0.6</AssemblyVersion>
+    <FileVersion>3.1.0.6</FileVersion>
     <Description>Simple mimicking Discord bot written with .Net Core and Discord.Net.</Description>
     <PackageLicenseUrl>https://github.com/Ervie/Homunculus/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Ervie/Homunculus</PackageProjectUrl>
@@ -108,6 +108,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\TextFiles\skeletonJokes.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\TextFiles\nosaczTrigger.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\TextFiles\skeletorTrigger.json">

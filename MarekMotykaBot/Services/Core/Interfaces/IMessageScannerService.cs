@@ -21,6 +21,6 @@ namespace MarekMotykaBot.Services.Core.Interfaces
 
 		Task DetectStreamMonday(SocketCommandContext context, SocketUserMessage message);
 
-		void  DetectMarekMessage(SocketUserMessage message);
+		void DetectMarekMessage(SocketUserMessage message);
 	}
 }

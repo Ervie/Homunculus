@@ -25,16 +25,12 @@ namespace MarekMotykaBot.Services.Core
 		private readonly ILoggingService _logger;
 
 		private readonly List<string> _swearWordList;
-
 		private readonly List<string> _waifuList;
-
 		private readonly List<string> _marekFaceWords;
-
 		private readonly List<string> _skeletorWords;
-
 		private readonly List<string> _takeuchiWords;
-
         private readonly List<string> _ziewaczWords;
+        private readonly List<string> _nosaczWords;
 
         public IConfiguration Configuration { get; set; }
 		
@@ -56,6 +52,7 @@ namespace MarekMotykaBot.Services.Core
 			_waifuList = _serializer.LoadFromFile<string>("marekWaifus.json");
 			_takeuchiWords = _serializer.LoadFromFile<string>("takeuchiTrigger.json");
             _ziewaczWords = _serializer.LoadFromFile<string>("ziewaczTrigger.json");
+            _nosaczWords = _serializer.LoadFromFile<string>("nosaczTrigger.json");
         }
 
 		public async Task ScanMessage(SocketMessage s)
@@ -73,6 +70,7 @@ namespace MarekMotykaBot.Services.Core
 				await AddReactionAfterTriggerWord(context, message, _skeletorWords, "skeletor");
 				await AddReactionAfterTriggerWord(context, message, _takeuchiWords, "takeuchi");
                 await AddReactionAfterTriggerWord(context, message, _ziewaczWords, "ziewface");
+                await AddReactionAfterTriggerWord(context, message, _nosaczWords, "nosacz");
 				await DetectMentions(context, message);
 				 DetectSwearWord(context, message);
 				await DetectStreamMonday(context, message);
@@ -94,6 +92,7 @@ namespace MarekMotykaBot.Services.Core
 				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _skeletorWords, "skeletor"), "skeletor");
 				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _takeuchiWords, "takeuchi"), "takeuchi");
                 await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _ziewaczWords, "ziewface"), "ziewface");
+                await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _nosaczWords, "nosacz"), "nosacz");
             }
 
 			_logger.CustomEditLog(message, oldMessage.Value);
