@@ -32,10 +32,10 @@ namespace MarekMotykaBot.Services.Core.Implementations
 
 		public Embed BuildStreamMondaySchedule()
 		{
-			List<string> schedule = _serializer.LoadFromFile<string>("streamMonday.json");
+			var schedule = _serializer.LoadSingleFromFile<StreamMondayBacklog>("streamMonday.json");
 
 			DateTime today = DateTime.Today;
-			int daysUntilWednesday = ((int)DayOfWeek.Thursday - (int)today.DayOfWeek + 7) % 7;
+			int daysUntilWednesday = ((int)schedule.DayOfTheStream - (int)today.DayOfWeek + 7) % 7;
 			DateTime nextWednesday = today.AddDays(daysUntilWednesday);
 
 			var builder = new EmbedBuilder()
@@ -44,12 +44,12 @@ namespace MarekMotykaBot.Services.Core.Implementations
 				Description = StringConsts.Backlog
 			};
 
-			if (schedule != null && schedule.Any())
+			if (schedule != null && schedule.BacklogEntries != null && schedule.BacklogEntries.Any())
 			{
 				builder.AddField(x =>
 				{
 					x.Name = nextWednesday.ToString("dd.MM");
-					x.Value = string.Join(Environment.NewLine, schedule.ToArray());
+					x.Value = string.Join(Environment.NewLine, schedule.BacklogEntries.ToArray());
 					x.IsInline = false;
 				});
 			}

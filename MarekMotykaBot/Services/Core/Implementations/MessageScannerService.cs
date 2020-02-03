@@ -73,7 +73,6 @@ namespace MarekMotykaBot.Services.Core
                 await AddReactionAfterTriggerWord(context, message, _nosaczWords, "nosacz");
 				await DetectMentions(context, message);
 				 DetectSwearWord(context, message);
-				await DetectStreamMonday(context, message);
 				 DetectMarekMessage(message);
 			}
 		}
@@ -226,36 +225,6 @@ namespace MarekMotykaBot.Services.Core
 					_serializer.SaveToFile<WordCounterEntry>("wordCounter.json", counterList);
 				}
 			}
-		}
-
-		/// <summary>
-		/// Check for @Streamdziałek mention, show schedule.
-		/// </summary>
-		public async Task DetectStreamMonday(SocketCommandContext context, SocketUserMessage message)
-		{
-			if (message.MentionedRoles.Any(x => x.Name.Equals(Configuration["configValues:streamAlias"])))
-			{
-				List<string> schedule = _serializer.LoadFromFile<string>("streamMonday.json");
-
-				var builder = new EmbedBuilder();
-
-				DateTime today = DateTime.Today;
-				int daysUntilWednesday = ((int)DayOfWeek.Wednesday - (int)today.DayOfWeek + 7) % 7;
-				DateTime nextWednesday = today.AddDays(daysUntilWednesday);
-
-				if (schedule != null && schedule.Count > 0)
-				{
-					builder.AddField(x =>
-					{
-						x.Name = "Rozkładówka (backlog) na " + nextWednesday.ToString("dd.MM");
-						x.Value = string.Join(Environment.NewLine, schedule.ToArray());
-						x.IsInline = false;
-					});
-				}
-
-				await context.Channel.SendMessageAsync("", false, builder.Build());
-			}
-			
 		}
 
 		public void DetectMarekMessage(SocketUserMessage message)

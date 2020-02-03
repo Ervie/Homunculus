@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.Modules.Interface;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services.Core.Interfaces;
@@ -45,13 +46,13 @@ namespace MarekMotykaBot.Modules
 		{
 			string entry = string.Join(" ", text);
 
-			List<string> schedule = _serializer.LoadFromFile<string>("streamMonday.json");
+			var schedule = _serializer.LoadSingleFromFile<StreamMondayBacklog>("streamMonday.json");
 
-			if (!schedule.Contains(entry))
+			if (!schedule.BacklogEntries.Contains(entry))
 			{
-				schedule.Add(entry);
+				schedule.BacklogEntries.Add(entry);
 
-				_serializer.SaveToFile("streamMonday.json", schedule);
+				_serializer.SaveSingleToFile("streamMonday.json", schedule);
 
 				await ReplyAsync(string.Format(StringConsts.Added, entry));
 			}
@@ -64,13 +65,13 @@ namespace MarekMotykaBot.Modules
 		{
 			string entry = string.Join(" ", text);
 
-			List<string> schedule = _serializer.LoadFromFile<string>("streamMonday.json");
+			var schedule = _serializer.LoadSingleFromFile<StreamMondayBacklog>("streamMonday.json");
 
-			if (schedule.Contains(entry))
+			if (schedule.BacklogEntries.Contains(entry))
 			{
-				schedule.Remove(entry);
+				schedule.BacklogEntries.Remove(entry);
 
-				_serializer.SaveToFile("streamMonday.json", schedule);
+				_serializer.SaveSingleToFile("streamMonday.json", schedule);
 
 				await ReplyAsync(string.Format(StringConsts.Removed, entry));
 			}
