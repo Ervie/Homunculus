@@ -664,6 +664,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, muszę zorganizować ślub..
+        /// </summary>
+        internal static string wedding {
+            get {
+                return ResourceManager.GetString("wedding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Czemu ja się zawahałem żeby strzelić? Mam wyrzuty sumienia?.
         /// </summary>
         internal static string whyWouldIDoThat {

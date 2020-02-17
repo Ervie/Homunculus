@@ -4,14 +4,11 @@ using Discord.WebSocket;
 using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.ExtensionsMethods;
 using MarekMotykaBot.Resources;
-using MarekMotykaBot.Services;
 using MarekMotykaBot.Services.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services.Core
@@ -29,11 +26,11 @@ namespace MarekMotykaBot.Services.Core
 		private readonly List<string> _marekFaceWords;
 		private readonly List<string> _skeletorWords;
 		private readonly List<string> _takeuchiWords;
-        private readonly List<string> _ziewaczWords;
-        private readonly List<string> _nosaczWords;
+		private readonly List<string> _ziewaczWords;
+		private readonly List<string> _nosaczWords;
 
-        public IConfiguration Configuration { get; set; }
-		
+		public IConfiguration Configuration { get; set; }
+
 		public MessageScannerService(
 			DiscordSocketClient client,
 			IJSONSerializerService serializer,
@@ -51,13 +48,12 @@ namespace MarekMotykaBot.Services.Core
 			_skeletorWords = _serializer.LoadFromFile<string>("skeletorTrigger.json");
 			_waifuList = _serializer.LoadFromFile<string>("marekWaifus.json");
 			_takeuchiWords = _serializer.LoadFromFile<string>("takeuchiTrigger.json");
-            _ziewaczWords = _serializer.LoadFromFile<string>("ziewaczTrigger.json");
-            _nosaczWords = _serializer.LoadFromFile<string>("nosaczTrigger.json");
-        }
+			_ziewaczWords = _serializer.LoadFromFile<string>("ziewaczTrigger.json");
+			_nosaczWords = _serializer.LoadFromFile<string>("nosaczTrigger.json");
+		}
 
 		public async Task ScanMessage(SocketMessage s)
 		{
-
 			if (!(s is SocketUserMessage message))
 				return;
 
@@ -69,17 +65,16 @@ namespace MarekMotykaBot.Services.Core
 				await AddReactionAfterTriggerWord(context, message, _marekFaceWords, "marekface");
 				await AddReactionAfterTriggerWord(context, message, _skeletorWords, "skeletor");
 				await AddReactionAfterTriggerWord(context, message, _takeuchiWords, "takeuchi");
-                await AddReactionAfterTriggerWord(context, message, _ziewaczWords, "ziewface");
-                await AddReactionAfterTriggerWord(context, message, _nosaczWords, "nosacz");
+				await AddReactionAfterTriggerWord(context, message, _ziewaczWords, "ziewface");
+				await AddReactionAfterTriggerWord(context, message, _nosaczWords, "nosacz");
 				await DetectMentions(context, message);
-				 DetectSwearWord(context, message);
-				 DetectMarekMessage(message);
+				DetectSwearWord(context, message);
+				DetectMarekMessage(message);
 			}
 		}
 
 		public async Task ScanUpdateMessage(Cacheable<IMessage, ulong> oldMessage, SocketMessage s, ISocketMessageChannel channel)
 		{
-
 			if (!(s is SocketUserMessage message))
 				return;
 
@@ -90,9 +85,9 @@ namespace MarekMotykaBot.Services.Core
 				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _marekFaceWords, "marekface"), "marekface");
 				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _skeletorWords, "skeletor"), "skeletor");
 				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _takeuchiWords, "takeuchi"), "takeuchi");
-                await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _ziewaczWords, "ziewface"), "ziewface");
-                await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _nosaczWords, "nosacz"), "nosacz");
-            }
+				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _ziewaczWords, "ziewface"), "ziewface");
+				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _nosaczWords, "nosacz"), "nosacz");
+			}
 
 			_logger.CustomEditLog(message, oldMessage.Value);
 		}
@@ -148,22 +143,16 @@ namespace MarekMotykaBot.Services.Core
 			{
 				DateTime today = DateTime.Now;
 
-				if (today.DayOfWeek == DayOfWeek.Saturday || today.DayOfWeek == DayOfWeek.Sunday)
+				string response = (today.DayOfWeek, today.Hour) switch
 				{
-					if (today.Hour < 12)
-						await context.Channel.SendMessageAsync(StringConsts.Snoring);
-					else
-						await context.Channel.SendMessageAsync(StringConsts.Girlfriend);
-				}
-				else
-				{
-					if (today.Hour < 7)
-						await context.Channel.SendMessageAsync(StringConsts.Snoring);
-					else if (today.Hour < 17)
-						await context.Channel.SendMessageAsync(StringConsts.Job);
-					else
-						await context.Channel.SendMessageAsync(StringConsts.Doctor);
-				}
+					(DayOfWeek day, int hour) when ((day == DayOfWeek.Saturday || day == DayOfWeek.Sunday) && hour < 12) => StringConsts.Snoring,
+					(DayOfWeek day, int hour) when ((day == DayOfWeek.Saturday || day == DayOfWeek.Sunday)) => StringConsts.Girlfriend,
+					(DayOfWeek day, int hour) when (hour < 9) => StringConsts.Snoring,
+					(DayOfWeek day, int hour) when (hour < 18) => StringConsts.Job,
+					_ => StringConsts.Wedding
+				};
+
+				await context.Channel.SendMessageAsync(response);
 			}
 		}
 

@@ -569,5 +569,13 @@
 				return StringResources.ResourceManager.GetString("currentMapHeader");
 			}
 		}
+
+		public static string Wedding
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("wedding");
+			}
+		}
 	}
 }

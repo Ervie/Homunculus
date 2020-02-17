@@ -338,4 +338,7 @@
   <data name="currentMapHeader" xml:space="preserve">
     <value>Obecna mapa:</value>
   </data>
+  <data name="wedding" xml:space="preserve">
+    <value>Sorry, muszę zorganizować ślub.</value>
+  </data>
 </root>
