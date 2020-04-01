@@ -11,13 +11,13 @@ namespace MarekMotykaBot.ExtensionsMethods
 
 			for (int i = 0; i < charArray.Length; i++)
 			{
-				if (string.IsNullOrEmpty(string.Empty))
+				if (string.IsNullOrEmpty(newString))
 					newString += charArray[i].ToString();
-				else if (string.Empty[^1] != charArray[i])
+				else if (newString[^1] != charArray[i])
 					newString += charArray[i].ToString();
 			}
 
-			return string.Empty;
+			return newString;
 		}
 
 		public static string RemoveEmojis(this string inputString)
