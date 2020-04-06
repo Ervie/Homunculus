@@ -1,15 +1,18 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Services.Core.Interfaces
 {
 	public interface IJSONSerializerService
 	{
-		T LoadSingleFromFile<T>(string fileName);
+		Task<T> LoadSingleFromFileAsync<T>(string fileName);
+
+		Task<List<T>> LoadFromFileAsync<T>(string fileName);
 
 		List<T> LoadFromFile<T>(string fileName);
 
-		void SaveSingleToFile<T>(string fileName, T dataToSave);
+		Task SaveSingleToFileAsync<T>(string fileName, T dataToSave);
 
-		void SaveToFile<T>(string fileName, List<T> dataToSave);
+		Task SaveToFileAsync<T>(string fileName, List<T> dataToSave);
 	}
 }

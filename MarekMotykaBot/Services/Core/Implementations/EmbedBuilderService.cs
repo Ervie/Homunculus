@@ -30,9 +30,9 @@ namespace MarekMotykaBot.Services.Core.Implementations
 			_serializer = serializer;
 		}
 
-		public Embed BuildStreamMondaySchedule()
+		public async Task<Embed> BuildStreamMondayScheduleAsync()
 		{
-			var schedule = _serializer.LoadSingleFromFile<StreamMondayBacklog>("streamMonday.json");
+			var schedule = await _serializer.LoadSingleFromFileAsync<StreamMondayBacklog>("streamMonday.json");
 
 			DateTime today = DateTime.Today;
 			int daysUntilWednesday = ((int)schedule.DayOfTheStream - (int)today.DayOfWeek + 7) % 7;
@@ -57,11 +57,11 @@ namespace MarekMotykaBot.Services.Core.Implementations
 			return builder.Build();
 		}
 
-		public Embed BuildSwearWordCountRanking()
+		public async Task<Embed> BuildSwearWordCountRankingAsync()
 		{
 			StringBuilder sb = new StringBuilder();
 
-			var counterList = _serializer.LoadFromFile<WordCounterEntry>("wordCounter.json");
+			var counterList = await _serializer.LoadFromFileAsync<WordCounterEntry>("wordCounter.json");
 
 			var builder = new EmbedBuilder()
 			{
@@ -177,7 +177,7 @@ namespace MarekMotykaBot.Services.Core.Implementations
 							sb.Append(command.Summary);
 						}
 
-						description += $"{sb.ToString()}\n";
+						description += $"{sb}\n";
 						sb.Clear();
 					}
 				}

@@ -78,22 +78,21 @@ namespace MarekMotykaBot.Services.Core
 		{
 			var channelToPost = _client.GetChannel(_destinationChannel) as IMessageChannel;
 
-			Embed streamBacklog = _embedBuilderService.BuildStreamMondaySchedule();
+			Embed streamBacklog = await _embedBuilderService.BuildStreamMondayScheduleAsync();
 
 			await channelToPost.SendMessageAsync("", false, streamBacklog);
 		}
 
 		public async Task QuoteOfTheDay()
 		{
-			var quotes = _serializer
-				.LoadFromFile<Quote>("quotes.json")
+			var quotes = (await _serializer.LoadFromFileAsync<Quote>("quotes.json"))
 				.Where(x => x.Categories.Contains(QuoteCategory.Wisdom))
 				.ToList();
 
 			int randomQuoteIndex = _rng.Next(0, quotes.Count);
 			var selectedQuote = quotes[randomQuoteIndex];
 
-			_serializer.SaveToFile("quoteOfTheDay.json", new List<Quote> { selectedQuote });
+			await _serializer.SaveToFileAsync("quoteOfTheDay.json", new List<Quote> { selectedQuote });
 
 			var channelToPost = _client.GetChannel(_destinationChannel) as IMessageChannel;
 
@@ -105,7 +104,7 @@ namespace MarekMotykaBot.Services.Core
 		public async Task SwearWordCount()
 		{
 			var channelToPost = _client.GetChannel(_destinationChannel) as IMessageChannel;
-			var swearWordCountRanking = _embedBuilderService.BuildSwearWordCountRanking();
+			var swearWordCountRanking = await _embedBuilderService.BuildSwearWordCountRankingAsync();
 
 			await channelToPost.SendMessageAsync("", false, swearWordCountRanking);
 		}

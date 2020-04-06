@@ -44,7 +44,7 @@ namespace MarekMotykaBot.Modules
 		[Command("StreamMonday"), Alias("sm", "Streamdziałek"), Summary("Prints schedule for next StreamMonday")]
 		public async Task StreamMondayAsync()
 		{
-			await ReplyAsync("", false, _embedBuilderService.BuildStreamMondaySchedule());
+			await ReplyAsync("", false, await _embedBuilderService.BuildStreamMondayScheduleAsync());
 
 			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}

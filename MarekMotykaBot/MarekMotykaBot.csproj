@@ -5,9 +5,9 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <StartupObject />
-    <Version>3.1.9</Version>
-    <AssemblyVersion>3.1.0.9</AssemblyVersion>
-    <FileVersion>3.1.0.9</FileVersion>
+    <Version>3.2.0</Version>
+    <AssemblyVersion>3.2.0.0</AssemblyVersion>
+    <FileVersion>3.2.0.0</FileVersion>
     <Description>Simple mimicking Discord bot written with .Net Core and Discord.Net.</Description>
     <PackageLicenseUrl>https://github.com/Ervie/Homunculus/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Ervie/Homunculus</PackageProjectUrl>

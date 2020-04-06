@@ -41,7 +41,7 @@ namespace MarekMotykaBot.Modules
 		[Command("Penis"), Summary("This is a Christian server!"), RequireUserPermission(GuildPermission.Administrator)]
 		public async Task SwearWordCounterAsync()
 		{
-			await ReplyAsync("", false, _embedBuilderService.BuildSwearWordCountRanking());
+			await ReplyAsync("", false, await _embedBuilderService.BuildSwearWordCountRankingAsync());
 
 			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
@@ -51,13 +51,13 @@ namespace MarekMotykaBot.Modules
 		{
 			string entry = string.Join(" ", text);
 
-			var schedule = _serializer.LoadSingleFromFile<StreamMondayBacklog>("streamMonday.json");
+			var schedule = await _serializer.LoadSingleFromFileAsync<StreamMondayBacklog>("streamMonday.json");
 
 			if (!schedule.BacklogEntries.Contains(entry))
 			{
 				schedule.BacklogEntries.Add(entry);
 
-				_serializer.SaveSingleToFile("streamMonday.json", schedule);
+				await _serializer.SaveSingleToFileAsync("streamMonday.json", schedule);
 
 				await ReplyAsync(string.Format(StringConsts.Added, entry));
 			}
@@ -70,13 +70,13 @@ namespace MarekMotykaBot.Modules
 		{
 			string entry = string.Join(" ", text);
 
-			var schedule = _serializer.LoadSingleFromFile<StreamMondayBacklog>("streamMonday.json");
+			var schedule = await _serializer.LoadSingleFromFileAsync<StreamMondayBacklog>("streamMonday.json");
 
 			if (schedule.BacklogEntries.Contains(entry))
 			{
 				schedule.BacklogEntries.Remove(entry);
 
-				_serializer.SaveSingleToFile("streamMonday.json", schedule);
+				await _serializer.SaveSingleToFileAsync("streamMonday.json", schedule);
 
 				await ReplyAsync(string.Format(StringConsts.Removed, entry));
 			}
@@ -92,9 +92,9 @@ namespace MarekMotykaBot.Modules
 			if (newDayOfWeek is { })
 			{
 				_timerService.ChangeStreamDay(newDayOfWeek);
-				var schedule = _serializer.LoadSingleFromFile<StreamMondayBacklog>("streamMonday.json");
+				var schedule = await _serializer.LoadSingleFromFileAsync<StreamMondayBacklog>("streamMonday.json");
 				schedule.DayOfTheStream = newDayOfWeek;
-				_serializer.SaveSingleToFile("streamMonday.json", schedule);
+				await _serializer.SaveSingleToFileAsync("streamMonday.json", schedule);
 
 				await ReplyAsync(string.Format(StringConsts.StreamDayChanged, newDayOfWeek));
 			}

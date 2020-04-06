@@ -7,18 +7,18 @@ namespace MarekMotykaBot.Services.Core.Interfaces
 {
 	public interface IMessageScannerService
 	{
-		Task ScanMessage(SocketMessage s);
+		Task ScanMessageAsync(SocketMessage s);
 
-		Task ScanUpdateMessage(Cacheable<IMessage, ulong> oldMessage, SocketMessage s, ISocketMessageChannel channel);
+		Task ScanUpdateMessageAsync(Cacheable<IMessage, ulong> oldMessage, SocketMessage s, ISocketMessageChannel channel);
 
-		Task ScanDeletedMessage(Cacheable<IMessage, ulong> deletedMessage, ISocketMessageChannel channel);
+		Task ScanDeletedMessageAsync(Cacheable<IMessage, ulong> deletedMessage, ISocketMessageChannel channel);
 
-		Task DetectMentions(SocketCommandContext context, SocketUserMessage message);
+		Task DetectMentionsAsync(SocketCommandContext context, SocketUserMessage message);
 
-		Task DetectWaifus(SocketCommandContext context, SocketUserMessage message);
+		Task DetectWaifusAsync(SocketCommandContext context, SocketUserMessage message);
 
-		void  DetectSwearWord(SocketCommandContext context, SocketUserMessage message);
+		Task DetectSwearWordAsync(SocketCommandContext context, SocketUserMessage message);
 
-		void DetectMarekMessage(SocketUserMessage message);
+		Task DetectMarekMessageAsync(SocketUserMessage message);
 	}
 }

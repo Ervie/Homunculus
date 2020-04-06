@@ -124,11 +124,11 @@ namespace MarekMotykaBot.Modules
 					break;
 			}
 
-			List<DeclineCache> declineCache = _jsonSerializer.LoadFromFile<DeclineCache>("declineCache.json");
+			var declineCache = await _jsonSerializer.LoadFromFileAsync<DeclineCache>("declineCache.json");
 
 			declineCache.RemoveAll(x => x.DiscordUsername.Equals(Context.User.DiscordId()));
 
-			_jsonSerializer.SaveToFile("declineCache.json", declineCache);
+			await _jsonSerializer.SaveToFileAsync("declineCache.json", declineCache);
 
 			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
@@ -206,7 +206,7 @@ namespace MarekMotykaBot.Modules
 		[Command("Joke"), Summary("Marek's joke - you know the drill")]
 		public async Task JokeAsync()
 		{
-			List<OneLinerJoke> jokes = _jsonSerializer.LoadFromFile<OneLinerJoke>("oneLiners.json");
+			var jokes = await _jsonSerializer.LoadFromFileAsync<OneLinerJoke>("oneLiners.json");
 
 			int randomJokeIndex = _rng.Next(1, jokes.Count);
 
@@ -231,7 +231,7 @@ namespace MarekMotykaBot.Modules
 			}
 			else
 			{
-				List<EightBallCache> cache = _jsonSerializer.LoadFromFile<EightBallCache>("cache8ball.json");
+				var cache = await _jsonSerializer.LoadFromFileAsync<EightBallCache>("cache8ball.json");
 
 				if (cache.Exists(x => x.Question == messageKey && x.DiscordUsername == userKey))
 				{
@@ -250,7 +250,7 @@ namespace MarekMotykaBot.Modules
 
 					cache.Add(new EightBallCache(userKey, messageKey, string.Format(selectedResponse, selectedUser)));
 
-					_jsonSerializer.SaveToFile("cache8ball.json", cache);
+					await _jsonSerializer.SaveToFileAsync("cache8ball.json", cache);
 
 					await Context.Channel.SendMessageAsync($"{string.Format(selectedResponse, selectedUser)}");
 				}
@@ -269,7 +269,7 @@ namespace MarekMotykaBot.Modules
 			switch (filtercategory)
 			{
 				case QuoteCategory.OfTheDay:
-					selectedQuote = _jsonSerializer.LoadFromFile<Quote>("quoteOfTheDay.json").First();
+					selectedQuote = (await _jsonSerializer.LoadFromFileAsync<Quote>("quoteOfTheDay.json")).First();
 					break;
 
 				case QuoteCategory.Insult:
@@ -281,11 +281,11 @@ namespace MarekMotykaBot.Modules
 						await Context.Channel.SendMessageAsync(StringConsts.WhyWouldIDoThat);
 						return;
 					}
-					selectedQuote = GetRandomQuote(filtercategory);
+					selectedQuote = await GetRandomQuoteAsync(filtercategory);
 					break;
 
 				default:
-					selectedQuote = GetRandomQuote(filtercategory);
+					selectedQuote = await GetRandomQuoteAsync(filtercategory);
 					break;
 			}
 
@@ -335,7 +335,7 @@ namespace MarekMotykaBot.Modules
 		[Command("lastContact"), Alias("lc", "lastMessage", "lm"), Summary("Last message by Marek")]
 		public async Task LastContactAsync()
 		{
-			LastMarekMessage lastMessage = _jsonSerializer.LoadSingleFromFile<LastMarekMessage>("marekLastMessage.json");
+			var lastMessage = await _jsonSerializer.LoadSingleFromFileAsync<LastMarekMessage>("marekLastMessage.json");
 
 			if (lastMessage != null)
 			{
@@ -346,7 +346,7 @@ namespace MarekMotykaBot.Modules
 		[Command("suchar"), Alias("pun"), Summary("A derpish pun from a derpish member")]
 		public async Task DerpPunAsync()
 		{
-			var suchars = _jsonSerializer.LoadFromFile<OneLinerJoke>("derpSuchars.json");
+			var suchars = await _jsonSerializer.LoadFromFileAsync<OneLinerJoke>("derpSuchars.json");
 			var selectedSucharIndex = _rng.Next(0, suchars.Count);
 			var selectedSuchar = suchars[selectedSucharIndex];
 
@@ -357,7 +357,7 @@ namespace MarekMotykaBot.Modules
 			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 
-		private Quote GetRandomQuote(QuoteCategory filtercategory)
+		private async Task<Quote> GetRandomQuoteAsync(QuoteCategory filtercategory)
 		{
 			// secret quote...
 			var secretQuoteResult = _rng.Next(1, 50);
@@ -369,7 +369,7 @@ namespace MarekMotykaBot.Modules
 			}
 			else
 			{
-				List<Quote> quotes = _jsonSerializer.LoadFromFile<Quote>("quotes.json");
+				var quotes = await _jsonSerializer.LoadFromFileAsync<Quote>("quotes.json");
 
 				if (filtercategory != QuoteCategory.None)
 					quotes = quotes

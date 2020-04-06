@@ -49,9 +49,9 @@ namespace MarekMotykaBot.Services.Core
 		public void SetStartingState()
 		{
 			_discord.MessageReceived += OnMessageReceivedAsync;
-			_discord.MessageReceived += _messageScanner.ScanMessage;
-			_discord.MessageUpdated += _messageScanner.ScanUpdateMessage;
-			_discord.MessageDeleted += _messageScanner.ScanDeletedMessage;
+			_discord.MessageReceived += _messageScanner.ScanMessageAsync;
+			_discord.MessageUpdated += _messageScanner.ScanUpdateMessageAsync;
+			_discord.MessageDeleted += _messageScanner.ScanDeletedMessageAsync;
 		}
 
 		public async Task OnMessageReceivedAsync(SocketMessage s)
@@ -71,7 +71,7 @@ namespace MarekMotykaBot.Services.Core
 			int argPos = 0;
 			if (msg.HasStringPrefix(Configuration["prefix"], ref argPos) || msg.HasMentionPrefix(_discord.CurrentUser, ref argPos))
 			{
-				if (! await DeclineCommand(context, msg.Content))
+				if (! await DeclineCommandAsync(context, msg.Content))
 				{
 					IResult result = await _commandService.ExecuteAsync(context, argPos, _provider);
 
@@ -85,14 +85,14 @@ namespace MarekMotykaBot.Services.Core
 				}
 			}
 		}
-		public async Task<bool> DeclineCommand(SocketCommandContext context, string messageContent)
+		public async Task<bool> DeclineCommandAsync(SocketCommandContext context, string messageContent)
 		{
 			string commandName = messageContent.Split(' ').FirstOrDefault();
 			bool commandDeclined = false;
 
 			if (!string.IsNullOrWhiteSpace(commandName))
 			{
-				if (await BlockCommand(context, commandName))
+				if (await BlockCommandAsync(context, commandName))
 				{
 					return true;
 				}
@@ -105,7 +105,7 @@ namespace MarekMotykaBot.Services.Core
 				if (randomInt < 6)
 				{
 					commandDeclined = true;
-					AddDeclineCache(context.User.DiscordId(), commandName);
+					await AddDeclineCacheAsync(context.User.DiscordId(), commandName);
 					await context.Channel.SendMessageAsync(meanResponse);
 				}
 				else if (randomInt == 6)
@@ -119,21 +119,21 @@ namespace MarekMotykaBot.Services.Core
 			return commandDeclined;
 		}
 
-		public void AddDeclineCache(string discordId, string commandName)
+		public async Task AddDeclineCacheAsync(string discordId, string commandName)
 		{
 			if (commandName != "!no" && commandName != "!nocosemoge" && commandName != "!co")
 			{
-				List<DeclineCache> declineCache = _jsonSerializer.LoadFromFile<DeclineCache>("declineCache.json");
+				var declineCache = await _jsonSerializer.LoadFromFileAsync<DeclineCache>("declineCache.json");
 
 				declineCache.Add(new DeclineCache(discordId, commandName));
 
-				_jsonSerializer.SaveToFile("declineCache.json", declineCache);
+				await _jsonSerializer.SaveToFileAsync("declineCache.json", declineCache);
 			}
 		}
 
-		public async Task<bool> BlockCommand(SocketCommandContext context, string commandName)
+		public async Task<bool> BlockCommandAsync(SocketCommandContext context, string commandName)
 		{
-			List<DeclineCache> declineCache = _jsonSerializer.LoadFromFile<DeclineCache>("declineCache.json");
+			var declineCache = await _jsonSerializer.LoadFromFileAsync<DeclineCache>("declineCache.json");
 
 			if (declineCache.Any() && declineCache.FirstOrDefault(x => x.DiscordUsername == context.User.DiscordId() && x.CommandName == commandName) != null)
 			{

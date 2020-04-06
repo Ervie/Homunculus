@@ -8,10 +8,10 @@ namespace MarekMotykaBot.Services.Core.Interfaces
 	{
 		Task OnMessageReceivedAsync(SocketMessage s);
 
-		Task<bool> BlockCommand(SocketCommandContext context, string commandName);
+		Task<bool> BlockCommandAsync(SocketCommandContext context, string commandName);
 
-		Task<bool> DeclineCommand(SocketCommandContext context, string messageContent);
+		Task<bool> DeclineCommandAsync(SocketCommandContext context, string messageContent);
 
-		void AddDeclineCache(string discordId, string commandName);
+		Task AddDeclineCacheAsync(string discordId, string commandName);
 	}
 }

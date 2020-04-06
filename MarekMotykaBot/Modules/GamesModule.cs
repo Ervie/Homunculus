@@ -85,7 +85,7 @@ namespace MarekMotykaBot.Modules
 
 						int rolledNumber = _rng.Next(0, defaultMaxNumber) + 1;
 
-						await ReplyAsync($"{Context.User.Username}: {rolledNumber.ToString()}");
+						await ReplyAsync($"{Context.User.Username}: {rolledNumber}");
 					}
 					else
 					{
@@ -124,8 +124,8 @@ namespace MarekMotykaBot.Modules
 		[Command("Charade"), Alias("kalambury", "c"), Summary("Draw a random entry for charade game.")]
 		public async Task CharadeAsync()
 		{
-			List<CharadeEntry> charadeCollection = _jsonSerializer.LoadFromFile<CharadeEntry>("Animes.json");
-			List<int> charadeCache = _jsonSerializer.LoadFromFile<int>("charadeCache.json");
+			var charadeCollection = await _jsonSerializer.LoadFromFileAsync<CharadeEntry>("Animes.json");
+			var charadeCache = await _jsonSerializer.LoadFromFileAsync<int>("charadeCache.json");
 
 			if (charadeCache.Count() == charadeCollection.Count())
 			{
@@ -146,7 +146,7 @@ namespace MarekMotykaBot.Modules
 
 				charadeCache.Add(selectedEntry.Series.Id);
 
-				_jsonSerializer.SaveToFile<int>("charadeCache.json", charadeCache);
+				await _jsonSerializer.SaveToFileAsync<int>("charadeCache.json", charadeCache);
 
 				break;
 			}
@@ -157,7 +157,7 @@ namespace MarekMotykaBot.Modules
 		[Command("ResetCharade"), Alias("reset", "r"), Summary("Reset charade cache")]
 		public async Task CharadeResetAsync()
 		{
-			_jsonSerializer.SaveToFile("charadeCache.json", new List<int>());
+			await _jsonSerializer.SaveToFileAsync("charadeCache.json", new List<int>());
 
 			await ReplyAsync(StringConsts.CharadeReset);
 

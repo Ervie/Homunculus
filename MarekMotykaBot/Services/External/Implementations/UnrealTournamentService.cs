@@ -39,7 +39,7 @@ namespace MarekMotykaBot.Services.External.Implementations
 
 			var mapsFromCurrentRotation = await LoadMapsFromCurrentRotation();
 
-			var mapsToExclude = LoadExcludedMapsList();
+			var mapsToExclude = await LoadExcludedMapsListAsync();
 
 			var newRotation = SelectNewRotation(availableMaps, mapsFromCurrentRotation, mapsToExclude);
 
@@ -69,9 +69,9 @@ namespace MarekMotykaBot.Services.External.Implementations
 				.Where(mapName => mapName is { })
 				.ToList();
 
-		private ICollection<string> LoadExcludedMapsList()
+		private async Task<ICollection<string>> LoadExcludedMapsListAsync()
 			=> RotationConfiguration.ExcludeMaps ?
-				_jsonSerializer.LoadFromFile<string>("excludedMaps.json") :
+				await _jsonSerializer.LoadFromFileAsync<string>("excludedMaps.json") :
 				new List<string>();
 
 		private ICollection<string> SelectNewRotation(ICollection<string> availableMaps, ICollection<string> oldRotation, ICollection<string> mapsToExclude)

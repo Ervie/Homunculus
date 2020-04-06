@@ -8,9 +8,9 @@ namespace MarekMotykaBot.Services.Core.Interfaces
 {
 	public interface IEmbedBuilderService
 	{
-		Embed BuildStreamMondaySchedule();
+		Task<Embed> BuildStreamMondayScheduleAsync();
 
-		Embed BuildSwearWordCountRanking();
+		Task<Embed> BuildSwearWordCountRankingAsync();
 
 		Embed BuildQuote(Quote quote);
 

@@ -52,7 +52,7 @@ namespace MarekMotykaBot.Services.Core
 			_nosaczWords = _serializer.LoadFromFile<string>("nosaczTrigger.json");
 		}
 
-		public async Task ScanMessage(SocketMessage s)
+		public async Task ScanMessageAsync(SocketMessage s)
 		{
 			if (!(s is SocketUserMessage message))
 				return;
@@ -61,19 +61,19 @@ namespace MarekMotykaBot.Services.Core
 
 			if (!message.Author.IsBot && !message.Content.StartsWith(Configuration["prefix"]))
 			{
-				await DetectWaifus(context, message);
+				await DetectWaifusAsync(context, message);
 				await AddReactionAfterTriggerWord(context, message, _marekFaceWords, "marekface");
 				await AddReactionAfterTriggerWord(context, message, _skeletorWords, "skeletor");
 				await AddReactionAfterTriggerWord(context, message, _takeuchiWords, "takeuchi");
 				await AddReactionAfterTriggerWord(context, message, _ziewaczWords, "ziewface");
 				await AddReactionAfterTriggerWord(context, message, _nosaczWords, "nosacz");
-				await DetectMentions(context, message);
-				DetectSwearWord(context, message);
-				DetectMarekMessage(message);
+				await DetectMentionsAsync(context, message);
+				await DetectSwearWordAsync(context, message);
+				await DetectMarekMessageAsync(message);
 			}
 		}
 
-		public async Task ScanUpdateMessage(Cacheable<IMessage, ulong> oldMessage, SocketMessage s, ISocketMessageChannel channel)
+		public async Task ScanUpdateMessageAsync(Cacheable<IMessage, ulong> oldMessage, SocketMessage s, ISocketMessageChannel channel)
 		{
 			if (!(s is SocketUserMessage message))
 				return;
@@ -92,7 +92,7 @@ namespace MarekMotykaBot.Services.Core
 			_logger.CustomEditLog(message, oldMessage.Value);
 		}
 
-		public async Task ScanDeletedMessage(Cacheable<IMessage, ulong> deletedMessage, ISocketMessageChannel channel)
+		public async Task ScanDeletedMessageAsync(Cacheable<IMessage, ulong> deletedMessage, ISocketMessageChannel channel)
 		{
 			_logger.CustomDeleteLog(deletedMessage.Value);
 		}
@@ -136,7 +136,7 @@ namespace MarekMotykaBot.Services.Core
 			}
 		}
 
-		public async Task DetectMentions(SocketCommandContext context, SocketUserMessage message)
+		public async Task DetectMentionsAsync(SocketCommandContext context, SocketUserMessage message)
 		{
 			if (message.MentionedUsers.Where(x => x.DiscordId().Equals("MarekMotykaBot#2213") || x.DiscordId().Equals("Erina#5946")).FirstOrDefault() != null ||
 				message.Tags.Any(x => x.Type.Equals(TagType.EveryoneMention) || x.Type.Equals(TagType.HereMention)))
@@ -159,7 +159,7 @@ namespace MarekMotykaBot.Services.Core
 		/// <summary>
 		/// Detect waifus name in each message
 		/// </summary>
-		public async Task DetectWaifus(SocketCommandContext context, SocketUserMessage message)
+		public async Task DetectWaifusAsync(SocketCommandContext context, SocketUserMessage message)
 		{
 			foreach (string waifuName in _waifuList)
 			{
@@ -179,7 +179,7 @@ namespace MarekMotykaBot.Services.Core
 		/// <summary>
 		/// Check for swearword and who posted it - increment counter;
 		/// </summary>
-		public void DetectSwearWord(SocketCommandContext context, SocketUserMessage message)
+		public async Task DetectSwearWordAsync(SocketCommandContext context, SocketUserMessage message)
 		{
 			string compressedText = message.Content.RemoveRepeatingChars();
 			compressedText = new string(compressedText.Where(c => !char.IsWhiteSpace(c)).ToArray());
@@ -189,7 +189,7 @@ namespace MarekMotykaBot.Services.Core
 			{
 				if (compressedText.Contains(swearWord.ToLowerInvariant()) && !message.Author.IsBot)
 				{
-					var counterList = _serializer.LoadFromFile<WordCounterEntry>("wordCounter.json");
+					var counterList = await _serializer.LoadFromFileAsync<WordCounterEntry>("wordCounter.json");
 
 					string messageText = message.Content.ToLowerInvariant();
 					string username = context.User.DiscordId();
@@ -211,16 +211,16 @@ namespace MarekMotykaBot.Services.Core
 										: messageText.Remove(firstSubstringIndex, swearWord.Length);
 					}
 
-					_serializer.SaveToFile<WordCounterEntry>("wordCounter.json", counterList);
+					await _serializer.SaveToFileAsync("wordCounter.json", counterList);
 				}
 			}
 		}
 
-		public void DetectMarekMessage(SocketUserMessage message)
+		public async Task DetectMarekMessageAsync(SocketUserMessage message)
 		{
 			if (message.Author.DiscordId().Equals("Erina#5946"))
 			{
-				LastMarekMessage lastMessage = _serializer.LoadSingleFromFile<LastMarekMessage>("marekLastMessage.json");
+				var lastMessage = await _serializer.LoadSingleFromFileAsync<LastMarekMessage>("marekLastMessage.json");
 
 				bool isImage = string.IsNullOrWhiteSpace(message.Content) && message.Attachments.Any();
 
@@ -231,7 +231,7 @@ namespace MarekMotykaBot.Services.Core
 
 				lastMessage.DatePosted = message.Timestamp.DateTime.ToLocalTime();
 
-				_serializer.SaveSingleToFile("marekLastMessage.json", lastMessage);
+				await _serializer.SaveSingleToFileAsync("marekLastMessage.json", lastMessage);
 			}
 		}
 	}
