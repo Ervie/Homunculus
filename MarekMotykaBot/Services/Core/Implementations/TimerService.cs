@@ -85,13 +85,13 @@ namespace MarekMotykaBot.Services.Core
 
 		public async Task QuoteOfTheDay()
 		{
-			List<Quote> quotes = _serializer.LoadFromFile<Quote>("quotes.json");
-
-			quotes = quotes.Where(x => x.Categories.Contains(QuoteCategory.Wisdom)).ToList();
+			var quotes = _serializer
+				.LoadFromFile<Quote>("quotes.json")
+				.Where(x => x.Categories.Contains(QuoteCategory.Wisdom))
+				.ToList();
 
 			int randomQuoteIndex = _rng.Next(0, quotes.Count);
-
-			Quote selectedQuote = quotes[randomQuoteIndex];
+			var selectedQuote = quotes[randomQuoteIndex];
 
 			_serializer.SaveToFile("quoteOfTheDay.json", new List<Quote> { selectedQuote });
 
@@ -105,19 +105,23 @@ namespace MarekMotykaBot.Services.Core
 		public async Task SwearWordCount()
 		{
 			var channelToPost = _client.GetChannel(_destinationChannel) as IMessageChannel;
-
-			Embed swearWordCountRanking = _embedBuilderService.BuildSwearWordCountRanking();
+			var swearWordCountRanking = _embedBuilderService.BuildSwearWordCountRanking();
 
 			await channelToPost.SendMessageAsync("", false, swearWordCountRanking);
 		}
 
-		public void ResetUTMapRotation()
+		public void ResetUTMapRotation() 
+			=> _unrealTournamentService.ChangeRotation(new UTRotationConfiguration()
+				{
+					Repeat = false,
+					ExcludeMaps = true
+				});
+
+		public void ChangeStreamDay(DayOfWeek dayOfWeek)
 		{
-			_unrealTournamentService.ChangeRotation(new DataTypes.UTRotationConfiguration()
-			{
-				Repeat = false,
-				ExcludeMaps = true
-			});
+			var streamMondayTask = TimedTasks.First(x => x.Name.Equals("StreamMondaySchedule"));
+			streamMondayTask.DaysOfWeek.Clear();
+			streamMondayTask.DaysOfWeek.Add(dayOfWeek);
 		}
 	}
 }

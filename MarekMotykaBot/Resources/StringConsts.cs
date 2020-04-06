@@ -577,5 +577,21 @@
 				return StringResources.ResourceManager.GetString("wedding");
 			}
 		}
+
+		public static string Quarantine
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("quarantine");
+			}
+		}
+
+		public static string StreamDayChanged
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("streamDayChanged");
+			}
+		}
 	}
 }

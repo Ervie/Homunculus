@@ -1,4 +1,5 @@
-﻿using System.Timers;
+﻿using System;
+using System.Timers;
 
 namespace MarekMotykaBot.Services.Core.Interfaces
 {
@@ -7,5 +8,7 @@ namespace MarekMotykaBot.Services.Core.Interfaces
 		void StartTimer();
 
 		void TimerTick(object src, ElapsedEventArgs e);
+
+		void ChangeStreamDay(DayOfWeek dayOfWeek);
 	}
 }

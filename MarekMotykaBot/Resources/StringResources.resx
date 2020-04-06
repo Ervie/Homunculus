@@ -341,4 +341,10 @@
   <data name="wedding" xml:space="preserve">
     <value>Sorry, muszę zorganizować ślub.</value>
   </data>
+  <data name="quarantine" xml:space="preserve">
+    <value>Sorry, jest kwarantanna.</value>
+  </data>
+  <data name="streamDayChanged" xml:space="preserve">
+    <value>Zmieniono dzień streamu na "{0}".</value>
+  </data>
 </root>

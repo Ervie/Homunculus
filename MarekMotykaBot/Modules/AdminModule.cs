@@ -5,7 +5,9 @@ using MarekMotykaBot.Modules.Interface;
 using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services.Core.Interfaces;
 using MarekMotykaBot.Services.External.Interfaces;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Modules
@@ -15,6 +17,7 @@ namespace MarekMotykaBot.Modules
 		private readonly IJSONSerializerService _serializer;
 		private readonly IEmbedBuilderService _embedBuilderService;
 		private readonly IUnrealTournamentService _unrealTournamentService;
+		private readonly ITimerService _timerService;
 
 		public string ModuleName { get => "AdminModule"; }
 
@@ -24,12 +27,14 @@ namespace MarekMotykaBot.Modules
 			IJSONSerializerService serializer,
 			ILoggingService loggingService,
 			IEmbedBuilderService embedBuilderService,
-			IUnrealTournamentService unrealTournamentService
+			IUnrealTournamentService unrealTournamentService,
+			ITimerService timerService
 			)
 		{
 			_serializer = serializer;
 			_embedBuilderService = embedBuilderService;
 			_unrealTournamentService = unrealTournamentService;
+			_timerService = timerService;
 			LoggingService = loggingService;
 		}
 
@@ -77,6 +82,24 @@ namespace MarekMotykaBot.Modules
 			}
 
 			LoggingService.CustomCommandLog(Context.Message, ModuleName, entry);
+		}
+
+		[Command("changeSMDay"), Alias("smd"), Summary("Change day of the SM (1-7)"), RequireUserPermission(GuildPermission.Administrator)]
+		public async Task ChangeStreamDay(params string[] text)
+		{
+			Enum.TryParse(text.FirstOrDefault(), out DayOfWeek newDayOfWeek);
+
+			if (newDayOfWeek is { })
+			{
+				_timerService.ChangeStreamDay(newDayOfWeek);
+				var schedule = _serializer.LoadSingleFromFile<StreamMondayBacklog>("streamMonday.json");
+				schedule.DayOfTheStream = newDayOfWeek;
+				_serializer.SaveSingleToFile("streamMonday.json", schedule);
+
+				await ReplyAsync(string.Format(StringConsts.StreamDayChanged, newDayOfWeek));
+			}
+
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, newDayOfWeek.ToString());
 		}
 
 		[Command("ut"), Summary("Change map rotation of UT 1999 server."), RequireUserPermission(GuildPermission.Administrator)]

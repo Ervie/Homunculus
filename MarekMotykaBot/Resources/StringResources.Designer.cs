@@ -448,6 +448,15 @@ namespace MarekMotykaBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry, jest kwarantanna..
+        /// </summary>
+        internal static string quarantine {
+            get {
+                return ResourceManager.GetString("quarantine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cytat na dziś:.
         /// </summary>
         internal static string quoteForToday {
@@ -507,6 +516,15 @@ namespace MarekMotykaBot.Resources {
         internal static string snoring {
             get {
                 return ResourceManager.GetString("snoring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zmieniono dzień streamu na &quot;{0}&quot;..
+        /// </summary>
+        internal static string streamDayChanged {
+            get {
+                return ResourceManager.GetString("streamDayChanged", resourceCulture);
             }
         }
         

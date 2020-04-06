@@ -146,10 +146,10 @@ namespace MarekMotykaBot.Services.Core
 				string response = (today.DayOfWeek, today.Hour) switch
 				{
 					(DayOfWeek day, int hour) when ((day == DayOfWeek.Saturday || day == DayOfWeek.Sunday) && hour < 12) => StringConsts.Snoring,
-					(DayOfWeek day, int hour) when ((day == DayOfWeek.Saturday || day == DayOfWeek.Sunday)) => StringConsts.Girlfriend,
+					(DayOfWeek day, int hour) when ((day == DayOfWeek.Saturday || day == DayOfWeek.Sunday)) => StringConsts.Wedding,
 					(DayOfWeek day, int hour) when (hour < 9) => StringConsts.Snoring,
 					(DayOfWeek day, int hour) when (hour < 18) => StringConsts.Job,
-					_ => StringConsts.Wedding
+					_ => StringConsts.Quarantine
 				};
 
 				await context.Channel.SendMessageAsync(response);
