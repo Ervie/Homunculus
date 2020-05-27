@@ -22,7 +22,9 @@ namespace MarekMotykaBot.Services.Core
 		private readonly DiscordSocketClient _client;
 		private readonly Random _rng;
 		private readonly Timer _timer;
-		private readonly ulong _destinationChannel;
+		private readonly ulong _destinationServerId;
+		private readonly ulong _destinationChannelId;
+		private readonly ulong _streamAliasId;
 
 		public IConfiguration Configuration { get; set; }
 
@@ -44,7 +46,9 @@ namespace MarekMotykaBot.Services.Core
 			_unrealTournamentService = unrealTournamentService;
 			_rng = rng;
 
-			_destinationChannel = (ulong)long.Parse(Configuration["tokens:destinationServerId"]);
+			_destinationServerId = (ulong)long.Parse(Configuration["tokens:destinationServerId"]);
+			_destinationChannelId = (ulong)long.Parse(Configuration["tokens:destinationChannelId"]);
+			_streamAliasId = (ulong)long.Parse(Configuration["configValues:streamAliasId"]);
 
 			TimedTasks = _serializer.LoadFromFile<TimedTask>("timedTasks.json");
 
@@ -76,9 +80,30 @@ namespace MarekMotykaBot.Services.Core
 
 		public async Task StreamMondaySchedule()
 		{
-			var channelToPost = _client.GetChannel(_destinationChannel) as IMessageChannel;
+			var channelToPost = _client.GetChannel(_destinationChannelId) as IMessageChannel;
 
-			Embed streamBacklog = await _embedBuilderService.BuildStreamMondayScheduleAsync();
+			var streamBacklog = await _embedBuilderService.BuildStreamMondayScheduleAsync();
+
+			await channelToPost.SendMessageAsync("", false, streamBacklog);
+		}
+
+		public async Task StreamMondayScheduleWithMention()
+		{
+			var channelToPost = _client.GetChannel(_destinationChannelId) as IMessageChannel;
+
+			var guild = _client.Guilds.FirstOrDefault(x => x.Id.Equals(_destinationServerId));
+
+			if (guild != null)
+			{
+				var alias = guild.Roles.FirstOrDefault(x => x.Id.Equals(_streamAliasId));
+
+				if (alias != null)
+				{
+					await channelToPost.SendMessageAsync(alias.Mention);
+				}
+			}
+
+			var streamBacklog = await _embedBuilderService.BuildStreamMondayScheduleAsync();
 
 			await channelToPost.SendMessageAsync("", false, streamBacklog);
 		}
@@ -94,7 +119,7 @@ namespace MarekMotykaBot.Services.Core
 
 			await _serializer.SaveToFileAsync("quoteOfTheDay.json", new List<Quote> { selectedQuote });
 
-			var channelToPost = _client.GetChannel(_destinationChannel) as IMessageChannel;
+			var channelToPost = _client.GetChannel(_destinationChannelId) as IMessageChannel;
 
 			await channelToPost.SendMessageAsync(StringConsts.QuoteForToday);
 			await Task.Delay(1000);
@@ -103,7 +128,7 @@ namespace MarekMotykaBot.Services.Core
 
 		public async Task SwearWordCount()
 		{
-			var channelToPost = _client.GetChannel(_destinationChannel) as IMessageChannel;
+			var channelToPost = _client.GetChannel(_destinationChannelId) as IMessageChannel;
 			var swearWordCountRanking = await _embedBuilderService.BuildSwearWordCountRankingAsync();
 
 			await channelToPost.SendMessageAsync("", false, swearWordCountRanking);
@@ -118,9 +143,13 @@ namespace MarekMotykaBot.Services.Core
 
 		public void ChangeStreamDay(DayOfWeek dayOfWeek)
 		{
-			var streamMondayTask = TimedTasks.First(x => x.Name.Equals("StreamMondaySchedule"));
-			streamMondayTask.DaysOfWeek.Clear();
-			streamMondayTask.DaysOfWeek.Add(dayOfWeek);
+			var streamMondayTasks = TimedTasks.Where(x => x.Name.StartsWith("StreamMondaySchedule"));
+
+			foreach (var streamTask in streamMondayTasks)
+			{
+				streamTask.DaysOfWeek.Clear();
+				streamTask.DaysOfWeek.Add(dayOfWeek);
+			}
 		}
 	}
 }
