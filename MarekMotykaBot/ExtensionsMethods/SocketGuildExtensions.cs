@@ -7,7 +7,7 @@ namespace MarekMotykaBot.ExtensionsMethods
 	public static class SocketGuildExtensions
 	{
 		private static readonly string MarekDiscordId = "Erina#5946";
-		private static readonly string MarekBotDiscordId = "MarekMotykaBot#2213";
+		private static readonly string MarekBotDiscordId = "Marek Motyka#3254";
 
 		public static string GetRandomUserName(this SocketGuild guild, Random rng)
 		{
