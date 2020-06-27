@@ -46,10 +46,12 @@ namespace MarekMotykaBot.Services.Core.Implementations
 
 			if (schedule != null && schedule.BacklogEntries != null && schedule.BacklogEntries.Any())
 			{
+				var formattedEntries = schedule.BacklogEntries.Select(x => x.FormatForEmbedded());
+
 				builder.AddField(x =>
 				{
 					x.Name = nextWednesday.ToString("dd.MM");
-					x.Value = string.Join(Environment.NewLine, schedule.BacklogEntries.ToArray());
+					x.Value = string.Join(Environment.NewLine, formattedEntries.ToArray());
 					x.IsInline = false;
 				});
 			}

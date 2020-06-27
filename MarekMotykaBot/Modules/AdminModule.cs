@@ -6,8 +6,8 @@ using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services.Core.Interfaces;
 using MarekMotykaBot.Services.External.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Modules
@@ -49,39 +49,44 @@ namespace MarekMotykaBot.Modules
 		[Command("addSMEntry"), Alias("sma"), Summary("Add entry to StreamMonday schedule"), RequireUserPermission(GuildPermission.Administrator)]
 		public async Task AddEntryToStreamBacklog(params string[] text)
 		{
-			string entry = string.Join(" ", text);
+			var entry = FormatStreamMondayEntryText(text);
+
+			if (string.IsNullOrWhiteSpace(entry.Name))
+				return;
 
 			var schedule = await _serializer.LoadSingleFromFileAsync<StreamMondayBacklog>("streamMonday.json");
 
-			if (!schedule.BacklogEntries.Contains(entry))
+			if (!schedule.BacklogEntries.Select(x => x.Name).Contains(entry.Name))
 			{
 				schedule.BacklogEntries.Add(entry);
 
 				await _serializer.SaveSingleToFileAsync("streamMonday.json", schedule);
 
-				await ReplyAsync(string.Format(StringConsts.Added, entry));
+				await ReplyAsync(string.Format(StringConsts.Added, entry.Name));
 			}
 
-			LoggingService.CustomCommandLog(Context.Message, ModuleName, entry);
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, entry.Name);
 		}
 
 		[Command("removeSMEntry"), Alias("smr"), Summary("Remove entry from StreamMonday schedule"), RequireUserPermission(GuildPermission.Administrator)]
 		public async Task RemoveEntryFromStreamBacklog(params string[] text)
 		{
-			string entry = string.Join(" ", text);
+			string entryName = string.Join(" ", text);
 
 			var schedule = await _serializer.LoadSingleFromFileAsync<StreamMondayBacklog>("streamMonday.json");
 
-			if (schedule.BacklogEntries.Contains(entry))
+			if (schedule.BacklogEntries.Select(x => x.Name).Contains(entryName))
 			{
-				schedule.BacklogEntries.Remove(entry);
+				var entryToRemove = schedule.BacklogEntries.First(x => x.Name == entryName);
+
+				schedule.BacklogEntries.Remove(entryToRemove);
 
 				await _serializer.SaveSingleToFileAsync("streamMonday.json", schedule);
 
-				await ReplyAsync(string.Format(StringConsts.Removed, entry));
+				await ReplyAsync(string.Format(StringConsts.Removed, entryName));
 			}
 
-			LoggingService.CustomCommandLog(Context.Message, ModuleName, entry);
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, entryName);
 		}
 
 		[Command("changeSMDay"), Alias("smd"), Summary("Change day of the SM (1-7)"), RequireUserPermission(GuildPermission.Administrator)]
@@ -114,6 +119,18 @@ namespace MarekMotykaBot.Modules
 			await ReplyAsync(StringConsts.UTRotationChange);
 
 			LoggingService.CustomCommandLog(Context.Message, ModuleName);
+		}
+
+		private BacklogEntry FormatStreamMondayEntryText(params string[] text)
+		{
+			var captions = string.Join(" ", text).Split(';').ToList();
+
+			return captions.Count switch
+			{
+				0 => new BacklogEntry(string.Empty, string.Empty),
+				1 => new BacklogEntry(captions[0], string.Empty),
+				_ => new BacklogEntry(captions[0], captions[1].Trim())
+			};
 		}
 	}
 }
