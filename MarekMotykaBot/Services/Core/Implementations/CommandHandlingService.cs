@@ -68,7 +68,7 @@ namespace MarekMotykaBot.Services.Core
 
 			var context = new SocketCommandContext(_discord, msg);
 
-			int argPos = 0;
+			var argPos = 0;
 			if (msg.HasStringPrefix(Configuration["prefix"], ref argPos) || msg.HasMentionPrefix(_discord.CurrentUser, ref argPos))
 			{
 				if (! await DeclineCommandAsync(context, msg.Content))
@@ -84,7 +84,17 @@ namespace MarekMotykaBot.Services.Core
 					}
 				}
 			}
+			else if (RegexChecker.IsWhatWord(msg.Content))
+			{
+				var randomInt = _rng.Next(1, 10);
+				// 20% chance
+				if (randomInt < 3)
+				{
+					await context.Channel.SendMessageAsync($"{StringConsts.ShitString}!");
+				}
+			}
 		}
+
 		public async Task<bool> DeclineCommandAsync(SocketCommandContext context, string messageContent)
 		{
 			string commandName = messageContent.Split(' ').FirstOrDefault();
