@@ -110,12 +110,13 @@ namespace MarekMotykaBot.Services.Core
 
 		public async Task QuoteOfTheDay()
 		{
-			var quotes = (await _serializer.LoadFromFileAsync<Quote>("quotes.json"))
-				.Where(x => x.Categories.Contains(QuoteCategory.Wisdom))
+			var allQuotes = await _serializer.LoadFromFileAsync<Quote>("quotes.json");
+			var availableQuotes = allQuotes
+				.Where(x => x.Categories.Contains(QuoteCategory.Wisdom) || x.Categories.Contains(QuoteCategory.Thought))
 				.ToList();
 
-			int randomQuoteIndex = _rng.Next(0, quotes.Count);
-			var selectedQuote = quotes[randomQuoteIndex];
+			var randomQuoteIndex = _rng.Next(0, availableQuotes.Count);
+			var selectedQuote = availableQuotes[randomQuoteIndex];
 
 			await _serializer.SaveToFileAsync("quoteOfTheDay.json", new List<Quote> { selectedQuote });
 
