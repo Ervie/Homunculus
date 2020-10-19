@@ -5,9 +5,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <StartupObject />
-    <Version>3.2.3</Version>
-    <AssemblyVersion>3.2.0.3</AssemblyVersion>
-    <FileVersion>3.2.0.3</FileVersion>
+    <Version>3.2.4</Version>
+    <AssemblyVersion>3.2.0.4</AssemblyVersion>
+    <FileVersion>3.2.0.4</FileVersion>
     <Description>Simple mimicking Discord bot written with .Net Core and Discord.Net.</Description>
     <PackageLicenseUrl>https://github.com/Ervie/Homunculus/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Ervie/Homunculus</PackageProjectUrl>
@@ -28,15 +28,15 @@
 
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="2.2.0" />
-    <PackageReference Include="Google.Apis" Version="1.45.0" />
-    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.45.0.1929" />
+    <PackageReference Include="Google.Apis" Version="1.49.0" />
+    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.49.0.2112" />
     <PackageReference Include="Imgur.API" Version="5.0.0-beta1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.4" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.4" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.4" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.9" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="NLog" Version="4.7.2" />
+    <PackageReference Include="NLog" Version="4.7.5" />
   </ItemGroup>
 
   <ItemGroup>

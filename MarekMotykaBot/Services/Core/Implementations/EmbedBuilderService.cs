@@ -16,7 +16,7 @@ namespace MarekMotykaBot.Services.Core.Implementations
 {
 	internal class EmbedBuilderService : IDiscordService, IEmbedBuilderService
 	{
-		private static readonly Color blueSidebarColor = new Color(114, 137, 218);
+		private static readonly Color BlueSidebarColor = new Color(114, 137, 218);
 		private readonly IJSONSerializerService _serializer;
 
 		public IConfiguration Configuration { get; set; }
@@ -40,7 +40,7 @@ namespace MarekMotykaBot.Services.Core.Implementations
 
 			var builder = new EmbedBuilder()
 			{
-				Color = blueSidebarColor,
+				Color = BlueSidebarColor,
 				Description = StringConsts.Backlog
 			};
 
@@ -67,7 +67,7 @@ namespace MarekMotykaBot.Services.Core.Implementations
 
 			var builder = new EmbedBuilder()
 			{
-				Color = blueSidebarColor,
+				Color = BlueSidebarColor,
 				Description = StringConsts.SwearWordCounterHeader
 			};
 
@@ -98,7 +98,7 @@ namespace MarekMotykaBot.Services.Core.Implementations
 		{
 			var builder = new EmbedBuilder()
 			{
-				Color = blueSidebarColor,
+				Color = BlueSidebarColor,
 			};
 
 			builder.WithFooter(quote.Author);
@@ -113,7 +113,7 @@ namespace MarekMotykaBot.Services.Core.Implementations
 
 			var builder = new EmbedBuilder()
 			{
-				Color = blueSidebarColor,
+				Color = BlueSidebarColor,
 				Description = StringConsts.About
 			};
 
@@ -138,7 +138,7 @@ namespace MarekMotykaBot.Services.Core.Implementations
 
 			var builder = new EmbedBuilder()
 			{
-				Color = blueSidebarColor,
+				Color = BlueSidebarColor,
 				Description = StringConsts.ListCommands
 			};
 
@@ -202,7 +202,7 @@ namespace MarekMotykaBot.Services.Core.Implementations
 		{
 			var builder = new EmbedBuilder()
 			{
-				Color = blueSidebarColor
+				Color = BlueSidebarColor
 			};
 
 			builder.WithImageUrl(charadeEntry.Series.ImageUrl);
@@ -265,7 +265,7 @@ namespace MarekMotykaBot.Services.Core.Implementations
 		{
 			var builder = new EmbedBuilder()
 			{
-				Color = blueSidebarColor
+				Color = BlueSidebarColor
 			};
 
 			if (maps is { } && maps.Any())
