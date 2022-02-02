@@ -347,4 +347,10 @@
   <data name="streamDayChanged" xml:space="preserve">
     <value>Zmieniono dzień streamu na "{0}".</value>
   </data>
+  <data name="lonkStole" xml:space="preserve">
+    <value>Sorry, ale Lonk wygryzł mnie z serwera</value>
+  </data>
+  <data name="drunk" xml:space="preserve">
+    <value>Sorry, ale przepijam hajsy z korpo</value>
+  </data>
 </root>

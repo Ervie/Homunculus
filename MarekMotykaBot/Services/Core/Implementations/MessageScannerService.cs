@@ -141,15 +141,15 @@ namespace MarekMotykaBot.Services.Core
 			if (message.MentionedUsers.Where(x => x.DiscordId().Equals("Marek Motyka#3254") || x.DiscordId().Equals("Erina#5946")).FirstOrDefault() != null ||
 				message.Tags.Any(x => x.Type.Equals(TagType.EveryoneMention) || x.Type.Equals(TagType.HereMention)))
 			{
-				DateTime today = DateTime.Now;
+				var today = DateTime.Now;
 
-				string response = (today.DayOfWeek, today.Hour) switch
+				var response = (today.DayOfWeek, today.Hour) switch
 				{
 					(DayOfWeek day, int hour) when ((day == DayOfWeek.Saturday || day == DayOfWeek.Sunday) && hour < 12) => StringConsts.Snoring,
-					(DayOfWeek day, int hour) when ((day == DayOfWeek.Saturday || day == DayOfWeek.Sunday)) => StringConsts.Wedding,
+					(DayOfWeek day, int hour) when ((day == DayOfWeek.Saturday || day == DayOfWeek.Sunday)) => StringConsts.Drunk,
 					(DayOfWeek day, int hour) when (hour < 9) => StringConsts.Snoring,
 					(DayOfWeek day, int hour) when (hour < 18) => StringConsts.Job,
-					_ => StringConsts.Quarantine
+					_ => StringConsts.LonkStole
 				};
 
 				await context.Channel.SendMessageAsync(response);
@@ -161,7 +161,7 @@ namespace MarekMotykaBot.Services.Core
 		/// </summary>
 		public async Task DetectWaifusAsync(SocketCommandContext context, SocketUserMessage message)
 		{
-			foreach (string waifuName in _waifuList)
+			foreach (var waifuName in _waifuList)
 			{
 				if (message.Content.ToLowerInvariant().Contains(waifuName.ToLowerInvariant()) && !message.Author.IsBot)
 				{

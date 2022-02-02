@@ -593,5 +593,21 @@
 				return StringResources.ResourceManager.GetString("streamDayChanged");
 			}
 		}
+		
+		public static string LonkStole
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("lonkStole");
+			}
+		}
+		
+		public static string Drunk
+		{
+			get
+			{
+				return StringResources.ResourceManager.GetString("drunk");
+			}
+		}
 	}
 }
