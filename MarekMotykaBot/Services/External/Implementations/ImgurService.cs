@@ -1,11 +1,11 @@
-﻿using Imgur.API.Authentication;
-using Imgur.API.Authentication.Impl;
-using Imgur.API.Endpoints.Impl;
-using MarekMotykaBot.Services.External.Interfaces;
+﻿using MarekMotykaBot.Services.External.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Imgur.API.Authentication;
+using Imgur.API.Authentication.Impl;
+using Imgur.API.Endpoints.Impl;
 
 namespace MarekMotykaBot.Services.External
 {
