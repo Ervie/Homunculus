@@ -5,7 +5,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <StartupObject />
-    <Version>3.2.4</Version>
+    <Version>3.3.0</Version>
     <AssemblyVersion>3.3.0.0</AssemblyVersion>
     <FileVersion>3.3.0.0</FileVersion>
     <Description>Simple mimicking Discord bot written with .Net Core and Discord.Net.</Description>
