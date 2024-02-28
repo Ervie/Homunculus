@@ -16,11 +16,8 @@ namespace MarekMotykaBot
 {
     public class Program
     {
-        public static void Main(string[] args)
-            => new Program()
-			.StartAsync()
-			.GetAwaiter()
-			.GetResult();
+        public static async Task Main(string[] args)
+            => await new Program().StartAsync();
         
         private IConfiguration _config;
 
@@ -49,6 +46,7 @@ namespace MarekMotykaBot
 				.AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
 				{
 					LogLevel = LogSeverity.Verbose,
+					GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent,
 					MessageCacheSize = 1000
 				}))
 				.AddSingleton(new CommandService(new CommandServiceConfig

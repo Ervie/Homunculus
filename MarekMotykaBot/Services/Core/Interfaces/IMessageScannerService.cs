@@ -11,8 +11,8 @@ namespace MarekMotykaBot.Services.Core.Interfaces
 
 		Task ScanUpdateMessageAsync(Cacheable<IMessage, ulong> oldMessage, SocketMessage s, ISocketMessageChannel channel);
 
-		Task ScanDeletedMessageAsync(Cacheable<IMessage, ulong> deletedMessage, ISocketMessageChannel channel);
-
+		Task ScanDeletedMessageAsync(Cacheable<IMessage, ulong> deletedMessage, Cacheable<IMessageChannel, ulong> channel);
+		
 		Task DetectMentionsAsync(SocketCommandContext context, SocketUserMessage message);
 
 		Task DetectWaifusAsync(SocketCommandContext context, SocketUserMessage message);

@@ -61,7 +61,7 @@ namespace MarekMotykaBot.Services.Core
 				return;
 			}
 
-			if (msg.Author == _discord.CurrentUser)
+			if (msg.Author.Id == _discord.CurrentUser.Id)
 			{
 				return;
 			}

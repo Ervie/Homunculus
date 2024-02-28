@@ -92,10 +92,9 @@ namespace MarekMotykaBot.Services.Core
 			_logger.CustomEditLog(message, oldMessage.Value);
 		}
 
-		public async Task ScanDeletedMessageAsync(Cacheable<IMessage, ulong> deletedMessage, ISocketMessageChannel channel)
-		{
-			_logger.CustomDeleteLog(deletedMessage.Value);
-		}
+		public async Task ScanDeletedMessageAsync(Cacheable<IMessage, ulong> deletedMessage, Cacheable<IMessageChannel, ulong> channel)
+			=> await Task.Run(() => _logger.CustomDeleteLog(deletedMessage.Value));
+		
 
 		/// <summary>
 		/// Add reaction if trigger word is detected in message.
