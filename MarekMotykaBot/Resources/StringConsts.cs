@@ -530,22 +530,6 @@
 			}
 		}
 
-		public static string HelionUser
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("helionUser");
-			}
-		}
-
-		public static string HelionPassword
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("helionPassword");
-			}
-		}
-
 		public static string UTRotationChange
 		{
 			get

@@ -316,22 +316,6 @@ namespace MarekMotykaBot.Modules
 			LoggingService.CustomCommandLog(Context.Message, ModuleName, string.Join(' ', category));
 		}
 
-		[Command("blueribbon"), Summary("Passes for hidden gift")]
-		public async Task UnityAsync()
-		{
-			if (!Context.User.DiscordId().Equals(lonkDiscordId))
-			{
-				await Context.Channel.SendMessageAsync(string.Format(StringConsts.SecretGiftDeny, "Lonka!"));
-			}
-			else
-			{
-				await Context.Channel.SendMessageAsync($"{StringConsts.HelionUser} {_configuration["credentials:helionUser"]}");
-				await Context.Channel.SendMessageAsync($"{StringConsts.HelionPassword} {_configuration["credentials:helionPassword"]}");
-			}
-
-			LoggingService.CustomCommandLog(Context.Message, ModuleName);
-		}
-
 		[Command("lastContact"), Alias("lc", "lastMessage", "lm"), Summary("Last message by Marek")]
 		public async Task LastContactAsync()
 		{
