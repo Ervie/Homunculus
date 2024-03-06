@@ -36,7 +36,7 @@ namespace MarekMotykaBot.Services.Core
 			IJSONSerializerService serializer,
 			IConfiguration configuration,
 			ILoggingService logger
-			)
+		)
 		{
 			_client = client;
 			_serializer = serializer;
@@ -137,7 +137,7 @@ namespace MarekMotykaBot.Services.Core
 
 		public async Task DetectMentionsAsync(SocketCommandContext context, SocketUserMessage message)
 		{
-			if (message.MentionedUsers.Where(x => x.DiscordId().Equals("Marek Motyka#3254") || x.DiscordId().Equals("Erina#5946")).FirstOrDefault() != null ||
+			if (message.MentionedUsers.Where(x => x.Username.Equals("Marek Motyka#3254") || x.Username.Equals("erina5946")).FirstOrDefault() != null ||
 				message.Tags.Any(x => x.Type.Equals(TagType.EveryoneMention) || x.Type.Equals(TagType.HereMention)))
 			{
 				var today = DateTime.Now;
@@ -180,44 +180,46 @@ namespace MarekMotykaBot.Services.Core
 		/// </summary>
 		public async Task DetectSwearWordAsync(SocketCommandContext context, SocketUserMessage message)
 		{
-			string compressedText = message.Content.RemoveRepeatingChars();
+			var compressedText = message.Content.RemoveRepeatingChars();
 			compressedText = new string(compressedText.Where(c => !char.IsWhiteSpace(c)).ToArray());
 			compressedText = compressedText.ToLowerInvariant();
 
 			foreach (string swearWord in _swearWordList)
 			{
-				if (compressedText.Contains(swearWord.ToLowerInvariant()) && !message.Author.IsBot)
+				if (!compressedText.Contains(swearWord.ToLowerInvariant()) || message.Author.IsBot)
 				{
-					var counterList = await _serializer.LoadFromFileAsync<WordCounterEntry>("wordCounter.json");
+					continue;
+				}
 
-					string messageText = message.Content.ToLowerInvariant();
-					string username = context.User.DiscordId();
+				var counterList = await _serializer.LoadFromFileAsync<WordCounterEntry>("wordCounter.json");
 
-					while (messageText.Contains(swearWord))
+				var messageText = message.Content.ToLowerInvariant();
+				var username = context.User.DiscordId();
+
+				while (messageText.Contains(swearWord))
+				{
+					if (counterList.Exists(x => x.DiscordUsername.Equals(username) && x.Word.Equals(swearWord)))
 					{
-						if (counterList.Exists(x => x.DiscordUsername.Equals(username) && x.Word.Equals(swearWord)))
-						{
-							counterList.Find(x => x.DiscordUsername.Equals(username) && x.Word.Equals(swearWord)).CounterValue++;
-						}
-						else
-						{
-							counterList.Add(new WordCounterEntry(username, context.User.Username, swearWord, 1));
-						}
-
-						int firstSubstringIndex = messageText.IndexOf(swearWord);
-						messageText = (firstSubstringIndex < 0)
-										? messageText
-										: messageText.Remove(firstSubstringIndex, swearWord.Length);
+						counterList.Find(x => x.DiscordUsername.Equals(username) && x.Word.Equals(swearWord)).CounterValue++;
+					}
+					else
+					{
+						counterList.Add(new WordCounterEntry(username, context.User.Username, swearWord, 1));
 					}
 
-					await _serializer.SaveToFileAsync("wordCounter.json", counterList);
+					int firstSubstringIndex = messageText.IndexOf(swearWord);
+					messageText = (firstSubstringIndex < 0)
+						? messageText
+						: messageText.Remove(firstSubstringIndex, swearWord.Length);
 				}
+
+				await _serializer.SaveToFileAsync("wordCounter.json", counterList);
 			}
 		}
 
 		public async Task DetectMarekMessageAsync(SocketUserMessage message)
 		{
-			if (message.Author.DiscordId().Equals("Erina#5946"))
+			if (message.Author.Username.Equals("erina5946"))
 			{
 				var lastMessage = await _serializer.LoadSingleFromFileAsync<LastMarekMessage>("marekLastMessage.json");
 

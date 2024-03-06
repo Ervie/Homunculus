@@ -97,8 +97,8 @@ namespace MarekMotykaBot.Services.Core
 
 		public async Task<bool> DeclineCommandAsync(SocketCommandContext context, string messageContent)
 		{
-			string commandName = messageContent.Split(' ').FirstOrDefault();
-			bool commandDeclined = false;
+			var commandName = messageContent.Split(' ').FirstOrDefault();
+			var commandDeclined = false;
 
 			if (!string.IsNullOrWhiteSpace(commandName))
 			{
@@ -112,13 +112,13 @@ namespace MarekMotykaBot.Services.Core
 				int randomInt = _rng.Next(1, 100);
 
 				// bad luck, you suck
-				if (randomInt < 6)
+				if (randomInt < 4)
 				{
 					commandDeclined = true;
 					await AddDeclineCacheAsync(context.User.DiscordId(), commandName);
 					await context.Channel.SendMessageAsync(meanResponse);
 				}
-				else if (randomInt == 6)
+				else if (randomInt == 4)
 				{
 					commandDeclined = true;
 					await context.Channel.SendMessageAsync(StringConsts.PreemptiveAttack);
@@ -147,7 +147,7 @@ namespace MarekMotykaBot.Services.Core
 
 			if (declineCache.Any() && declineCache.FirstOrDefault(x => x.DiscordUsername == context.User.DiscordId() && x.CommandName == commandName) != null)
 			{
-				string meanerResponse = string.Format(StringConsts.ToldYou, context.User.Username, commandName);
+				var meanerResponse = string.Format(StringConsts.ToldYou, context.User.Username, commandName);
 				await context.Channel.SendMessageAsync(meanerResponse);
 				return true;
 			}

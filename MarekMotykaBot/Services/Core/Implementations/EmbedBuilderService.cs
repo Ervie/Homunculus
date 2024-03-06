@@ -109,7 +109,7 @@ namespace MarekMotykaBot.Services.Core.Implementations
 
 		public Embed BuildAbout()
 		{
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 
 			var builder = new EmbedBuilder()
 			{
@@ -132,7 +132,7 @@ namespace MarekMotykaBot.Services.Core.Implementations
 
 		public async Task<Embed> BuildCommandListAsync(IEnumerable<ModuleInfo> moduleInfos, SocketCommandContext commandContext)
 		{
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 
 			string prefix = Configuration["prefix"];
 
