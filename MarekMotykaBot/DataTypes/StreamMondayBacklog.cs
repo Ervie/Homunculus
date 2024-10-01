@@ -6,6 +6,8 @@ namespace MarekMotykaBot.DataTypes
 	internal class StreamMondayBacklog
 	{
 		public DayOfWeek DayOfTheStream { get; set; }
+		
+		public int HourOfTheStream { get; set; }
 
 		public ICollection<BacklogEntry> BacklogEntries { get; set; }
 	}

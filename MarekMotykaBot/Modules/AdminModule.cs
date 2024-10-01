@@ -100,6 +100,10 @@ namespace MarekMotykaBot.Modules
 				_timerService.ChangeStreamDay(newDayOfWeek, newHour);
 				var schedule = await _serializer.LoadSingleFromFileAsync<StreamMondayBacklog>("streamMonday.json");
 				schedule.DayOfTheStream = newDayOfWeek;
+				if (newHour.HasValue)
+				{
+					schedule.HourOfTheStream = newHour.Value;
+				}
 				await _serializer.SaveSingleToFileAsync("streamMonday.json", schedule);
 
 				await ReplyAsync(string.Format(StringConsts.StreamDayChanged, newDayOfWeek));

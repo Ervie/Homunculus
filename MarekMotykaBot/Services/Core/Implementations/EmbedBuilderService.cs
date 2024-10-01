@@ -35,8 +35,8 @@ namespace MarekMotykaBot.Services.Core.Implementations
 			var schedule = await _serializer.LoadSingleFromFileAsync<StreamMondayBacklog>("streamMonday.json");
 
 			DateTime today = DateTime.Today;
-			int daysUntilWednesday = ((int)schedule.DayOfTheStream - (int)today.DayOfWeek + 7) % 7;
-			DateTime nextWednesday = today.AddDays(daysUntilWednesday);
+			int daysUntilStreamDay = ((int)schedule.DayOfTheStream - (int)today.DayOfWeek + 7) % 7;
+			DateTime nexStreamDay = today.AddDays(daysUntilStreamDay);
 
 			var builder = new EmbedBuilder()
 			{
@@ -50,7 +50,7 @@ namespace MarekMotykaBot.Services.Core.Implementations
 
 				builder.AddField(x =>
 				{
-					x.Name = nextWednesday.ToString("dd.MM");
+					x.Name = $"{nexStreamDay.ToString("dd.MM")} ({schedule.HourOfTheStream}:00)";
 					x.Value = string.Join(Environment.NewLine, formattedEntries.ToArray());
 					x.IsInline = false;
 				});
