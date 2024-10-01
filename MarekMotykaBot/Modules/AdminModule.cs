@@ -6,8 +6,8 @@ using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services.Core.Interfaces;
 using MarekMotykaBot.Services.External.Interfaces;
 using System;
+using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace MarekMotykaBot.Modules
@@ -93,10 +93,11 @@ namespace MarekMotykaBot.Modules
 		public async Task ChangeStreamDay(params string[] text)
 		{
 			Enum.TryParse(text.FirstOrDefault(), out DayOfWeek newDayOfWeek);
-
+			int? newHour = int.TryParse(text.LastOrDefault(), out int result) ? result : (int?)null;
+	
 			if (newDayOfWeek is { })
 			{
-				_timerService.ChangeStreamDay(newDayOfWeek);
+				_timerService.ChangeStreamDay(newDayOfWeek, newHour);
 				var schedule = await _serializer.LoadSingleFromFileAsync<StreamMondayBacklog>("streamMonday.json");
 				schedule.DayOfTheStream = newDayOfWeek;
 				await _serializer.SaveSingleToFileAsync("streamMonday.json", schedule);

@@ -142,7 +142,7 @@ namespace MarekMotykaBot.Services.Core
 					ExcludeMaps = true
 				});
 
-		public void ChangeStreamDay(DayOfWeek dayOfWeek)
+		public void ChangeStreamDay(DayOfWeek dayOfWeek, int? hour)
 		{
 			var streamMondayTasks = TimedTasks.Where(x => x.Name.StartsWith("StreamMondaySchedule"));
 
@@ -150,6 +150,14 @@ namespace MarekMotykaBot.Services.Core
 			{
 				streamTask.DaysOfWeek.Clear();
 				streamTask.DaysOfWeek.Add(dayOfWeek);
+
+				if (hour.HasValue)
+				{
+					var newReminderHour = streamTask.Name.EndsWith("WithMention") ? hour.Value - 1 : hour.Value - 4;
+
+					streamTask.Hours.Clear();
+					streamTask.Hours.Add(newReminderHour);
+				}
 			}
 		}
 	}
