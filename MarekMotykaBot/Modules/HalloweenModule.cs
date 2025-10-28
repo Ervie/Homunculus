@@ -29,7 +29,7 @@ namespace MarekMotykaBot.Modules
 		[Command("Skeleton"), Alias("sk", "skmeme"), Summary("Skeleton meme")]
 		public async Task OldMemeAsync()
 		{
-			string gifUrl = await _imgur.GetRandomImageFromAlbum("HuEZ2QX");
+			string gifUrl = await _imgur.GetRandomImageFromGallery("LTDVyEv");
 
 			await ReplyAsync(gifUrl);
 
