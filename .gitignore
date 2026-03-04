@@ -287,6 +287,10 @@ __pycache__/
 *.odx.cs
 *.xsd.cs
 
+# macOS metadata
+.DS_Store
+**/._*
+
 # config
 
 configuration.json
