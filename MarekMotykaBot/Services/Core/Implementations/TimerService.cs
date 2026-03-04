@@ -1,4 +1,4 @@
-﻿using Discord;
+using Discord;
 using Discord.WebSocket;
 using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.DataTypes.Enumerations;
@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -19,6 +20,7 @@ namespace MarekMotykaBot.Services.Core
 		private readonly IJSONSerializerService _serializer;
 		private readonly IEmbedBuilderService _embedBuilderService;
 		private readonly IUnrealTournamentService _unrealTournamentService;
+		private readonly INyaaService _nyaaService;
 		private readonly DiscordSocketClient _client;
 		private readonly Random _rng;
 		private readonly Timer _timer;
@@ -35,6 +37,7 @@ namespace MarekMotykaBot.Services.Core
 			IJSONSerializerService serializer,
 			IEmbedBuilderService statisticsService,
 			IUnrealTournamentService unrealTournamentService,
+			INyaaService nyaaService,
 			DiscordSocketClient client,
 			Random rng
 		)
@@ -44,6 +47,7 @@ namespace MarekMotykaBot.Services.Core
 			_client = client;
 			_embedBuilderService = statisticsService;
 			_unrealTournamentService = unrealTournamentService;
+			_nyaaService = nyaaService;
 			_rng = rng;
 
 			_destinationServerId = (ulong)long.Parse(Configuration["tokens:destinationServerId"]);
@@ -142,6 +146,139 @@ namespace MarekMotykaBot.Services.Core
 					ExcludeMaps = true
 				});
 
+		public async Task NyaaWeeklySearch()
+		{
+			var trackedEntries = await _serializer.LoadFromFileAsync<NyaaBacklogEntry>("nyaaBacklog.json") ?? new List<NyaaBacklogEntry>();
+			if (trackedEntries.Count == 0)
+				return;
+
+			var streamMonday = await _serializer.LoadSingleFromFileAsync<StreamMondayBacklog>("streamMonday.json");
+			if (streamMonday.BacklogEntries == null)
+				streamMonday.BacklogEntries = new List<BacklogEntry>();
+
+			foreach (var entry in trackedEntries)
+			{
+				var phrase = entry.SearchPhrase;
+				if (string.IsNullOrWhiteSpace(phrase))
+					continue;
+
+				string lastKnownTitle = entry.LastKnownTitle;
+
+				try
+				{
+					var newResults = await _nyaaService
+						.GetNewTorrentDownloadsSinceAsync(phrase, lastKnownTitle, 20)
+						.ConfigureAwait(false);
+
+					if (newResults == null || newResults.Count == 0)
+					{
+						continue;
+					}
+
+					// Add new episodes to StreamMonday backlog (oldest first for natural ordering)
+					foreach (var result in newResults.Reverse())
+					{
+						string suffix = GetEpisodeSuffixFromTitle(result.Title);
+						string episodeName;
+
+						if (!string.IsNullOrWhiteSpace(entry.DisplayName) && !string.IsNullOrWhiteSpace(suffix))
+						{
+							episodeName = $"{entry.DisplayName} {suffix}";
+						}
+						else if (!string.IsNullOrWhiteSpace(entry.DisplayName))
+						{
+							episodeName = entry.DisplayName;
+						}
+						else
+						{
+							episodeName = GetEpisodeNameFromTitle(result.Title) ?? result.Title;
+						}
+
+						if (!streamMonday.BacklogEntries.Any(x => x.Name == episodeName))
+						{
+							streamMonday.BacklogEntries.Add(new BacklogEntry(episodeName, result.TorrentUrl));
+						}
+					}
+
+					// Update entry with most recent result
+					var newest = newResults[0];
+					entry.LastKnownTitle = newest.Title;
+					entry.LastUpdated = DateTime.UtcNow;
+				}
+				catch
+				{
+					// Skip failed phrase and continue with the rest
+				}
+
+				await Task.Delay(500).ConfigureAwait(false);
+			}
+
+			await _serializer.SaveSingleToFileAsync("streamMonday.json", streamMonday).ConfigureAwait(false);
+			await _serializer.SaveToFileAsync("nyaaBacklog.json", trackedEntries).ConfigureAwait(false);
+		}
+
+		private static string GetEpisodeNameFromTitle(string title)
+		{
+			if (string.IsNullOrWhiteSpace(title))
+			{
+				return title;
+			}
+
+			// Strip leading group tags like [ASW]
+			string cleaned = Regex.Replace(title, @"^\[[^\]]+\]\s*", string.Empty).Trim();
+
+			// Extract the main name and episode number: "Show Name S2 - 03 ..." or "Show Name - 21 ..."
+			var match = Regex.Match(cleaned, @"^(?<name>.+?)\s*(?<season>S\d+)?\s*-\s*(?<ep>\d{1,3})\b");
+			if (!match.Success)
+			{
+				return null;
+			}
+
+			string name = match.Groups["name"].Value.Trim();
+			string seasonGroup = match.Groups["season"].Success ? match.Groups["season"].Value.TrimStart('S', 's') : null;
+			string episodeNumber = match.Groups["ep"].Value.TrimStart('0');
+			if (string.IsNullOrEmpty(episodeNumber))
+			{
+				episodeNumber = match.Groups["ep"].Value; // keep original if all zeros
+			}
+
+			if (!string.IsNullOrEmpty(seasonGroup))
+			{
+				return $"{name} s{seasonGroup}ep{episodeNumber}";
+			}
+
+			return $"{name} ep{episodeNumber}";
+		}
+
+		private static string GetEpisodeSuffixFromTitle(string title)
+		{
+			if (string.IsNullOrWhiteSpace(title))
+			{
+				return null;
+			}
+
+			string cleaned = Regex.Replace(title, @"^\[[^\]]+\]\s*", string.Empty).Trim();
+			var match = Regex.Match(cleaned, @"^(?<name>.+?)\s*(?<season>S\d+)?\s*-\s*(?<ep>\d{1,3})\b");
+			if (!match.Success)
+			{
+				return null;
+			}
+
+			string seasonGroup = match.Groups["season"].Success ? match.Groups["season"].Value.TrimStart('S', 's') : null;
+			string episodeNumber = match.Groups["ep"].Value.TrimStart('0');
+			if (string.IsNullOrEmpty(episodeNumber))
+			{
+				episodeNumber = match.Groups["ep"].Value;
+			}
+
+			if (!string.IsNullOrEmpty(seasonGroup))
+			{
+				return $"s{seasonGroup}ep{episodeNumber}";
+			}
+
+			return $"ep{episodeNumber}";
+		}
+
 		public void ChangeStreamDay(DayOfWeek dayOfWeek, int? hour)
 		{
 			var streamMondayTasks = TimedTasks.Where(x => x.Name.StartsWith("StreamMondaySchedule"));
@@ -157,6 +294,22 @@ namespace MarekMotykaBot.Services.Core
 
 					streamTask.Hours.Clear();
 					streamTask.Hours.Add(newReminderHour);
+				}
+			}
+
+			// Keep Nyaa weekly search in sync: it should run 1 hour before StreamMondayScheduleWithMention
+			var nyaaTasks = TimedTasks.Where(x => x.Name == nameof(NyaaWeeklySearch));
+			foreach (var nyaaTask in nyaaTasks)
+			{
+				nyaaTask.DaysOfWeek.Clear();
+				nyaaTask.DaysOfWeek.Add(dayOfWeek);
+
+				if (hour.HasValue)
+				{
+					var nyaaHour = hour.Value - 5;
+
+					nyaaTask.Hours.Clear();
+					nyaaTask.Hours.Add(nyaaHour);
 				}
 			}
 		}

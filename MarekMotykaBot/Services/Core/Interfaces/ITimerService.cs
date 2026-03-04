@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace MarekMotykaBot.Services.Core.Interfaces
@@ -10,5 +11,7 @@ namespace MarekMotykaBot.Services.Core.Interfaces
 		void TimerTick(object src, ElapsedEventArgs e);
 
 		void ChangeStreamDay(DayOfWeek dayOfWeek, int? hour = null);
+
+		Task NyaaWeeklySearch();
 	}
 }

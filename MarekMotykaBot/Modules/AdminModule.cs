@@ -1,4 +1,4 @@
-﻿using Discord;
+using Discord;
 using Discord.Commands;
 using MarekMotykaBot.DataTypes;
 using MarekMotykaBot.Modules.Interface;
@@ -6,6 +6,7 @@ using MarekMotykaBot.Resources;
 using MarekMotykaBot.Services.Core.Interfaces;
 using MarekMotykaBot.Services.External.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -123,6 +124,94 @@ namespace MarekMotykaBot.Modules
 
 			await ReplyAsync(StringConsts.UTRotationChange);
 
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
+		}
+
+		[Command("addNyaaPhrase"), Alias("nyaap"), Summary("Add tracked Nyaa.si entry: \"Display name; search phrase\""), RequireUserPermission(GuildPermission.Administrator)]
+		public async Task AddNyaaPhraseAsync(params string[] text)
+		{
+			string input = string.Join(" ", text).Trim();
+			if (string.IsNullOrWhiteSpace(input))
+			{
+				return;
+			}
+
+			var parts = input.Split(';')
+				.Select(p => p.Trim())
+				.Where(p => !string.IsNullOrWhiteSpace(p))
+				.ToList();
+
+			if (parts.Count < 2)
+			{
+				await ReplyAsync("Please use format: `Display name; search phrase`.");
+				return;
+			}
+
+			string displayName = parts[0];
+			string searchPhrase = parts[1];
+
+			var backlog = await _serializer.LoadFromFileAsync<NyaaBacklogEntry>("nyaaBacklog.json") ?? new List<NyaaBacklogEntry>();
+
+			if (!backlog.Any(x => string.Equals(x.SearchPhrase, searchPhrase, StringComparison.OrdinalIgnoreCase)))
+			{
+				backlog.Add(new NyaaBacklogEntry
+				{
+					DisplayName = displayName,
+					SearchPhrase = searchPhrase
+				});
+
+				await _serializer.SaveToFileAsync("nyaaBacklog.json", backlog);
+				await ReplyAsync(string.Format(StringConsts.Added, $"{displayName} ({searchPhrase})"));
+			}
+
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, input);
+		}
+
+		[Command("removeNyaaPhrase"), Alias("nyaar"), Summary("Remove tracked Nyaa.si entry by search phrase"), RequireUserPermission(GuildPermission.Administrator)]
+		public async Task RemoveNyaaPhraseAsync(params string[] text)
+		{
+			string phrase = string.Join(" ", text).Trim();
+			var backlog = await _serializer.LoadFromFileAsync<NyaaBacklogEntry>("nyaaBacklog.json") ?? new List<NyaaBacklogEntry>();
+			if (backlog.Count == 0)
+			{
+				return;
+			}
+
+			var toRemove = backlog.FirstOrDefault(x => string.Equals(x.SearchPhrase, phrase, StringComparison.OrdinalIgnoreCase));
+			if (toRemove != null)
+			{
+				backlog.Remove(toRemove);
+				await _serializer.SaveToFileAsync("nyaaBacklog.json", backlog);
+				await ReplyAsync(string.Format(StringConsts.Removed, phrase));
+			}
+
+			LoggingService.CustomCommandLog(Context.Message, ModuleName, phrase);
+		}
+
+		[Command("listNyaaPhrases"), Alias("nyaal"), Summary("List tracked Nyaa.si entries"), RequireUserPermission(GuildPermission.Administrator)]
+		public async Task ListNyaaPhrasesAsync()
+		{
+			var backlog = await _serializer.LoadFromFileAsync<NyaaBacklogEntry>("nyaaBacklog.json") ?? new List<NyaaBacklogEntry>();
+			if (backlog.Count == 0)
+			{
+				await ReplyAsync("No Nyaa entries configured.");
+				LoggingService.CustomCommandLog(Context.Message, ModuleName);
+				return;
+			}
+
+			var lines = backlog
+				.Select((e, i) =>
+					$"{i + 1}. {e.DisplayName} | `{e.SearchPhrase}` | last updated: {(e.LastUpdated.HasValue ? e.LastUpdated.Value.ToString("u") : "never")}");
+
+			await ReplyAsync("**Tracked Nyaa entries:**\n" + string.Join("\n", lines));
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
+		}
+
+		[Command("runNyaaWeeklySearch"), Alias("nyaaw"), Summary("Run Nyaa.si weekly search now"), RequireUserPermission(GuildPermission.Administrator)]
+		public async Task RunNyaaWeeklySearchAsync()
+		{
+			await _timerService.NyaaWeeklySearch();
+			await ReplyAsync("Nyaa weekly search executed.");
 			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 
