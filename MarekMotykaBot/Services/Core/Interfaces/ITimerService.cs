@@ -10,7 +10,7 @@ namespace MarekMotykaBot.Services.Core.Interfaces
 
 		void TimerTick(object src, ElapsedEventArgs e);
 
-		void ChangeStreamDay(DayOfWeek dayOfWeek, int? hour = null);
+		Task ChangeStreamDayAsync(DayOfWeek dayOfWeek, int? hour = null);
 
 		Task NyaaWeeklySearch();
 	}

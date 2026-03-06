@@ -279,7 +279,7 @@ namespace MarekMotykaBot.Services.Core
 			return $"ep{episodeNumber}";
 		}
 
-		public void ChangeStreamDay(DayOfWeek dayOfWeek, int? hour)
+		public async Task ChangeStreamDayAsync(DayOfWeek dayOfWeek, int? hour)
 		{
 			var streamMondayTasks = TimedTasks.Where(x => x.Name.StartsWith("StreamMondaySchedule"));
 
@@ -312,6 +312,8 @@ namespace MarekMotykaBot.Services.Core
 					nyaaTask.Hours.Add(nyaaHour);
 				}
 			}
+			
+			await _serializer.SaveToFileAsync<TimedTask>("timedTasks.json", TimedTasks.ToList());
 		}
 	}
 }

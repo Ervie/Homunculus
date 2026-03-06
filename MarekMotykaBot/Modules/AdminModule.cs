@@ -7,7 +7,6 @@ using MarekMotykaBot.Services.Core.Interfaces;
 using MarekMotykaBot.Services.External.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -98,7 +97,8 @@ namespace MarekMotykaBot.Modules
 	
 			if (newDayOfWeek is { })
 			{
-				_timerService.ChangeStreamDay(newDayOfWeek, newHour);
+				await _timerService.ChangeStreamDayAsync(newDayOfWeek, newHour);
+				
 				var schedule = await _serializer.LoadSingleFromFileAsync<StreamMondayBacklog>("streamMonday.json");
 				schedule.DayOfTheStream = newDayOfWeek;
 				if (newHour.HasValue)
@@ -106,7 +106,7 @@ namespace MarekMotykaBot.Modules
 					schedule.HourOfTheStream = newHour.Value;
 				}
 				await _serializer.SaveSingleToFileAsync("streamMonday.json", schedule);
-
+				
 				await ReplyAsync(string.Format(StringConsts.StreamDayChanged, newDayOfWeek));
 			}
 
