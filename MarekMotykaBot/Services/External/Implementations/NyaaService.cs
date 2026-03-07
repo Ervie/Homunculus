@@ -44,12 +44,12 @@ namespace MarekMotykaBot.Services.External
 
 			try
 			{
-				var allResults = await GetSearchResultsAsync(searchPhrase, lastKnownTitle, maxResults).ConfigureAwait(false);
+				var allResults = await GetSearchResultsAsync(searchPhrase, lastKnownTitle, maxResults);
 				var list = new List<(string Title, string TorrentUrl)>();
 
 				foreach (var (viewPath, title) in allResults)
 				{
-					string torrentUrl = await GetTorrentDownloadUrlFromViewPageAsync(viewPath).ConfigureAwait(false);
+					string torrentUrl = await GetTorrentDownloadUrlFromViewPageAsync(viewPath);
 					if (string.IsNullOrEmpty(torrentUrl))
 					{
 						continue;
@@ -121,9 +121,9 @@ namespace MarekMotykaBot.Services.External
 			string query = Uri.EscapeDataString(searchPhrase);
 			string url = NyaaBaseUrl + SearchPath + query;
 
-			using var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
+			using var response = await _httpClient.GetAsync(url);
 			response.EnsureSuccessStatusCode();
-			string html = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+			string html = await response.Content.ReadAsStringAsync();
 
 			var doc = new HtmlDocument();
 			doc.LoadHtml(html);
@@ -141,7 +141,7 @@ namespace MarekMotykaBot.Services.External
 			foreach (var a in links)
 			{
 				string href = a.GetAttributeValue("href", null);
-				if (string.IsNullOrEmpty(href))
+				if (string.IsNullOrEmpty(href) || href.Contains("#comments"))
 				{
 					continue;
 				}
@@ -153,6 +153,7 @@ namespace MarekMotykaBot.Services.External
 				}
 
 				string path = href.Substring(href.IndexOf("/view/", StringComparison.Ordinal));
+					
 				int queryStart = path.IndexOf('?');
 				if (queryStart > 0)
 				{
@@ -176,11 +177,6 @@ namespace MarekMotykaBot.Services.External
 				}
 
 				results.Add((path, title));
-
-				if (!hasLastTitle && results.Count >= 1)
-				{
-					break;
-				}
 
 				if (results.Count >= maxResults)
 				{

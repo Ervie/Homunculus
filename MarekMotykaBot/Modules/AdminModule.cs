@@ -149,6 +149,12 @@ namespace MarekMotykaBot.Modules
 
 			string displayName = parts[0];
 			string searchPhrase = parts[1];
+			string lastKnownTitle = null;
+			
+			if (parts.Count > 2)
+			{
+				lastKnownTitle = parts[2];
+			}
 
 			var backlog = await _serializer.LoadFromFileAsync<NyaaBacklogEntry>("nyaaBacklog.json") ?? new List<NyaaBacklogEntry>();
 
@@ -157,7 +163,8 @@ namespace MarekMotykaBot.Modules
 				backlog.Add(new NyaaBacklogEntry
 				{
 					DisplayName = displayName,
-					SearchPhrase = searchPhrase
+					SearchPhrase = searchPhrase,
+					LastKnownTitle = lastKnownTitle
 				});
 
 				await _serializer.SaveToFileAsync("nyaaBacklog.json", backlog);
@@ -177,7 +184,10 @@ namespace MarekMotykaBot.Modules
 				return;
 			}
 
-			var toRemove = backlog.FirstOrDefault(x => string.Equals(x.SearchPhrase, phrase, StringComparison.OrdinalIgnoreCase));
+			var toRemove = backlog.FirstOrDefault(x 
+				=> string.Equals(x.SearchPhrase, phrase, StringComparison.OrdinalIgnoreCase)
+				|| string.Equals(x.DisplayName, phrase, StringComparison.OrdinalIgnoreCase));
+			
 			if (toRemove != null)
 			{
 				backlog.Remove(toRemove);

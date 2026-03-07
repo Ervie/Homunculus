@@ -150,25 +150,30 @@ namespace MarekMotykaBot.Services.Core
 		{
 			var trackedEntries = await _serializer.LoadFromFileAsync<NyaaBacklogEntry>("nyaaBacklog.json") ?? new List<NyaaBacklogEntry>();
 			if (trackedEntries.Count == 0)
+			{
 				return;
-
+			}
+			
 			var streamMonday = await _serializer.LoadSingleFromFileAsync<StreamMondayBacklog>("streamMonday.json");
 			if (streamMonday.BacklogEntries == null)
+			{
 				streamMonday.BacklogEntries = new List<BacklogEntry>();
+			}
 
 			foreach (var entry in trackedEntries)
 			{
 				var phrase = entry.SearchPhrase;
 				if (string.IsNullOrWhiteSpace(phrase))
+				{
 					continue;
+				}
 
 				string lastKnownTitle = entry.LastKnownTitle;
 
 				try
 				{
 					var newResults = await _nyaaService
-						.GetNewTorrentDownloadsSinceAsync(phrase, lastKnownTitle, 20)
-						.ConfigureAwait(false);
+						.GetNewTorrentDownloadsSinceAsync(phrase, lastKnownTitle, 20);
 
 					if (newResults == null || newResults.Count == 0)
 					{
