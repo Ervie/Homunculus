@@ -1,0 +1,5 @@
+<Solution FileFormatVersion="12.00" MinimumVisualStudioVersion="17.0" Version="1.0">
+  <Project Path="MarekMotykaBot\MarekMotykaBot.csproj" />
+  <Project Path="ImfFlipAPI.APISource.Core\ImfFlipAPI.APISource.Core.csproj" />
+  <Project Path="MarekMotykaBot.Tests\MarekMotykaBot.Tests.csproj" />
+</Solution>
