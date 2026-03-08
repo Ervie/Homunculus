@@ -1,5 +1,11 @@
 <Solution FileFormatVersion="12.00" MinimumVisualStudioVersion="17.0" Version="1.0">
   <Project Path="MarekMotykaBot\MarekMotykaBot.csproj" />
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+  </Folder>
   <Project Path="ImfFlipAPI.APISource.Core\ImfFlipAPI.APISource.Core.csproj" />
   <Project Path="MarekMotykaBot.Tests\MarekMotykaBot.Tests.csproj" />
 </Solution>
