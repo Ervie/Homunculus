@@ -292,6 +292,8 @@ __pycache__/
 **/._*
 
 # config
-
 configuration.json
 *.json
+
+# Deploy credentials
+.env
