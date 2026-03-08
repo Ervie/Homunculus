@@ -1,3 +1,4 @@
+using Cronos;
 using Discord;
 using Discord.WebSocket;
 using MarekMotykaBot.DataTypes;
@@ -10,8 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
 
 namespace MarekMotykaBot.Services.Core
 {
@@ -23,10 +24,13 @@ namespace MarekMotykaBot.Services.Core
 		private readonly INyaaService _nyaaService;
 		private readonly DiscordSocketClient _client;
 		private readonly Random _rng;
-		private readonly Timer _timer;
 		private readonly ulong _destinationServerId;
 		private readonly ulong _destinationChannelId;
 		private readonly ulong _streamAliasId;
+		private readonly Dictionary<string, Func<Task>> _taskDispatch;
+
+		private CancellationTokenSource _cts;
+		private readonly object _schedulerLock = new object();
 
 		public IConfiguration Configuration { get; set; }
 
@@ -56,28 +60,101 @@ namespace MarekMotykaBot.Services.Core
 
 			TimedTasks = _serializer.LoadFromFile<TimedTask>("timedTasks.json");
 
-			_timer = new Timer(60 * 1000);
-
-			_timer.Elapsed += new ElapsedEventHandler(TimerTick);
+			_taskDispatch = new Dictionary<string, Func<Task>>
+			{
+				{ nameof(StreamMondaySchedule), StreamMondaySchedule },
+				{ nameof(StreamMondayScheduleWithMention), StreamMondayScheduleWithMention },
+				{ nameof(QuoteOfTheDay), QuoteOfTheDay },
+				{ nameof(SwearWordCount), SwearWordCount },
+				{ nameof(ResetUTMapRotation), () => { ResetUTMapRotation(); return Task.CompletedTask; } },
+				{ nameof(NyaaWeeklySearch), NyaaWeeklySearch }
+			};
 		}
 
 		public void StartTimer()
 		{
-			if (!_timer.Enabled)
-				_timer.Start();
+			lock (_schedulerLock)
+			{
+				if (_cts != null)
+				{
+					return;
+				}
+
+				_cts = new CancellationTokenSource();
+				_ = Task.Run(() => RunSchedulerLoopAsync(_cts.Token));
+			}
 		}
 
-		public void TimerTick(object src, ElapsedEventArgs e)
+		private void RestartSchedulerLoop()
 		{
-			DateTime currentDateTime = DateTime.Now;
-
-			foreach (TimedTask task in TimedTasks)
+			lock (_schedulerLock)
 			{
-				if (task.Hours.Contains(currentDateTime.Hour) &&
-					task.Minutes.Contains(currentDateTime.Minute) &&
-					(task.DaysOfWeek.Contains(currentDateTime.DayOfWeek) || task.DaysOfMonth.Contains(currentDateTime.Day)))
+				_cts?.Cancel();
+				_cts?.Dispose();
+				_cts = new CancellationTokenSource();
+				_ = Task.Run(() => RunSchedulerLoopAsync(_cts.Token));
+			}
+		}
+
+		private async Task RunSchedulerLoopAsync(CancellationToken token)
+		{
+			while (!token.IsCancellationRequested)
+			{
+				try
 				{
-					GetType().GetMethod(task.Name).Invoke(this, null);
+					var now = DateTime.UtcNow;
+					DateTime? earliest = null;
+
+					foreach (var task in TimedTasks)
+					{
+						var cron = CronExpression.Parse(task.CronExpression);
+						var next = cron.GetNextOccurrence(now, TimeZoneInfo.Local);
+						if (next.HasValue && (!earliest.HasValue || next.Value < earliest.Value))
+						{
+							earliest = next.Value;
+						}
+					}
+
+					if (!earliest.HasValue)
+					{
+						await Task.Delay(TimeSpan.FromHours(1), token);
+						continue;
+					}
+
+					var delay = earliest.Value - DateTime.UtcNow;
+					if (delay > TimeSpan.Zero)
+					{
+						await Task.Delay(delay, token);
+					}
+
+					if (token.IsCancellationRequested)
+					{
+						break;
+					}
+
+					var fireTime = DateTime.UtcNow;
+					foreach (var task in TimedTasks)
+					{
+						var cron = CronExpression.Parse(task.CronExpression);
+						var next = cron.GetNextOccurrence(now, TimeZoneInfo.Local);
+						if (next.HasValue && next.Value <= fireTime && _taskDispatch.TryGetValue(task.Name, out var action))
+						{
+							try
+							{
+								await action();
+							}
+							catch
+							{
+							}
+						}
+					}
+				}
+				catch (TaskCanceledException)
+				{
+					break;
+				}
+				catch
+				{
 				}
 			}
 		}
@@ -139,7 +216,7 @@ namespace MarekMotykaBot.Services.Core
 			await channelToPost.SendMessageAsync("", false, swearWordCountRanking);
 		}
 
-		public void ResetUTMapRotation() 
+		public void ResetUTMapRotation()
 			=> _unrealTournamentService.ChangeRotation(new UTRotationConfiguration()
 				{
 					Repeat = false,
@@ -286,39 +363,38 @@ namespace MarekMotykaBot.Services.Core
 
 		public async Task ChangeStreamDayAsync(DayOfWeek dayOfWeek, int? hour)
 		{
-			var streamMondayTasks = TimedTasks.Where(x => x.Name.StartsWith("StreamMondaySchedule"));
+			int cronDow = (int)dayOfWeek;
 
-			foreach (var streamTask in streamMondayTasks)
+			foreach (var task in TimedTasks.Where(t => t.Name.StartsWith("StreamMondaySchedule")))
 			{
-				streamTask.DaysOfWeek.Clear();
-				streamTask.DaysOfWeek.Add(dayOfWeek);
+				var parts = task.CronExpression.Split(' ');
+				parts[4] = cronDow.ToString();
 
 				if (hour.HasValue)
 				{
-					var newReminderHour = streamTask.Name.EndsWith("WithMention") ? hour.Value - 1 : hour.Value - 4;
-
-					streamTask.Hours.Clear();
-					streamTask.Hours.Add(newReminderHour);
+					var newHour = task.Name.EndsWith("WithMention") ? hour.Value - 1 : hour.Value - 4;
+					parts[1] = newHour.ToString();
 				}
+
+				task.CronExpression = string.Join(" ", parts);
 			}
 
-			// Keep Nyaa weekly search in sync: it should run 1 hour before StreamMondayScheduleWithMention
-			var nyaaTasks = TimedTasks.Where(x => x.Name == nameof(NyaaWeeklySearch));
-			foreach (var nyaaTask in nyaaTasks)
+			foreach (var task in TimedTasks.Where(t => t.Name == nameof(NyaaWeeklySearch)))
 			{
-				nyaaTask.DaysOfWeek.Clear();
-				nyaaTask.DaysOfWeek.Add(dayOfWeek);
+				var parts = task.CronExpression.Split(' ');
+				parts[4] = cronDow.ToString();
 
 				if (hour.HasValue)
 				{
-					var nyaaHour = hour.Value - 5;
-
-					nyaaTask.Hours.Clear();
-					nyaaTask.Hours.Add(nyaaHour);
+					parts[1] = (hour.Value - 5).ToString();
 				}
+
+				task.CronExpression = string.Join(" ", parts);
 			}
-			
+
 			await _serializer.SaveToFileAsync<TimedTask>("timedTasks.json", TimedTasks.ToList());
+
+			RestartSchedulerLoop();
 		}
 	}
 }
