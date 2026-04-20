@@ -217,13 +217,131 @@ namespace MarekMotykaBot.Modules
 			LoggingService.CustomCommandLog(Context.Message, ModuleName);
 		}
 
-		[Command("runNyaaWeeklySearch"), Alias("nyaaw"), Summary("Run Nyaa.si weekly search now"), RequireUserPermission(GuildPermission.Administrator)]
-		public async Task RunNyaaWeeklySearchAsync()
+	[Command("runNyaaWeeklySearch"), Alias("nyaaw"), Summary("Run Nyaa.si weekly search now"), RequireUserPermission(GuildPermission.Administrator)]
+	public async Task RunNyaaWeeklySearchAsync()
+	{
+		await _timerService.NyaaWeeklySearch();
+		await ReplyAsync("Nyaa weekly search executed.");
+		LoggingService.CustomCommandLog(Context.Message, ModuleName);
+	}
+
+	[Command("addNyaaComplete"), Alias("nyaac"), Summary("Add NyaaComplete entry: \"Display name;torrent url;total episodes;[start episode]\""), RequireUserPermission(GuildPermission.Administrator)]
+	public async Task AddNyaaCompleteAsync(params string[] text)
+	{
+		string input = string.Join(" ", text).Trim();
+		if (string.IsNullOrWhiteSpace(input))
 		{
-			await _timerService.NyaaWeeklySearch();
-			await ReplyAsync("Nyaa weekly search executed.");
-			LoggingService.CustomCommandLog(Context.Message, ModuleName);
+			return;
 		}
+
+		var parts = input.Split(';')
+			.Select(p => p.Trim())
+			.Where(p => !string.IsNullOrWhiteSpace(p))
+			.ToList();
+
+		if (parts.Count < 3)
+		{
+			await ReplyAsync("Please use format: `Display name;torrent url;total episodes;[start episode]`.");
+			return;
+		}
+
+		string displayName = parts[0];
+		string torrentUrl = parts[1];
+
+		if (!Uri.IsWellFormedUriString(torrentUrl, UriKind.Absolute))
+		{
+			await ReplyAsync("Invalid torrent URL. Please provide an absolute URL.");
+			return;
+		}
+
+		if (!int.TryParse(parts[2], out int totalEpisodes) || totalEpisodes < 1)
+		{
+			await ReplyAsync("Total episodes must be a positive integer.");
+			return;
+		}
+
+		int startEpisode = 1;
+		if (parts.Count > 3)
+		{
+			if (!int.TryParse(parts[3], out startEpisode) || startEpisode < 1 || startEpisode > totalEpisodes)
+			{
+				await ReplyAsync($"Start episode must be a positive integer between 1 and {totalEpisodes}.");
+				return;
+			}
+		}
+
+		var backlog = await _serializer.LoadFromFileAsync<NyaaCompleteBacklogEntry>("nyaaCompleteBacklog.json") ?? new List<NyaaCompleteBacklogEntry>();
+
+		if (!backlog.Any(x => string.Equals(x.DisplayName, displayName, StringComparison.OrdinalIgnoreCase)))
+		{
+			backlog.Add(new NyaaCompleteBacklogEntry
+			{
+				DisplayName = displayName,
+				TorrentUrl = torrentUrl,
+				TotalEpisodes = totalEpisodes,
+				NextEpisodeNumber = startEpisode
+			});
+
+			await _serializer.SaveToFileAsync("nyaaCompleteBacklog.json", backlog);
+			await ReplyAsync(string.Format(StringConsts.Added, $"{displayName} ({totalEpisodes} episodes, starting at ep{startEpisode.ToString().PadLeft(2, '0')})"));
+		}
+		else
+		{
+			await ReplyAsync($"Entry `{displayName}` already exists in NyaaComplete list.");
+		}
+
+		LoggingService.CustomCommandLog(Context.Message, ModuleName, input);
+	}
+
+	[Command("removeNyaaComplete"), Alias("nyaacr"), Summary("Remove NyaaComplete entry by display name"), RequireUserPermission(GuildPermission.Administrator)]
+	public async Task RemoveNyaaCompleteAsync(params string[] text)
+	{
+		string displayName = string.Join(" ", text).Trim();
+		if (string.IsNullOrWhiteSpace(displayName))
+		{
+			return;
+		}
+
+		var backlog = await _serializer.LoadFromFileAsync<NyaaCompleteBacklogEntry>("nyaaCompleteBacklog.json") ?? new List<NyaaCompleteBacklogEntry>();
+		if (backlog.Count == 0)
+		{
+			return;
+		}
+
+		var toRemove = backlog.FirstOrDefault(x => string.Equals(x.DisplayName, displayName, StringComparison.OrdinalIgnoreCase));
+		if (toRemove != null)
+		{
+			backlog.Remove(toRemove);
+			await _serializer.SaveToFileAsync("nyaaCompleteBacklog.json", backlog);
+			await ReplyAsync(string.Format(StringConsts.Removed, displayName));
+		}
+
+		LoggingService.CustomCommandLog(Context.Message, ModuleName, displayName);
+	}
+
+	[Command("listNyaaComplete"), Alias("nyaacl"), Summary("List NyaaComplete tracked entries"), RequireUserPermission(GuildPermission.Administrator)]
+	public async Task ListNyaaCompleteAsync()
+	{
+		var backlog = await _serializer.LoadFromFileAsync<NyaaCompleteBacklogEntry>("nyaaCompleteBacklog.json") ?? new List<NyaaCompleteBacklogEntry>();
+		if (backlog.Count == 0)
+		{
+			await ReplyAsync("No NyaaComplete entries configured.");
+			LoggingService.CustomCommandLog(Context.Message, ModuleName);
+			return;
+		}
+
+		var lines = backlog.Select((e, i) =>
+		{
+			string lastUpdated = e.LastUpdated.HasValue ? e.LastUpdated.Value.ToString("u") : "never";
+			string progress = e.NextEpisodeNumber > e.TotalEpisodes
+				? $"complete ({e.TotalEpisodes}/{e.TotalEpisodes})"
+				: $"ep{e.NextEpisodeNumber.ToString().PadLeft(2, '0')} of {e.TotalEpisodes}";
+			return $"{i + 1}. {e.DisplayName} | {progress} | last updated: {lastUpdated}";
+		});
+
+		await ReplyAsync("**NyaaComplete entries:**\n" + string.Join("\n", lines));
+		LoggingService.CustomCommandLog(Context.Message, ModuleName);
+	}
 
 		private BacklogEntry FormatStreamMondayEntryText(params string[] text)
 		{

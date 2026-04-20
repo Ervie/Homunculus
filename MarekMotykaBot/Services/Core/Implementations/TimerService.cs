@@ -223,81 +223,100 @@ namespace MarekMotykaBot.Services.Core
 					ExcludeMaps = true
 				});
 
-		public async Task NyaaWeeklySearch()
+	public async Task NyaaWeeklySearch()
+	{
+		var streamMonday = await _serializer.LoadSingleFromFileAsync<StreamMondayBacklog>("streamMonday.json");
+		if (streamMonday.BacklogEntries == null)
 		{
-			var trackedEntries = await _serializer.LoadFromFileAsync<NyaaBacklogEntry>("nyaaBacklog.json") ?? new List<NyaaBacklogEntry>();
-			if (trackedEntries.Count == 0)
+			streamMonday.BacklogEntries = new List<BacklogEntry>();
+		}
+
+		var trackedEntries = await _serializer.LoadFromFileAsync<NyaaBacklogEntry>("nyaaBacklog.json") ?? new List<NyaaBacklogEntry>();
+
+		foreach (var entry in trackedEntries)
+		{
+			var phrase = entry.SearchPhrase;
+			if (string.IsNullOrWhiteSpace(phrase))
 			{
-				return;
-			}
-			
-			var streamMonday = await _serializer.LoadSingleFromFileAsync<StreamMondayBacklog>("streamMonday.json");
-			if (streamMonday.BacklogEntries == null)
-			{
-				streamMonday.BacklogEntries = new List<BacklogEntry>();
+				continue;
 			}
 
-			foreach (var entry in trackedEntries)
+			string lastKnownTitle = entry.LastKnownTitle;
+
+			try
 			{
-				var phrase = entry.SearchPhrase;
-				if (string.IsNullOrWhiteSpace(phrase))
+				var newResults = await _nyaaService
+					.GetNewTorrentDownloadsSinceAsync(phrase, lastKnownTitle, 20);
+
+				if (newResults == null || newResults.Count == 0)
 				{
 					continue;
 				}
 
-				string lastKnownTitle = entry.LastKnownTitle;
-
-				try
+				// Add new episodes to StreamMonday backlog (oldest first for natural ordering)
+				foreach (var result in newResults.Reverse())
 				{
-					var newResults = await _nyaaService
-						.GetNewTorrentDownloadsSinceAsync(phrase, lastKnownTitle, 20);
+					string suffix = GetEpisodeSuffixFromTitle(result.Title);
+					string episodeName;
 
-					if (newResults == null || newResults.Count == 0)
+					if (!string.IsNullOrWhiteSpace(entry.DisplayName) && !string.IsNullOrWhiteSpace(suffix))
 					{
-						continue;
+						episodeName = $"{entry.DisplayName} {suffix}";
+					}
+					else if (!string.IsNullOrWhiteSpace(entry.DisplayName))
+					{
+						episodeName = entry.DisplayName;
+					}
+					else
+					{
+						episodeName = GetEpisodeNameFromTitle(result.Title) ?? result.Title;
 					}
 
-					// Add new episodes to StreamMonday backlog (oldest first for natural ordering)
-					foreach (var result in newResults.Reverse())
+					if (!streamMonday.BacklogEntries.Any(x => x.Name == episodeName))
 					{
-						string suffix = GetEpisodeSuffixFromTitle(result.Title);
-						string episodeName;
-
-						if (!string.IsNullOrWhiteSpace(entry.DisplayName) && !string.IsNullOrWhiteSpace(suffix))
-						{
-							episodeName = $"{entry.DisplayName} {suffix}";
-						}
-						else if (!string.IsNullOrWhiteSpace(entry.DisplayName))
-						{
-							episodeName = entry.DisplayName;
-						}
-						else
-						{
-							episodeName = GetEpisodeNameFromTitle(result.Title) ?? result.Title;
-						}
-
-						if (!streamMonday.BacklogEntries.Any(x => x.Name == episodeName))
-						{
-							streamMonday.BacklogEntries.Add(new BacklogEntry(episodeName, result.TorrentUrl));
-						}
+						streamMonday.BacklogEntries.Add(new BacklogEntry(episodeName, result.TorrentUrl));
 					}
-
-					// Update entry with most recent result
-					var newest = newResults[0];
-					entry.LastKnownTitle = newest.Title;
-					entry.LastUpdated = DateTime.UtcNow;
-				}
-				catch
-				{
-					// Skip failed phrase and continue with the rest
 				}
 
-				await Task.Delay(500).ConfigureAwait(false);
+				// Update entry with most recent result
+				var newest = newResults[0];
+				entry.LastKnownTitle = newest.Title;
+				entry.LastUpdated = DateTime.UtcNow;
+			}
+			catch
+			{
+				// Skip failed phrase and continue with the rest
 			}
 
-			await _serializer.SaveSingleToFileAsync("streamMonday.json", streamMonday).ConfigureAwait(false);
-			await _serializer.SaveToFileAsync("nyaaBacklog.json", trackedEntries).ConfigureAwait(false);
+			await Task.Delay(500).ConfigureAwait(false);
 		}
+
+		await _serializer.SaveToFileAsync("nyaaBacklog.json", trackedEntries).ConfigureAwait(false);
+
+		var completeEntries = await _serializer.LoadFromFileAsync<NyaaCompleteBacklogEntry>("nyaaCompleteBacklog.json") ?? new List<NyaaCompleteBacklogEntry>();
+
+		foreach (var entry in completeEntries)
+		{
+			if (entry.NextEpisodeNumber > entry.TotalEpisodes)
+			{
+				continue;
+			}
+
+			string episodeNumber = entry.NextEpisodeNumber.ToString().PadLeft(2, '0');
+			string episodeName = $"{entry.DisplayName}ep{episodeNumber}";
+
+			if (!streamMonday.BacklogEntries.Any(x => x.Name == episodeName))
+			{
+				streamMonday.BacklogEntries.Add(new BacklogEntry(episodeName, entry.TorrentUrl));
+			}
+
+			entry.NextEpisodeNumber++;
+			entry.LastUpdated = DateTime.UtcNow;
+		}
+
+		await _serializer.SaveToFileAsync("nyaaCompleteBacklog.json", completeEntries).ConfigureAwait(false);
+		await _serializer.SaveSingleToFileAsync("streamMonday.json", streamMonday).ConfigureAwait(false);
+	}
 
 		private static string GetEpisodeNameFromTitle(string title)
 		{
