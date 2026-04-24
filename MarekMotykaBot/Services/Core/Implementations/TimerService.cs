@@ -10,7 +10,6 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -319,66 +318,10 @@ namespace MarekMotykaBot.Services.Core
 	}
 
 		private static string GetEpisodeNameFromTitle(string title)
-		{
-			if (string.IsNullOrWhiteSpace(title))
-			{
-				return title;
-			}
-
-			// Strip leading group tags like [ASW]
-			string cleaned = Regex.Replace(title, @"^\[[^\]]+\]\s*", string.Empty).Trim();
-
-			// Extract the main name and episode number: "Show Name S2 - 03 ..." or "Show Name - 21 ..."
-			var match = Regex.Match(cleaned, @"^(?<name>.+?)\s*(?<season>S\d+)?\s*-\s*(?<ep>\d{1,3})\b");
-			if (!match.Success)
-			{
-				return null;
-			}
-
-			string name = match.Groups["name"].Value.Trim();
-			string seasonGroup = match.Groups["season"].Success ? match.Groups["season"].Value.TrimStart('S', 's') : null;
-			string episodeNumber = match.Groups["ep"].Value.TrimStart('0');
-			if (string.IsNullOrEmpty(episodeNumber))
-			{
-				episodeNumber = match.Groups["ep"].Value; // keep original if all zeros
-			}
-
-			if (!string.IsNullOrEmpty(seasonGroup))
-			{
-				return $"{name} s{seasonGroup}ep{episodeNumber}";
-			}
-
-			return $"{name} ep{episodeNumber}";
-		}
+			=> EpisodeTitleParser.FormatEpisodeName(title);
 
 		private static string GetEpisodeSuffixFromTitle(string title)
-		{
-			if (string.IsNullOrWhiteSpace(title))
-			{
-				return null;
-			}
-
-			string cleaned = Regex.Replace(title, @"^\[[^\]]+\]\s*", string.Empty).Trim();
-			var match = Regex.Match(cleaned, @"^(?<name>.+?)\s*(?<season>S\d+)?\s*-\s*(?<ep>\d{1,3})\b");
-			if (!match.Success)
-			{
-				return null;
-			}
-
-			string seasonGroup = match.Groups["season"].Success ? match.Groups["season"].Value.TrimStart('S', 's') : null;
-			string episodeNumber = match.Groups["ep"].Value.TrimStart('0');
-			if (string.IsNullOrEmpty(episodeNumber))
-			{
-				episodeNumber = match.Groups["ep"].Value;
-			}
-
-			if (!string.IsNullOrEmpty(seasonGroup))
-			{
-				return $"s{seasonGroup}ep{episodeNumber}";
-			}
-
-			return $"ep{episodeNumber}";
-		}
+			=> EpisodeTitleParser.FormatEpisodeSuffix(title);
 
 		public async Task ChangeStreamDayAsync(DayOfWeek dayOfWeek, int? hour)
 		{
