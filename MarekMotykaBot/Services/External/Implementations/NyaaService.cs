@@ -3,6 +3,7 @@ using MarekMotykaBot.Services.External.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -21,7 +22,14 @@ namespace MarekMotykaBot.Services.External
 		public NyaaService(IConfiguration configuration, HttpClient httpClient)
 		{
 			Configuration = configuration;
-			_httpClient = httpClient ?? new HttpClient();
+			// Nyaa.si (behind DDoS-Guard) returns gzip-compressed responses on cached
+			// pages regardless of the request's Accept-Encoding header, so the client
+			// must decompress automatically; otherwise HtmlAgilityPack parses garbled
+			// bytes and misses torrent links.
+			_httpClient = httpClient ?? new HttpClient(new HttpClientHandler
+			{
+				AutomaticDecompression = DecompressionMethods.All
+			});
 			if (_httpClient.Timeout != RequestTimeout)
 			{
 				_httpClient.Timeout = RequestTimeout;

@@ -4,6 +4,7 @@ using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using MarekMotykaBot.Services.Core;
@@ -66,7 +67,10 @@ namespace MarekMotykaBot
 				.AddSingleton<IJSONSerializerService, JSONSerializerService>()
 				.AddSingleton<ITimerService, TimerService>()
 				.AddSingleton<IUnrealTournamentService, UnrealTournamentService>()
-				.AddSingleton(new HttpClient())
+				.AddSingleton(new HttpClient(new HttpClientHandler
+				{
+					AutomaticDecompression = DecompressionMethods.All
+				}))
 				.AddSingleton<INyaaService, NyaaService>()
 				.AddSingleton(_config)
 				.AddSingleton<Random>();
