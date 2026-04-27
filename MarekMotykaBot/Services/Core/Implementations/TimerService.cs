@@ -132,11 +132,17 @@ namespace MarekMotykaBot.Services.Core
 					}
 
 					var fireTime = DateTime.UtcNow;
+					// Task.Delay may return sub-millisecond before the requested due time.
+					// Without this clamp, an early wake makes (next <= fireTime) false for the very
+					// task we slept for, silently dropping that occurrence and shifting the schedule
+					// forward by one cron period (e.g. a missed day for a daily cron).
+					var dispatchThreshold = fireTime < earliest.Value ? earliest.Value : fireTime;
+
 					foreach (var task in TimedTasks)
 					{
 						var cron = CronExpression.Parse(task.CronExpression);
 						var next = cron.GetNextOccurrence(now, TimeZoneInfo.Local);
-						if (next.HasValue && next.Value <= fireTime && _taskDispatch.TryGetValue(task.Name, out var action))
+						if (next.HasValue && next.Value <= dispatchThreshold && _taskDispatch.TryGetValue(task.Name, out var action))
 						{
 							try
 							{
