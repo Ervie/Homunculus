@@ -28,6 +28,7 @@ namespace MarekMotykaBot.Services.Core
 		private readonly List<string> _takeuchiWords;
 		private readonly List<string> _ziewaczWords;
 		private readonly List<string> _nosaczWords;
+		private readonly List<string> _jaWords;
 
 		public IConfiguration Configuration { get; set; }
 
@@ -50,6 +51,7 @@ namespace MarekMotykaBot.Services.Core
 			_takeuchiWords = _serializer.LoadFromFile<string>("takeuchiTrigger.json");
 			_ziewaczWords = _serializer.LoadFromFile<string>("ziewaczTrigger.json");
 			_nosaczWords = _serializer.LoadFromFile<string>("nosaczTrigger.json");
+			_jaWords = _serializer.LoadFromFile<string>("jaTrigger.json");
 		}
 
 		public async Task ScanMessageAsync(SocketMessage s)
@@ -67,6 +69,7 @@ namespace MarekMotykaBot.Services.Core
 				await AddReactionAfterTriggerWord(context, message, _takeuchiWords, "takeuchi");
 				await AddReactionAfterTriggerWord(context, message, _ziewaczWords, "ziewface");
 				await AddReactionAfterTriggerWord(context, message, _nosaczWords, "nosacz");
+				await AddReactionAfterTriggerWord(context, message, _jaWords, "ja");
 				await DetectMentionsAsync(context, message);
 				await DetectSwearWordAsync(context, message);
 				await DetectMarekMessageAsync(message);
@@ -87,6 +90,7 @@ namespace MarekMotykaBot.Services.Core
 				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _takeuchiWords, "takeuchi"), "takeuchi");
 				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _ziewaczWords, "ziewface"), "ziewface");
 				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _nosaczWords, "nosacz"), "nosacz");
+				await RemoveReactionAfterTriggerMissing(context, message, await AddReactionAfterTriggerWord(context, message, _jaWords, "ja"), "ja");
 			}
 
 			_logger.CustomEditLog(message, oldMessage.Value);
