@@ -2,596 +2,66 @@
 {
 	public static class StringConsts
 	{
-		public static string MasterThesis
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("masterThesis");
-			}
-		}
-
-		public static string WaifuBetter
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("waifuBetter");
-			}
-		}
-
-		public static string WaifuBest
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("waifuBest");
-			}
-		}
-
-		public static string HusbandoBetter
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("husbandoBetter");
-			}
-		}
-
-		public static string HusbandoBest
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("husbandoBest");
-			}
-		}
-
-		public static string WaifuEqual
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("waifuEqual");
-			}
-		}
-
-		public static string WaifuShit
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("waifuShit");
-			}
-		}
-
-		public static string ListCommands
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("listCommands");
-			}
-		}
-
-		public static string DeclineCommand
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("declineCommand");
-			}
-		}
-
-		public static string LegiaWarszawa
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("legiaWarszawa");
-			}
-		}
-
-		public static string WaitForIt
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("waitForIt");
-			}
-		}
-
-		public static string ShitString
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("shitString");
-			}
-		}
-
-		public static string MarekWaifus
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("marekWaifus");
-			}
-		}
-
-		public static string YtNotFound
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("ytNotFound");
-			}
-		}
-
-		public static string Head
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("head");
-			}
-		}
-
-		public static string Tails
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("tails");
-			}
-		}
-
-		public static string InTheJar
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("inTheJar");
-			}
-		}
-
-		public static string RunAway
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("runAway");
-			}
-		}
-
-		public static string ThesisDefense
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("thesisDefense");
-			}
-		}
-
-		public static string Snoring
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("snoring");
-			}
-		}
-
-		public static string Job
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("job");
-			}
-		}
-
-		public static string Doctor
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("doctor");
-			}
-		}
-
-		public static string Girlfriend
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("girlfriend");
-			}
-		}
-
-		public static string NoNumber
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("noNumber");
-			}
-		}
-
-		public static string TooMuch
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("tooMuch");
-			}
-		}
-
-		public static string Impossible
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("impossible");
-			}
-		}
-
-		public static string SecretGiftDeny
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("secretGiftDeny");
-			}
-		}
-
-		public static string SwearWordCounterEntry
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("swearWordCounterEntry");
-			}
-		}
-
-		public static string SwearWordCounterHeader
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("swearWordCounterHeader");
-			}
-		}
-
-		public static string CharadeEnd
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("charadeEnd");
-			}
-		}
-
-		public static string CharadeReset
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("charadeReset");
-			}
-		}
-
-		public static string DerpQuote
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("derpQuote");
-			}
-		}
-
-		public static string DerpQuote2
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("derpQuote2");
-			}
-		}
-
-		public static string DerpQuote3
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("derpQuote3");
-			}
-		}
-
-		public static string WrongQuestion
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("wrongQuestion");
-			}
-		}
-
-		public static string MissedThrow
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("missedThrow");
-			}
-		}
-
-		public static string MissedThrow2
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("missedThrow2");
-			}
-		}
-
-		public static string FinishingBlow
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("finishingBlow");
-			}
-		}
-
-		public static string GenkiDama
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("genkiDama");
-			}
-		}
-
-		public static string QuoteForToday
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("quoteForToday");
-			}
-		}
-
-		public static string ToldYou
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("toldYou");
-			}
-		}
-
-		public static string CustomDeleteLog
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("customDeleteLog");
-			}
-		}
-
-		public static string CustomEditLog
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("customEditLog");
-			}
-		}
-
-		public static string CustomCommandLog
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("customCommandLog");
-			}
-		}
-
-		public static string CustomReactionLog
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("customReactionLog");
-			}
-		}
-
-		public static string Parameters
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("parameters");
-			}
-		}
-
-		public static string EggString
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("eggString");
-			}
-		}
-
-		public static string SorryForLateArrivalMessage1
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("lateArrivalMessage1");
-			}
-		}
-
-		public static string SorryForLateArrivalMessage2
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("lateArrivalMessage2");
-			}
-		}
-
-		public static string RabbitMissing
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("rabbitMissing");
-			}
-		}
-
-		public static string PreemptiveAttack
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("preemptiveAttack");
-			}
-		}
-
-		public static string Today
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("today");
-			}
-		}
-
-		public static string Yesterday
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("yesterday");
-			}
-		}
-
-		public static string DaysAgo
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("daysAgo");
-			}
-		}
-
-		public static string InTheAss
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("inTheAss");
-			}
-		}
-
-		public static string OnlyErina
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("onlyErina");
-			}
-		}
-
-		public static string FlagReset
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("flagReset");
-			}
-		}
-
-		public static string WhyWouldIDoThat
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("whyWouldIDoThat");
-			}
-		}
-
-		public static string Backlog
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("backlog");
-			}
-		}
-
-		public static string Added
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("added");
-			}
-		}
-
-		public static string Removed
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("removed");
-			}
-		}
-
-		public static string VersionHeader
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("versionHeader");
-			}
-		}
-
-		public static string About
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("about");
-			}
-		}
-
-		public static string Title
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("title");
-			}
-		}
-
-		public static string Translations
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("translations");
-			}
-		}
-
-		public static string WatchedRead
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("watchedRead");
-			}
-		}
-
-		public static string UTRotationChange
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("utRotationChange");
-			}
-		}
-
-		public static string CurrentMapRotationHeader
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("currentMapRotationHeader");
-			}
-		}
-
-		public static string CurrentMapHeader
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("currentMapHeader");
-			}
-		}
-
-		public static string Wedding
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("wedding");
-			}
-		}
-
-		public static string Quarantine
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("quarantine");
-			}
-		}
-
-		public static string StreamDayChanged
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("streamDayChanged");
-			}
-		}
-		
-		public static string LonkStole
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("lonkStole");
-			}
-		}
-		
-		public static string Drunk
-		{
-			get
-			{
-				return StringResources.ResourceManager.GetString("drunk");
-			}
-		}
+		public const string WaifuBetter = "{0} lepsza.";
+		public const string WaifuBest = "{0} najlepsza.";
+		public const string HusbandoBetter = "{0} lepszy.";
+		public const string HusbandoBest = "{0} najlepszy.";
+		public const string WaifuEqual = "Obie świetne <3!";
+		public const string WaifuShit = "{0} najlepsza, reszta to shit!";
+		public const string ListCommands = "Elo mordy, tutaj są komendy";
+		public const string DeclineCommand = "Z {0} to se możesz... to wiesz co se możesz!";
+		public const string WaitForIt = "Patrzcie chłopaki jak mu pocisnę...";
+		public const string ShitString = "GÓWNO";
+		public const string MarekWaifus = "{0} jest najlepsza! <3";
+		public const string YtNotFound = "Nie znalazłem takiego filmu jak {0}.";
+		public const string Head = "Orzeł";
+		public const string Tails = "Reszka";
+		public const string InTheJar = "...w słoiku!";
+		public const string RunAway = "Spierdalamyyyy!";
+		public const string Snoring = "Chrrr... chrrr... chrrr...";
+		public const string Job = "Sorry, teraz pracuję.";
+		public const string NoNumber = "Ni ma liczby naturalnej, rzucam zwykłą.";
+		public const string SwearWordCounterEntry = "{0} do tej pory użył słowa  \"{1}\" {2} razy.";
+		public const string SwearWordCounterHeader = "Zliczam brzydkie słowa!";
+		public const string CharadeEnd = "Koniec haseł!";
+		public const string CharadeReset = "Kesz do kalamburów zresetowany.";
+		public const string DerpQuote = "Księga DerpRoomu mówi wyraźnie...";
+		public const string DerpQuote2 = "W Księdze DerpRoomu napisane jest jasno...";
+		public const string DerpQuote3 = "Jak pisze w Księdze DerpRoomu czarno na białym...";
+		public const string WrongQuestion = "Złe pytanie.";
+		public const string MissedThrow = "O kuźwa, nie trafiłem! Sorry {0} mordo!";
+		public const string MissedThrow2 = "Tsk... Nie trafiłem.";
+		public const string FinishingBlow = "HISSATSU";
+		public const string GenkiDama = "GÓWNO-DAMA!!!";
+		public const string QuoteForToday = "Cytat na dziś:";
+		public const string ToldYou = "Ech {0}, przecież mówiłem Ci że z {1} to se możesz... To wiesz co se możesz!";
+		public const string CustomDeleteLog = "Użytkownik {0} w kanale {1} usunął wiadomość o treści: {2}";
+		public const string CustomEditLog = "Użytkownik {0} w kanale {1} zmienił wiadomość: {2} -> {3}";
+		public const string CustomCommandLog = "Wywołano komendę {0} modułu {1} dla użytkownika {2} w kanale {3}";
+		public const string CustomReactionLog = "Dodano reakcję {0} dla wiadomości użytkownika {1} o treści {2} w kanale {3}";
+		public const string Parameters = "Parametry: {0}";
+		public const string EggString = "JAJCO";
+		public const string SorryForLateArrivalMessage1 = "Sorry, mordo! Autobus mi uciekł i się spóźniłem.";
+		public const string SorryForLateArrivalMessage2 = "Stary, wybacz spóźnienie! Myślałem, że też się spóźnisz.";
+		public const string PreemptiveAttack = "Atak bez ostrzeżenia!";
+		public const string Today = "dzisiaj.";
+		public const string Yesterday = "wczoraj.";
+		public const string DaysAgo = "{0} dni temu.";
+		public const string InTheAss = "...w dupie!";
+		public const string OnlyErina = "Jak Nakiri to tylko Erina! Reszta to shit!";
+		public const string WhyWouldIDoThat = "Czemu ja się zawahałem żeby strzelić? Mam wyrzuty sumienia?";
+		public const string Backlog = "Rozkładówka (backlog)";
+		public const string Added = "Dodano {0}";
+		public const string Removed = "Usunięto {0}";
+		public const string VersionHeader = "Wersja";
+		public const string About = "O bocie";
+		public const string Title = "Tytuł";
+		public const string Translations = "Tłumaczenia";
+		public const string WatchedRead = "Obejrzane/przeczytane przez:";
+		public const string UTRotationChange = "Zmieniono rotację map.";
+		public const string CurrentMapRotationHeader = "Aktualna rotacja:";
+		public const string StreamDayChanged = "Zmieniono dzień streamu na \"{0}\".";
+		public const string LonkStole = "Sorry, ale Lonk wygryzł mnie z serwera";
+		public const string Drunk = "Sorry, ale przepijam hajsy z korpo";
 	}
 }
