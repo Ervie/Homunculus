@@ -22,6 +22,7 @@ Homunculus is a Discord bot (Discord.Net / .NET 10) plus a small ImgFlip API hel
 - Do not change `deploy.sh` excludes for `Resources/TextFiles/`, `configuration.json`, `Logs/`, `Errors/`, or `Custom/` without an explicit reason — those keep live server state intact.
 - Prefer existing service interfaces under `Services/*/Interfaces` over new ad-hoc helpers.
 - Keep `AGENTS.md` short; put deeper detail in `README.md` (or `docs/` only if that becomes necessary).
+- **Version bump:** Unless the prompt already specifies a version change or explicitly skips it, ask the user during plan execution whether to bump the bot version. Default yes: increment the minor component and reset patch (e.g. `3.8.0` → `3.9.0`) in `MarekMotykaBot/MarekMotykaBot.csproj`. Only edit `<Version>` — do not introduce or maintain `<AssemblyVersion>`, `<FileVersion>`, or `<PackageVersion>` (the SDK derives them).
 
 ## Verify
 
