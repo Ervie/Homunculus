@@ -145,14 +145,16 @@ namespace MarekMotykaBot.Services.Core
 				message.Tags.Any(x => x.Type.Equals(TagType.EveryoneMention) || x.Type.Equals(TagType.HereMention)))
 			{
 				var today = DateTime.Now;
+				var isWeekend = today.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday;
 
-				var response = (today.DayOfWeek, today.Hour) switch
+				var response = (isWeekend, today.Hour) switch
 				{
-					(DayOfWeek day, int hour) when ((day == DayOfWeek.Saturday || day == DayOfWeek.Sunday) && hour < 12) => StringConsts.Snoring,
-					(DayOfWeek day, int hour) when ((day == DayOfWeek.Saturday || day == DayOfWeek.Sunday)) => StringConsts.Drunk,
-					(DayOfWeek day, int hour) when (hour < 9) => StringConsts.Snoring,
-					(DayOfWeek day, int hour) when (hour < 18) => StringConsts.Job,
-					_ => StringConsts.LonkStole
+					(_, < 5) => StringConsts.Grzmot,
+					(_, < 9) => StringConsts.Snoring,
+					(true, < 18) => StringConsts.Resting,
+					(false, < 18) => StringConsts.Job,
+					(true, _) => StringConsts.Drunk,
+					_ => StringConsts.Grzmot2
 				};
 
 				await context.Channel.SendMessageAsync(response);

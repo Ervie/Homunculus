@@ -63,5 +63,8 @@
 		public const string StreamDayChanged = "Zmieniono dzień streamu na \"{0}\".";
 		public const string LonkStole = "Sorry, ale Lonk wygryzł mnie z serwera";
 		public const string Drunk = "Sorry, ale przepijam hajsy z korpo";
+		public const string Grzmot = "Sorry, właśnie karmię Grzmota";
+		public const string Resting = "Sorry właśnie odpoczywam";
+		public const string Grzmot2 = "Sorry właśnie przewijam Grzmota";
 	}
 }
